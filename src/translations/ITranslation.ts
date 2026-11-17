@@ -7,6 +7,12 @@ export interface ITranslation {
     HowItWorks: string;
     Pricing: string;
     GetStarted: string;
+    Solutions: string;
+    SolutionItems: Array<{
+      href: string;
+      title: string;
+      description: string;
+    }>;
     DropTitle: string;
     DropDesc: string;
     FeaturesDropTitle: string;

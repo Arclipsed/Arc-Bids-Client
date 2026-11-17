@@ -7,6 +7,24 @@ export const DE: ITranslation = {
     HowItWorks: "So funktioniert's",
     Pricing: "Preise",
     GetStarted: "Jetzt starten",
+    Solutions: "Lösungen",
+    SolutionItems: [
+      {
+        href: "/solutions/itad-hardware-auctions",
+        title: "ITAD & Refurbished Hardware",
+        description: "Laptop-, Smartphone- & Server-Posten in 15 Minuten live versteigern.",
+      },
+      {
+        href: "/solutions/liquidation-pallet-auctions",
+        title: "Restposten & Retourenpaletten",
+        description: "Mischpaletten & Überbestände mit 0 % Provision abverkaufen.",
+      },
+      {
+        href: "/solutions/whatsapp-b2b-auction-alternative",
+        title: "WhatsApp-B2B-Alternative",
+        description: "Ein privater Live-Link statt 20 paralleler Einzel-Chats.",
+      },
+    ],
     DropTitle: "Live-Auktionsraum",
     DropDesc: "Treten Sie einem aktiven Großhandels-Auktionsraum in Echtzeit bei.",
     FeaturesDropTitle: "Plattform-Funktionen",

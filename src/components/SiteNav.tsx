@@ -8,9 +8,11 @@ import type { ITranslation } from "@/translations/ITranslation"
 import { EN } from "@/translations/en/en"
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
@@ -42,6 +44,33 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                 {nav.Features}
               </a>
             </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white data-[state=open]:bg-white/[0.06] data-[state=open]:text-white">
+              {nav.Solutions}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[360px] gap-1.5 rounded-2xl border border-white/[0.08] bg-[#090d14] p-2.5 shadow-2xl">
+                {nav.SolutionItems.map((item) => (
+                  <li key={item.href}>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={item.href}
+                        className="block rounded-xl p-3 transition hover:bg-white/[0.05]"
+                      >
+                        <div className="text-sm font-semibold text-white">
+                          {item.title}
+                        </div>
+                        <p className="mt-1 text-xs leading-relaxed text-zinc-400">
+                          {item.description}
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                ))}
+              </ul>
+            </NavigationMenuContent>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
@@ -125,6 +154,24 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                   </Link>
                 </li>
               </ul>
+              <div className="mt-3 border-t border-white/[0.06] pt-3">
+                <p className="px-3.5 pb-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
+                  {nav.Solutions}
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {nav.SolutionItems.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="block rounded-xl px-3.5 py-2 text-sm text-zinc-300 transition hover:bg-white/[0.06] hover:text-white"
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="mt-3 border-t border-white/[0.06] pt-3">
                 <Link
                   href="/dashboard"
