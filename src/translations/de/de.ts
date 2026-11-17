@@ -6,6 +6,7 @@ export const DE: ITranslation = {
     Features: "Funktionen",
     HowItWorks: "So funktioniert's",
     Pricing: "Preise",
+    Tools: "Kostenlose Tools",
     GetStarted: "Jetzt starten",
     Solutions: "Lösungen",
     SolutionItems: [
@@ -18,6 +19,21 @@ export const DE: ITranslation = {
         href: "/solutions/liquidation-pallet-auctions",
         title: "Restposten & Retourenpaletten",
         description: "Mischpaletten & Überbestände mit 0 % Provision abverkaufen.",
+      },
+      {
+        href: "/solutions/b2b-smartphone-stock-auctions",
+        title: "Smartphone-Großhandel",
+        description: "Gegradete iPhone- & Samsung-Chargen in Echtzeit versteigern.",
+      },
+      {
+        href: "/solutions/industrial-surplus-machinery-auctions",
+        title: "Industrie & Werkzeug-Posten",
+        description: "Werkzeuge, MRO & Betriebstechnik ohne Auktionsaufgeld räumen.",
+      },
+      {
+        href: "/solutions/fashion-overstock-lot-auctions",
+        title: "Mode- & Marken-Restposten",
+        description: "Saison-Überhänge diskret an geprüfte Outlet-Partner abgeben.",
       },
       {
         href: "/solutions/whatsapp-b2b-auction-alternative",

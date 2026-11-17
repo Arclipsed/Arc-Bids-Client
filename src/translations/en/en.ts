@@ -6,6 +6,7 @@ export const EN: ITranslation = {
     Features: "Features",
     HowItWorks: "How It Works",
     Pricing: "Pricing",
+    Tools: "Free Tools",
     GetStarted: "Get Started",
     Solutions: "Solutions",
     SolutionItems: [
@@ -18,6 +19,21 @@ export const EN: ITranslation = {
         href: "/solutions/liquidation-pallet-auctions",
         title: "Liquidation & Return Pallets",
         description: "Move mixed pallets and overstock faster with 0% commission.",
+      },
+      {
+        href: "/solutions/b2b-smartphone-stock-auctions",
+        title: "Smartphone & Telecom Wholesale",
+        description: "Auction graded iPhone and Samsung batches in real time.",
+      },
+      {
+        href: "/solutions/industrial-surplus-machinery-auctions",
+        title: "Industrial Surplus & Tools",
+        description: "Clear tools, MRO parts, and equipment with zero buyer premiums.",
+      },
+      {
+        href: "/solutions/fashion-overstock-lot-auctions",
+        title: "Fashion & Retail Overstock",
+        description: "Sell seasonal stocklots discreetly to vetted outlet buyers.",
       },
       {
         href: "/solutions/whatsapp-b2b-auction-alternative",

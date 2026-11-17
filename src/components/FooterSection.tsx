@@ -83,27 +83,16 @@ export default function FooterSection({
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/solutions/itad-hardware-auctions"
-                  className="transition-colors hover:text-[#e4fffb]"
-                >
-                  ITAD Hardware Auctions
+                <Link href="/solutions" className="transition-colors hover:text-[#e4fffb]">
+                  Solutions
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/solutions/liquidation-pallet-auctions"
-                  className="transition-colors hover:text-[#e4fffb]"
+                  href="/tools"
+                  className="font-medium text-[#3ff2e0] transition-colors hover:text-[#e4fffb]"
                 >
-                  Liquidation Pallet Auctions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/solutions/whatsapp-b2b-auction-alternative"
-                  className="transition-colors hover:text-[#e4fffb]"
-                >
-                  WhatsApp B2B Alternative
+                  Free Margin Calculator
                 </Link>
               </li>
             </ul>

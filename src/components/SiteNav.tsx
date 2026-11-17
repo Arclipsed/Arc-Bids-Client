@@ -51,25 +51,45 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
               {nav.Solutions}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[360px] gap-1.5 rounded-2xl border border-white/[0.08] bg-[#090d14] p-2.5 shadow-2xl">
-                {nav.SolutionItems.map((item) => (
-                  <li key={item.href}>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href={item.href}
-                        className="block rounded-xl p-3 transition hover:bg-white/[0.05]"
-                      >
-                        <div className="text-sm font-semibold text-white">
-                          {item.title}
-                        </div>
-                        <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-                          {item.description}
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </li>
-                ))}
-              </ul>
+              <div className="w-[540px] rounded-2xl border border-white/[0.08] bg-[#090d14] p-3 shadow-2xl">
+                <ul className="grid grid-cols-2 gap-1.5">
+                  {nav.SolutionItems.map((item) => (
+                    <li key={item.href}>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={item.href}
+                          className="block rounded-xl p-3 transition hover:bg-white/[0.05]"
+                        >
+                          <div className="text-sm font-semibold text-white">
+                            {item.title}
+                          </div>
+                          <p className="mt-1 text-xs leading-relaxed text-zinc-400">
+                            {item.description}
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-2 flex items-center justify-between border-t border-white/[0.06] px-3 pt-2.5 text-xs">
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/solutions"
+                      className="font-medium text-zinc-300 transition hover:text-white"
+                    >
+                      {nav.Solutions} →
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/tools"
+                      className="font-semibold text-[#3ff2e0] transition hover:text-[#e4fffb]"
+                    >
+                      {nav.Tools} →
+                    </Link>
+                  </NavigationMenuLink>
+                </div>
+              </div>
             </NavigationMenuContent>
           </NavigationMenuItem>
 
@@ -97,6 +117,20 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                 )}
               >
                 {nav.Pricing}
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link
+                href="/tools"
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
+                )}
+              >
+                {nav.Tools}
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -151,6 +185,15 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                     className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
                   >
                     {nav.Pricing}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/tools"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#3ff2e0] transition hover:bg-white/[0.06] hover:text-[#e4fffb]"
+                  >
+                    {nav.Tools}
                   </Link>
                 </li>
               </ul>
