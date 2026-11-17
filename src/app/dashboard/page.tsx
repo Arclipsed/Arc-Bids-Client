@@ -37,6 +37,7 @@ import {
   GlowLiveBadge,
 } from "@/components/ui/glow-bento-card";
 import { OrganizationWidget } from "@/components/dashboard/OrganizationWidget";
+import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import {
   CreateAuctionForm,
   type CreateAuctionPayload,
@@ -559,9 +560,7 @@ export default function DashboardPage() {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
           <div className="flex items-center gap-3">
             <Link href="/" className="group flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/15 bg-[#0e1420] text-xs font-bold text-[#e4fffb] transition group-hover:border-[#3ff2e0]/40">
-                A
-              </span>
+              <ArcBidsLogo size="sm" />
               <span className="text-sm font-semibold text-white transition group-hover:text-[#e4fffb]">
                 {myOrg ? myOrg.name : "ArcBids"}
               </span>

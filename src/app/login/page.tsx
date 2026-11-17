@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
+import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -123,9 +124,7 @@ export default function LoginPage() {
 
         <div className="rounded-3xl border border-white/[0.08] bg-[#090d14]/95 p-7 shadow-2xl shadow-black/70 backdrop-blur-xl sm:p-8">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#3ff2e0]/30 bg-[#0e1420] text-sm font-bold text-[#e4fffb]">
-              A
-            </span>
+            <ArcBidsLogo />
             <span className="text-base font-bold tracking-tight text-white">
               ArcBids
             </span>

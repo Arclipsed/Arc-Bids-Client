@@ -21,7 +21,7 @@ interface FooterSectionProps {
 }
 
 export default function FooterSection({
-  brandName = "ArcBid",
+  brandName = "ArcBids",
   tagline = "Enterprise-grade B2B wholesale auction platform built for real-time speed.",
   badge = "Live Engine · Sub-Second Sync",
   homeLabel = "Home",
@@ -36,7 +36,7 @@ export default function FooterSection({
   address = "Stockholm, Sweden",
   phone = "+46 8 500 123 45",
   email = "hello@arcbids.com",
-  copyright = "© 2026 ArcBid. All rights reserved.",
+  copyright = "© 2026 ArcBids. All rights reserved.",
   craftedWith = "High-availability real-time infrastructure",
 }: FooterSectionProps) {
   return (

@@ -18,7 +18,7 @@ export const EN: ITranslation = {
       title: "ArcBids — Real-Time B2B Wholesale Auctions",
       description:
         "Launch private or public wholesale auction rooms in minutes—with instant live bidding, anti-snipe protection, and effortless buyer invites.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: [
         "B2B auctions",
         "wholesale auction platform",
@@ -63,7 +63,7 @@ export const EN: ITranslation = {
       title: "How It Works — ArcBids Live B2B Auctions",
       description:
         "Step-by-step walkthrough of how sellers host wholesale auction rooms and how buyers join, bid, and close deals on ArcBids.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["how ArcBids works", "B2B auction workflow", "anti-snipe", "wholesale drops"],
     },
     Eyebrow: "How It Works",
@@ -179,7 +179,7 @@ export const EN: ITranslation = {
       title: "Pricing — ArcBids",
       description:
         "Simple, transparent pricing for B2B wholesale auction rooms. Start running live drops with zero commission fees.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["ArcBids pricing", "B2B auction pricing", "wholesale software"],
     },
   },
@@ -189,7 +189,7 @@ export const EN: ITranslation = {
       title: "Live Auction Room — ArcBids",
       description:
         "Join a real-time B2B wholesale auction room on ArcBids with live bidding, unit pricing, and anti-snipe protection.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["live auction room", "B2B bidding", "ArcBids"],
     },
   },
@@ -199,7 +199,7 @@ export const EN: ITranslation = {
       title: "Seller Dashboard — ArcBids",
       description:
         "Manage your organization, whitelist buyers, create wholesale auction rooms, and contact winning bidders.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["seller dashboard", "auction management", "ArcBids"],
     },
   },
@@ -209,7 +209,7 @@ export const EN: ITranslation = {
       title: "Sign In — ArcBids",
       description:
         "Sign in to your ArcBids seller workspace with an instant 6-digit email verification code or magic link.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["ArcBids login", "seller sign in"],
     },
   },

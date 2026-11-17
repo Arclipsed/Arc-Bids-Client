@@ -18,7 +18,7 @@ export const DE: ITranslation = {
       title: "ArcBids — B2B-Großhandelsauktionen in Echtzeit",
       description:
         "Starten Sie private oder öffentliche Großhandels-Auktionsräume in wenigen Minuten – mit Live-Geboten, Anti-Snipe-Schutz und einfachen Käufereinladungen.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: [
         "B2B Auktionen",
         "Großhandel Auktionsplattform",
@@ -62,7 +62,7 @@ export const DE: ITranslation = {
       title: "So funktioniert's — ArcBids B2B-Auktionen",
       description:
         "Schritt-für-Schritt-Erklärung, wie Verkäufer Großhandelsauktionen starten und Käufer auf ArcBids in Echtzeit mitbieten.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["ArcBids Ablauf", "B2B Auktion", "Anti-Snipe", "Großhandel"],
     },
     Eyebrow: "So funktioniert's",
@@ -178,7 +178,7 @@ export const DE: ITranslation = {
       title: "Preise — ArcBids",
       description:
         "Transparente Preise für B2B-Großhandelsauktionen ohne Verkaufsprovision.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["ArcBids Preise", "B2B Auktion Kosten"],
     },
   },
@@ -188,7 +188,7 @@ export const DE: ITranslation = {
       title: "Live-Auktionsraum — ArcBids",
       description:
         "Nehmen Sie in Echtzeit an einer B2B-Großhandelsauktion auf ArcBids teil.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["Live Auktion", "B2B Gebote", "ArcBids"],
     },
   },
@@ -198,7 +198,7 @@ export const DE: ITranslation = {
       title: "Verkäufer-Dashboard — ArcBids",
       description:
         "Verwalten Sie Ihre Organisation, Käufer-Whitelist, Auktionsräume und Gewinnerkontakte.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["Dashboard", "Auktionsverwaltung", "ArcBids"],
     },
   },
@@ -208,7 +208,7 @@ export const DE: ITranslation = {
       title: "Anmelden — ArcBids",
       description:
         "Melden Sie sich mit einem 6-stelligen E-Mail-Code oder Magic-Link in Ihrem ArcBids-Workspace an.",
-      imgUrl: "/og-image.png",
+      imgUrl: "/opengraph-image",
       tags: ["ArcBids Login", "Anmelden"],
     },
   },

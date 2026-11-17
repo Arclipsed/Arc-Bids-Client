@@ -15,6 +15,7 @@ import type { DbConnection } from "@/module_bindings";
 import { createSpacetimeConnection } from "@/lib/spacetime";
 import { formatCurrency } from "@/lib/format";
 import { GlowCard, GlowLiveBadge } from "@/components/ui/glow-bento-card";
+import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import FooterSection from "@/components/FooterSection";
 
 interface OrgInfo {
@@ -154,11 +155,9 @@ export function OrganizationPublicClient({ slug }: { slug: string }) {
       <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#05070c]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/15 bg-gradient-to-b from-white/10 to-white/[0.02] text-xs font-bold text-white">
-              A
-            </span>
+            <ArcBidsLogo size="sm" />
             <span className="text-sm font-bold tracking-tight text-white">
-              ArcBid
+              ArcBids
             </span>
           </Link>
 

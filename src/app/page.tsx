@@ -8,6 +8,7 @@ import HalftoneNebula from "@/components/ui/halftone-nebula";
 import { LiveAuctionShowcase } from "@/components/LiveAuctionShowcase";
 import { FeaturesShowcase } from "@/components/FeaturesShowcase";
 import { LanguageSwitchButton } from "@/components/LanguageSwitchButton";
+import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
 import { EN } from "@/translations/en/en";
@@ -24,9 +25,7 @@ async function HomeContent() {
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#05070c]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
           <Link href="/" className="group flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-gradient-to-b from-white/10 to-white/[0.02] text-sm font-bold text-white shadow-inner shadow-white/10 transition group-hover:border-sky-400/40">
-              A
-            </span>
+            <ArcBidsLogo />
             <span className="text-base font-bold tracking-tight text-white">
               ArcBids
             </span>
