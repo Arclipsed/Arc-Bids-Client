@@ -4,6 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
+import type { ITranslation } from "@/translations/ITranslation"
+import { EN } from "@/translations/en/en"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -27,17 +29,30 @@ const ROOM_LINKS: { title: string; href: string; description: string }[] = [
   },
 ]
 
-export function SiteNav() {
+export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
+  const roomLinks = [
+    {
+      title: nav.DropTitle,
+      href: "/auction",
+      description: nav.DropDesc,
+    },
+    {
+      title: nav.FeaturesDropTitle,
+      href: "/#features",
+      description: nav.FeaturesDropDesc,
+    },
+  ]
+
   return (
     <NavigationMenu className="hidden sm:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white data-[state=open]:bg-white/[0.06]">
-            Auctions
+            {nav.Auctions}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[360px] gap-2 p-3 md:w-[420px]">
-              {ROOM_LINKS.map((item) => (
+              {roomLinks.map((item) => (
                 <ListItem key={item.title} title={item.title} href={item.href}>
                   {item.description}
                 </ListItem>
@@ -55,7 +70,7 @@ export function SiteNav() {
                 "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
               )}
             >
-              Features
+              {nav.Features}
             </a>
           </NavigationMenuLink>
         </NavigationMenuItem>
@@ -69,7 +84,7 @@ export function SiteNav() {
                 "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
               )}
             >
-              How It Works
+              {nav.HowItWorks}
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
@@ -83,7 +98,7 @@ export function SiteNav() {
                 "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
               )}
             >
-              Pricing
+              {nav.Pricing}
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>

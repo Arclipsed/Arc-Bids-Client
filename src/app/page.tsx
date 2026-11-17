@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import FooterSection from "@/components/FooterSection";
@@ -5,29 +7,17 @@ import { SiteNav } from "@/components/SiteNav";
 import HalftoneNebula from "@/components/ui/halftone-nebula";
 import { LiveAuctionShowcase } from "@/components/LiveAuctionShowcase";
 import { FeaturesShowcase } from "@/components/FeaturesShowcase";
+import { LanguageSwitchButton } from "@/components/LanguageSwitchButton";
+import { MetaTagService } from "@/services/MetaTagService";
+import { TranslationService } from "@/services/TranslationService";
+import { EN } from "@/translations/en/en";
 
-const STEPS = [
-  {
-    step: "01",
-    title: "Create your auction room",
-    description:
-      "Add your wholesale lots, set starting prices, minimum increments, and anti-snipe rules in minutes.",
-  },
-  {
-    step: "02",
-    title: "Invite your buyers",
-    description:
-      "Share private invite links with your approved wholesale buyers so only vetted accounts can bid.",
-  },
-  {
-    step: "03",
-    title: "Run live & close fast",
-    description:
-      "Watch bids land in real time, let anti-snipe keep bidding fair, and lock in winning buyers automatically.",
-  },
-];
+export const metadata: Metadata = MetaTagService.CreateMetaTags(EN.HomePage.MetaTags);
 
-export default function Home() {
+async function HomeContent() {
+  const locale = await TranslationService.GetUserLocale();
+  const t = TranslationService.GetTranslations(locale);
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-clip bg-[#05070c] text-zinc-100">
       {/* Header (z-50 so NavigationMenu dropdown stays above everything) */}
@@ -38,19 +28,22 @@ export default function Home() {
               A
             </span>
             <span className="text-base font-bold tracking-tight text-white">
-              ArcBid
+              ArcBids
             </span>
           </Link>
 
-          <SiteNav />
+          <SiteNav nav={t.Nav} />
 
-          <Link
-            href="/dashboard"
-            className="group inline-flex items-center gap-1.5 rounded-full bg-[#e4fffb] px-4 py-2 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.18)] transition hover:bg-white hover:shadow-[0_0_26px_rgba(63,242,224,0.3)]"
-          >
-            Get Started
-            <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <LanguageSwitchButton currentLocale={locale} />
+            <Link
+              href="/dashboard"
+              className="group inline-flex items-center gap-1.5 rounded-full bg-[#e4fffb] px-4 py-2 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.18)] transition hover:bg-white hover:shadow-[0_0_26px_rgba(63,242,224,0.3)]"
+            >
+              {t.Nav.GetStarted}
+              <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -64,15 +57,14 @@ export default function Home() {
         <div className="relative z-10 mx-auto my-auto w-full max-w-5xl px-4 sm:px-6">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-bold tracking-tight text-[#e4fffb] drop-shadow-[0_2px_16px_rgba(0,0,0,0.95)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.06]">
-              Real-time B2B auctions,{" "}
+              {t.HomePage.HeroTitleStart}{" "}
               <span className="bg-gradient-to-r from-[#e4fffb] via-[#3ff2e0] to-[#0f8f9f] bg-clip-text text-transparent">
-                built for speed.
+                {t.HomePage.HeroTitleHighlight}
               </span>
             </h1>
 
             <p className="mt-5 max-w-xl text-base leading-relaxed text-zinc-200 drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] sm:text-lg">
-              Launch private wholesale auction rooms in minutes—with instant
-              live bidding, anti-snipe protection, and effortless buyer invites.
+              {t.HomePage.HeroSubtitle}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -80,15 +72,15 @@ export default function Home() {
                 href="/dashboard"
                 className="group pointer-events-auto inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#e4fffb] px-7 text-sm font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_28px_rgba(63,242,224,0.2)] transition hover:bg-white hover:shadow-[0_0_34px_rgba(63,242,224,0.32)] active:scale-[0.98]"
               >
-                Get Started
+                {t.HomePage.PrimaryCta}
                 <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <a
-                href="#features"
+              <Link
+                href="/how-it-works"
                 className="pointer-events-auto inline-flex h-12 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-6 text-sm font-medium text-zinc-200 backdrop-blur-md transition hover:border-white/25 hover:bg-white/[0.09] hover:text-white active:scale-[0.98]"
               >
-                How It Works
-              </a>
+                {t.HomePage.SecondaryCta}
+              </Link>
             </div>
           </div>
         </div>
@@ -106,15 +98,15 @@ export default function Home() {
         <section id="how-it-works" className="scroll-mt-24">
           <div className="mb-8 max-w-xl">
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
-              How It Works
+              {t.HomePage.StepsEyebrow}
             </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              From invite to winning bid in three steps.
+              {t.HomePage.StepsTitle}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {STEPS.map((item) => (
+            {t.HomePage.Steps.map((item) => (
               <div
                 key={item.step}
                 className="rounded-3xl border border-white/[0.07] bg-[#090d14] p-6"
@@ -145,10 +137,10 @@ export default function Home() {
               </p>
             </div>
             <Link
-              href="/auction"
+              href="/dashboard"
               className="group inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#e4fffb] px-6 text-sm font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_24px_rgba(63,242,224,0.18)] transition hover:bg-white"
             >
-              Enter Live Auction
+              {t.Nav.GetStarted}
               <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
@@ -157,5 +149,19 @@ export default function Home() {
 
       <FooterSection />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[#05070c]">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3ff2e0]/20 border-t-[#3ff2e0]" />
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }

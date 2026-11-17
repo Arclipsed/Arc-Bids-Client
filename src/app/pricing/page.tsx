@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import FooterSection from "@/components/FooterSection";
 import { SiteNav } from "@/components/SiteNav";
 import { PricingSection } from "@/components/PricingSection";
+import { MetaTagService } from "@/services/MetaTagService";
+import { EN } from "@/translations/en/en";
+
+export const metadata: Metadata = MetaTagService.CreateMetaTags(
+  EN.PricingPage.MetaTags
+);
 
 export default function PricingPage() {
   return (

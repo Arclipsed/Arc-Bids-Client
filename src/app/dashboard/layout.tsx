@@ -1,7 +1,14 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/email-auth";
+import { MetaTagService } from "@/services/MetaTagService";
+import { EN } from "@/translations/en/en";
+
+export const metadata: Metadata = MetaTagService.CreateMetaTags(
+  EN.DashboardPage.MetaTags
+);
 
 async function DashboardAuthGate({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();

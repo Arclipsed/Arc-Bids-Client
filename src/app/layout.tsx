@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { MetaTagService } from "@/services/MetaTagService";
+import { EN } from "@/translations/en/en";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,10 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "ArcBid — Live Wholesale Auction",
-  description: "Real-time B2B wholesale auction engine",
-};
+export const metadata: Metadata = MetaTagService.CreateMetaTags(EN.HomePage.MetaTags);
 
 export const viewport: Viewport = {
   width: "device-width",
