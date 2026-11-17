@@ -598,8 +598,11 @@ export default function HalftoneNebula({
     let cssW = 1
     let cssH = 1
     let dpr = 1
+    const isMobileDevice = () =>
+      window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, Math.max(maxDpr, 0.5))
+      const effectiveMaxDpr = isMobileDevice() ? Math.min(maxDpr, 1) : Math.max(maxDpr, 0.5)
+      dpr = Math.min(window.devicePixelRatio || 1, effectiveMaxDpr)
       cssW = Math.max(canvas.clientWidth, 1)
       cssH = Math.max(canvas.clientHeight, 1)
       const w = Math.floor(cssW * dpr)
@@ -757,9 +760,14 @@ export default function HalftoneNebula({
     // ---- loop, paused whenever nobody can see it -----------------------------
     let raf = 0
     let visible = true
-    const frame = () => {
+    let lastPaintAt = 0
+    const frame = (ts: number) => {
       raf = 0
-      paint()
+      const minInterval = isMobileDevice() ? 32 : 0
+      if (minInterval === 0 || ts - lastPaintAt >= minInterval) {
+        lastPaintAt = ts
+        paint()
+      }
       if (visible && !document.hidden) raf = requestAnimationFrame(frame)
     }
     const wake = () => {
