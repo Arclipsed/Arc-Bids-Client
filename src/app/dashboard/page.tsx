@@ -95,22 +95,39 @@ interface BidRow {
   amount: bigint;
 }
 
-function buildDefaultOrgFromEmail(email: string): { name: string; slug: string } {
-  const local = email.split("@")[0] ?? "workspace";
-  const cleanName =
-    local
-      .replace(/[^a-zA-Z0-9]+/g, " ")
-      .trim()
-      .replace(/\b\w/g, (c) => c.toUpperCase()) || "My";
+const ORG_ADJECTIVES = [
+  "Apex",
+  "Nordic",
+  "Prime",
+  "Vertex",
+  "Atlas",
+  "Nova",
+  "Summit",
+  "Metro",
+  "Krono",
+  "Beacon",
+  "Vanguard",
+  "Harbor",
+];
+
+const ORG_NOUNS = [
+  "Wholesale",
+  "Trading",
+  "Supply",
+  "Exchange",
+  "Commerce",
+  "Ventures",
+  "Logistics",
+  "Merchants",
+];
+
+function buildRandomDefaultOrg(): { name: string; slug: string } {
+  const adj = ORG_ADJECTIVES[Math.floor(Math.random() * ORG_ADJECTIVES.length)];
+  const noun = ORG_NOUNS[Math.floor(Math.random() * ORG_NOUNS.length)];
   const suffix = Math.random().toString(36).slice(2, 6);
-  const slugBase =
-    local
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "") || "org";
   return {
-    name: `${cleanName} Wholesale`,
-    slug: `${slugBase}-${suffix}`,
+    name: `${adj} ${noun}`,
+    slug: `${adj.toLowerCase()}-${noun.toLowerCase()}-${suffix}`,
   };
 }
 
@@ -301,7 +318,7 @@ export default function DashboardPage() {
     const conn = connRef.current;
     if (!conn) return;
     autoCreatedRef.current = true;
-    const { name, slug } = buildDefaultOrgFromEmail(userEmail);
+    const { name, slug } = buildRandomDefaultOrg();
     try {
       conn.reducers.createOrganization({ name, slug });
     } catch {
