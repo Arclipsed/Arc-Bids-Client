@@ -73,9 +73,9 @@ export default function FooterSection({
                 </a>
               </li>
               <li>
-                <a href="/#how-it-works" className="transition-colors hover:text-[#e4fffb]">
+                <Link href="/how-it-works" className="transition-colors hover:text-[#e4fffb]">
                   {howItWorksLabel}
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="/pricing" className="transition-colors hover:text-[#e4fffb]">
@@ -120,12 +120,12 @@ export default function FooterSection({
             </h4>
             <ul className="space-y-1.5 text-xs">
               <li>
-                <Link href="/auction" className="transition-colors hover:text-[#e4fffb]">
+                <Link href="/terms" className="transition-colors hover:text-[#e4fffb]">
                   {termsLabel}
                 </Link>
               </li>
               <li>
-                <Link href="/auction" className="transition-colors hover:text-[#e4fffb]">
+                <Link href="/privacy" className="transition-colors hover:text-[#e4fffb]">
                   {privacyLabel}
                 </Link>
               </li>
