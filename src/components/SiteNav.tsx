@@ -120,20 +120,6 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link
-                href="/tools"
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
-                )}
-              >
-                {nav.Tools}
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
 
