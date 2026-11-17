@@ -541,10 +541,13 @@ export default function DashboardPage() {
     setTimeout(() => setCopiedId(null), 1800);
   };
 
-  if (!authChecked || !userEmail) {
+  if (!authChecked || !userEmail || (!tablesSynced && connState !== "error")) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#05070c]">
-        <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#3ff2e0]/20 border-t-[#3ff2e0]" />
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#05070c] text-zinc-100">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3ff2e0]/20 border-t-[#3ff2e0]" />
+        <p className="mt-4 text-xs font-medium text-zinc-400">
+          Loading dashboard…
+        </p>
       </div>
     );
   }
