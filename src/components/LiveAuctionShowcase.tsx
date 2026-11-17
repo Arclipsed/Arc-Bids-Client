@@ -5,6 +5,8 @@ import type { UiBid, UiItem } from "@/lib/auction-types";
 import { ActiveLotCard } from "@/components/ActiveLotCard";
 import { BidFeed } from "@/components/BidFeed";
 import { HighestBidderCard } from "@/components/HighestBidderCard";
+import type { ITranslation } from "@/translations/ITranslation";
+import { EN } from "@/translations/en/en";
 
 const SAMPLE_BUYERS = [
   "Nordic Tech Supply",
@@ -45,7 +47,11 @@ function createInitialBids(now: number): UiBid[] {
   ];
 }
 
-export function LiveAuctionShowcase() {
+export function LiveAuctionShowcase({
+  copy = EN.HomePage.Showcase,
+}: {
+  copy?: ITranslation["HomePage"]["Showcase"];
+}) {
   const [nowMs, setNowMs] = useState<number>(0);
   const [endsAtMs, setEndsAtMs] = useState<number>(LOT_DURATION_MS);
   const [bids, setBids] = useState<UiBid[]>(() => createInitialBids(0));
@@ -124,14 +130,13 @@ export function LiveAuctionShowcase() {
     <section id="live-preview" className="scroll-mt-24">
       <div className="mb-8 max-w-2xl">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
-          Live Room Experience
+          {copy.Eyebrow}
         </p>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-          See every bid land in real time.
+          {copy.Title}
         </h2>
         <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
-          Buyers browse lot photos, unit quantities, and per-unit pricing while
-          competing live—with automatic anti-snipe timer protection.
+          {copy.Subtitle}
         </p>
       </div>
 

@@ -5,81 +5,35 @@ import { Building, Briefcase, CheckCircle2, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import * as PricingCard from "@/components/ui/pricing-card"
 import { cn } from "@/lib/utils"
+import type { ITranslation } from "@/translations/ITranslation"
+import { EN } from "@/translations/en/en"
 
-const PLANS = [
-  {
-    icon: <Users />,
-    name: "Buyer Pass",
-    description: "For verified wholesale buyers",
-    price: "Free",
-    period: "",
-    original: "",
-    badge: "",
-    variant: "outline" as const,
-    href: "/auction",
-    cta: "Join Live Room",
-    features: [
-      "Verified magic token access",
-      "Sub-second live bid updates",
-      "Real-time activity feed",
-      "Anti-snipe countdown protection",
-      "Instant lot queue visibility",
-    ],
-  },
-  {
-    icon: <Briefcase />,
-    name: "Wholesale Desk",
-    description: "For active distributors & liquidators",
-    price: "$149",
-    original: "$199",
-    period: "/month",
-    badge: "Popular",
-    variant: "default" as const,
-    href: "/auction",
-    cta: "Start Selling",
-    features: [
-      "Everything in Buyer Pass",
-      "Custom branded auction rooms",
-      "Configurable anti-snipe timers",
-      "Approved buyer token management",
-      "Priority onboarding & support",
-    ],
-  },
-  {
-    icon: <Building />,
-    name: "Enterprise",
-    description: "For high-volume B2B networks",
-    price: "$499",
-    original: "$649",
-    period: "/month",
-    badge: "",
-    variant: "outline" as const,
-    href: "/auction",
-    cta: "Contact Sales",
-    features: [
-      "Everything in Wholesale Desk",
-      "Multi-organization room controls",
-      "Dedicated account manager",
-      "Custom ERP & webhook integrations",
-      "99.99% uptime SLA",
-    ],
-  },
+const PLAN_META = [
+  { icon: <Users />, variant: "outline" as const, href: "/auction" },
+  { icon: <Briefcase />, variant: "default" as const, href: "/dashboard" },
+  { icon: <Building />, variant: "outline" as const, href: "/dashboard" },
 ]
 
-export function PricingSection() {
+export function PricingSection({
+  copy = EN.PricingPage.Section,
+}: {
+  copy?: ITranslation["PricingPage"]["Section"];
+}) {
   return (
     <section id="pricing" className="scroll-mt-24">
       <div className="mb-8 max-w-xl">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
-          Pricing
+          {copy.Eyebrow}
         </p>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-          Simple plans for buyers and wholesale desks.
+          {copy.Title}
         </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-        {PLANS.map((plan) => (
+        {copy.Plans.map((plan, idx) => {
+          const meta = PLAN_META[idx] ?? PLAN_META[0];
+          return (
           <PricingCard.Card
             key={plan.name}
             className={cn(
@@ -90,7 +44,7 @@ export function PricingSection() {
             <PricingCard.Header className="rounded-2xl border-white/[0.07] bg-[#0e1420]/80">
               <PricingCard.Plan>
                 <PricingCard.PlanName className="text-zinc-300">
-                  {plan.icon}
+                  {meta.icon}
                   <span>{plan.name}</span>
                 </PricingCard.PlanName>
                 {plan.badge && (
@@ -118,15 +72,15 @@ export function PricingSection() {
 
               <Button
                 asChild
-                variant={plan.variant}
+                variant={meta.variant}
                 className={cn(
                   "w-full rounded-full font-semibold",
-                  plan.variant === "default"
+                  meta.variant === "default"
                     ? "bg-[#e4fffb] text-[#04070b] hover:bg-white"
                     : "border-white/15 bg-white/[0.04] text-zinc-100 hover:bg-white/[0.08] hover:text-white"
                 )}
               >
-                <Link href={plan.href}>{plan.cta}</Link>
+                <Link href={meta.href}>{plan.cta}</Link>
               </Button>
             </PricingCard.Header>
 
@@ -147,7 +101,8 @@ export function PricingSection() {
               </PricingCard.List>
             </PricingCard.Body>
           </PricingCard.Card>
-        ))}
+          );
+        })}
       </div>
     </section>
   )

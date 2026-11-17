@@ -56,6 +56,32 @@ export const EN: ITranslation = {
           "Watch bids land in real time, let anti-snipe keep bidding fair, and contact winning buyers directly when the room closes.",
       },
     ],
+    Showcase: {
+      Eyebrow: "Live Room Experience",
+      Title: "See every bid land in real time.",
+      Subtitle:
+        "Buyers browse lot photos, unit quantities, and per-unit pricing while competing live—with automatic anti-snipe timer protection.",
+    },
+    Features: {
+      Eyebrow: "Platform",
+      Title: "Engineered for live wholesale speed.",
+      AutoBidTitle: "Auto-Bid & Max Ceiling",
+      AutoBidDesc:
+        "Let your buyers set a maximum ceiling once. Automated minimum increments keep competition going and drive stronger close prices on your lots.",
+      AutoBidToggleLabel: "Auto-Bidding",
+      AntiSnipeTitle: "Anti-Snipe Protection",
+      AntiSnipeDesc:
+        "Last-second bids automatically extend your lot timer so competing buyers always have time to counter—maximizing final sale value.",
+      AntiSnipeExtended: "+15s extended",
+      InvitesTitle: "Private Buyer Invites",
+      InvitesDesc:
+        "Invite only the wholesale buyers you trust with private room links, and control who can bid anytime from your desk.",
+      InvitedLabel: "Invited",
+      PausedLabel: "Paused",
+    },
+    BottomCtaTitle: "Ready for the next wholesale drop?",
+    BottomCtaSubtitle:
+      "Launch a room in minutes to inspect active lots and receive bids in real time.",
   },
   HowItWorksPage: {
     MetaTags: {
@@ -182,6 +208,76 @@ export const EN: ITranslation = {
       imgUrl: "/opengraph-image",
       tags: ["ArcBids pricing", "B2B auction pricing", "wholesale software"],
     },
+    Section: {
+      Eyebrow: "Pricing",
+      Title: "Simple plans for buyers and wholesale desks.",
+      Plans: [
+        {
+          name: "Buyer Pass",
+          description: "For verified wholesale buyers",
+          price: "Free",
+          period: "",
+          original: "",
+          badge: "",
+          cta: "Join Live Room",
+          features: [
+            "Email whitelist & public room access",
+            "Sub-second live bid updates",
+            "Real-time activity feed",
+            "Anti-snipe countdown protection",
+            "Instant lot queue visibility",
+          ],
+        },
+        {
+          name: "Wholesale Desk",
+          description: "For active distributors & liquidators",
+          price: "$149",
+          period: "/month",
+          original: "$199",
+          badge: "Popular",
+          cta: "Start Selling",
+          features: [
+            "Everything in Buyer Pass",
+            "Custom branded organization page",
+            "Configurable anti-snipe timers",
+            "Approved buyer whitelist management",
+            "Winner contact & invoicing tools",
+          ],
+        },
+        {
+          name: "Enterprise",
+          description: "For high-volume B2B networks",
+          price: "$499",
+          period: "/month",
+          original: "$649",
+          badge: "",
+          cta: "Contact Sales",
+          features: [
+            "Everything in Wholesale Desk",
+            "Multi-organization room controls",
+            "Dedicated account manager",
+            "Custom ERP & webhook integrations",
+            "99.99% uptime SLA",
+          ],
+        },
+      ],
+    },
+  },
+  Footer: {
+    Tagline:
+      "Enterprise-grade B2B wholesale auction platform built for real-time speed.",
+    Badge: "Live Engine · Sub-Second Sync",
+    Home: "Home",
+    Features: "Features",
+    HowItWorks: "How It Works",
+    LiveRoom: "Live Auction Room",
+    NavTitle: "Navigation",
+    LegalTitle: "Legal",
+    ContactTitle: "Contact",
+    Privacy: "Privacy Policy",
+    Terms: "Terms of Service",
+    Copyright: "© 2026 ArcBids. All rights reserved.",
+    CraftedWith: "High-availability real-time infrastructure",
   },
   AuctionPage: {
     MetaTags: {

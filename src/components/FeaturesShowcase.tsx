@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { Check, Copy, Timer, UserPlus, Zap } from "lucide-react";
 import { InteractivePill } from "@/components/ui/interactive-pill";
+import type { ITranslation } from "@/translations/ITranslation";
+import { EN } from "@/translations/en/en";
 
 const MAX_BID_OPTIONS = [20_000, 22_000, 25_000];
 
-export function FeaturesShowcase() {
+export function FeaturesShowcase({
+  copy = EN.HomePage.Features,
+}: {
+  copy?: ITranslation["HomePage"]["Features"];
+}) {
   const [maxBid, setMaxBid] = useState<number>(22_000);
   const [autoBidOn, setAutoBidOn] = useState<boolean>(true);
   const [copiedInvite, setCopiedInvite] = useState<boolean>(false);
@@ -16,10 +22,10 @@ export function FeaturesShowcase() {
     <section id="features" className="scroll-mt-24">
       <div className="mb-8 max-w-xl">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
-          Platform
+          {copy.Eyebrow}
         </p>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-          Engineered for live wholesale speed.
+          {copy.Title}
         </h2>
       </div>
 
@@ -31,12 +37,10 @@ export function FeaturesShowcase() {
               <Zap className="h-4 w-4" />
             </div>
             <h3 className="mt-4 text-base font-semibold text-white">
-              Auto-Bid &amp; Max Ceiling
+              {copy.AutoBidTitle}
             </h3>
             <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">
-              Let your buyers set a maximum ceiling once. Automated minimum
-              increments keep competition going and drive stronger close prices
-              on your lots.
+              {copy.AutoBidDesc}
             </p>
           </div>
 
@@ -44,7 +48,7 @@ export function FeaturesShowcase() {
           <div className="mt-5 rounded-2xl border border-white/[0.07] bg-[#0e1420]/80 p-3.5">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-medium text-zinc-400">
-                Auto-Bidding
+                {copy.AutoBidToggleLabel}
               </span>
               <button
                 type="button"
@@ -108,11 +112,10 @@ export function FeaturesShowcase() {
               <Timer className="h-4 w-4" />
             </div>
             <h3 className="mt-4 text-base font-semibold text-white">
-              Anti-Snipe Protection
+              {copy.AntiSnipeTitle}
             </h3>
             <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">
-              Last-second bids automatically extend your lot timer so competing
-              buyers always have time to counter—maximizing final sale value.
+              {copy.AntiSnipeDesc}
             </p>
           </div>
 
@@ -123,7 +126,7 @@ export function FeaturesShowcase() {
                 00:03
               </span>
               <span className="font-mono text-[11px] font-semibold text-[#3ff2e0]">
-                +15s extended
+                {copy.AntiSnipeExtended}
               </span>
               <span className="font-mono text-sm font-bold tabular-nums text-[#e4fffb]">
                 00:18
@@ -146,11 +149,10 @@ export function FeaturesShowcase() {
               <UserPlus className="h-4 w-4" />
             </div>
             <h3 className="mt-4 text-base font-semibold text-white">
-              Private Buyer Invites
+              {copy.InvitesTitle}
             </h3>
             <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">
-              Invite only the wholesale buyers you trust with private room
-              links, and control who can bid anytime from your desk.
+              {copy.InvitesDesc}
             </p>
           </div>
 
@@ -171,7 +173,7 @@ export function FeaturesShowcase() {
                 onClick={() => setBuyerAllowed((v) => !v)}
                 className="px-2.5 py-0.5 text-[10px]"
               >
-                {buyerAllowed ? "Invited" : "Paused"}
+                {buyerAllowed ? copy.InvitedLabel : copy.PausedLabel}
               </InteractivePill>
             </div>
 

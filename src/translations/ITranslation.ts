@@ -26,6 +26,27 @@ export interface ITranslation {
       title: string;
       description: string;
     }>;
+    Showcase: {
+      Eyebrow: string;
+      Title: string;
+      Subtitle: string;
+    };
+    Features: {
+      Eyebrow: string;
+      Title: string;
+      AutoBidTitle: string;
+      AutoBidDesc: string;
+      AutoBidToggleLabel: string;
+      AntiSnipeTitle: string;
+      AntiSnipeDesc: string;
+      AntiSnipeExtended: string;
+      InvitesTitle: string;
+      InvitesDesc: string;
+      InvitedLabel: string;
+      PausedLabel: string;
+    };
+    BottomCtaTitle: string;
+    BottomCtaSubtitle: string;
   };
   HowItWorksPage: {
     MetaTags: IMetaTags;
@@ -61,6 +82,35 @@ export interface ITranslation {
   };
   PricingPage: {
     MetaTags: IMetaTags;
+    Section: {
+      Eyebrow: string;
+      Title: string;
+      Plans: Array<{
+        name: string;
+        description: string;
+        price: string;
+        period: string;
+        original: string;
+        badge: string;
+        cta: string;
+        features: string[];
+      }>;
+    };
+  };
+  Footer: {
+    Tagline: string;
+    Badge: string;
+    Home: string;
+    Features: string;
+    HowItWorks: string;
+    LiveRoom: string;
+    NavTitle: string;
+    LegalTitle: string;
+    ContactTitle: string;
+    Privacy: string;
+    Terms: string;
+    Copyright: string;
+    CraftedWith: string;
   };
   AuctionPage: {
     MetaTags: IMetaTags;

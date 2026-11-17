@@ -88,10 +88,10 @@ async function HomeContent() {
       {/* Below-the-fold sections */}
       <main className="relative z-10 mx-auto w-full max-w-5xl flex-1 space-y-20 px-4 py-20 sm:px-6">
         {/* Live Auction Preview (Lot Card + Real-Time Bidder Feed) */}
-        <LiveAuctionShowcase />
+        <LiveAuctionShowcase copy={t.HomePage.Showcase} />
 
         {/* Interactive Features */}
-        <FeaturesShowcase />
+        <FeaturesShowcase copy={t.HomePage.Features} />
 
         {/* How It Works */}
         <section id="how-it-works" className="scroll-mt-24">
@@ -129,10 +129,10 @@ async function HomeContent() {
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
             <div>
               <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-                Ready for the next wholesale drop?
+                {t.HomePage.BottomCtaTitle}
               </h2>
               <p className="mt-1.5 text-sm text-zinc-400">
-                Join the live room to inspect active lots and place bids in real time.
+                {t.HomePage.BottomCtaSubtitle}
               </p>
             </div>
             <Link
@@ -146,7 +146,21 @@ async function HomeContent() {
         </section>
       </main>
 
-      <FooterSection />
+      <FooterSection
+        tagline={t.Footer.Tagline}
+        badge={t.Footer.Badge}
+        homeLabel={t.Footer.Home}
+        featuresLabel={t.Footer.Features}
+        howItWorksLabel={t.Footer.HowItWorks}
+        liveRoomLabel={t.Footer.LiveRoom}
+        quickLinksTitle={t.Footer.NavTitle}
+        legalTitle={t.Footer.LegalTitle}
+        contactTitle={t.Footer.ContactTitle}
+        privacyLabel={t.Footer.Privacy}
+        termsLabel={t.Footer.Terms}
+        copyright={t.Footer.Copyright}
+        craftedWith={t.Footer.CraftedWith}
+      />
     </div>
   );
 }

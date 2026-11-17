@@ -227,7 +227,21 @@ async function HowItWorksContent() {
         </section>
       </main>
 
-      <FooterSection />
+      <FooterSection
+        tagline={t.Footer.Tagline}
+        badge={t.Footer.Badge}
+        homeLabel={t.Footer.Home}
+        featuresLabel={t.Footer.Features}
+        howItWorksLabel={t.Footer.HowItWorks}
+        liveRoomLabel={t.Footer.LiveRoom}
+        quickLinksTitle={t.Footer.NavTitle}
+        legalTitle={t.Footer.LegalTitle}
+        contactTitle={t.Footer.ContactTitle}
+        privacyLabel={t.Footer.Privacy}
+        termsLabel={t.Footer.Terms}
+        copyright={t.Footer.Copyright}
+        craftedWith={t.Footer.CraftedWith}
+      />
     </div>
   );
 }

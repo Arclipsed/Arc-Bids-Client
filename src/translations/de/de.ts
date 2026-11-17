@@ -55,6 +55,32 @@ export const DE: ITranslation = {
           "Verfolgen Sie jedes Gebot in Echtzeit, lassen Sie den Anti-Snipe-Timer fair verlängern und kontaktieren Sie Gewinner direkt.",
       },
     ],
+    Showcase: {
+      Eyebrow: "Live-Auktions-Erlebnis",
+      Title: "Jedes Gebot in Echtzeit erleben.",
+      Subtitle:
+        "Käufer sehen Fotos, Stückzahlen und Stückpreise live im synchronisierten Raum – inklusive automatischem Anti-Snipe-Schutz.",
+    },
+    Features: {
+      Eyebrow: "Plattform",
+      Title: "Entwickelt für Tempo im B2B-Großhandel.",
+      AutoBidTitle: "Auto-Gebot & Maximalbetrag",
+      AutoBidDesc:
+        "Lassen Sie Käufer einmalig ein Maximalgebot festlegen. Automatische Mindestschritte halten den Wettbewerb aktiv und erzielen bessere Preise.",
+      AutoBidToggleLabel: "Auto-Gebot",
+      AntiSnipeTitle: "Anti-Snipe-Schutz",
+      AntiSnipeDesc:
+        "Gebote in letzter Sekunde verlängern den Timer automatisch, damit Mitbieter fair reagieren können und der Endpreis maximiert wird.",
+      AntiSnipeExtended: "+15s verlängert",
+      InvitesTitle: "Private Käufereinladungen",
+      InvitesDesc:
+        "Laden Sie nur geprüfte Großhandelskunden über exklusive Raum-Links ein und steuern Sie den Zugang jederzeit über Ihre Whitelist.",
+      InvitedLabel: "Eingeladen",
+      PausedLabel: "Pausiert",
+    },
+    BottomCtaTitle: "Bereit für Ihren nächsten Großhandels-Drop?",
+    BottomCtaSubtitle:
+      "Starten Sie in wenigen Minuten Ihren eigenen Auktionsraum mit Live-Geboten.",
   },
   HowItWorksPage: {
     MetaTags: {
@@ -181,6 +207,76 @@ export const DE: ITranslation = {
       imgUrl: "/opengraph-image",
       tags: ["ArcBids Preise", "B2B Auktion Kosten"],
     },
+    Section: {
+      Eyebrow: "Preise",
+      Title: "Klare Pläne für Käufer und Großhändler.",
+      Plans: [
+        {
+          name: "Käufer-Pass",
+          description: "Für verifizierte Großhandelskunden",
+          price: "Kostenlos",
+          period: "",
+          original: "",
+          badge: "",
+          cta: "Raum beitreten",
+          features: [
+            "Zugang per Whitelist & öffentliche Links",
+            "Live-Gebote in Echtzeit",
+            "Live-Aktivitätsfeed",
+            "Anti-Snipe-Timer-Schutz",
+            "Sofortige Übersicht kommender Positionen",
+          ],
+        },
+        {
+          name: "Wholesale Desk",
+          description: "Für aktive Distributoren & Aufkäufer",
+          price: "149 €",
+          period: "/Monat",
+          original: "199 €",
+          badge: "Beliebt",
+          cta: "Jetzt starten",
+          features: [
+            "Alles aus dem Käufer-Pass",
+            "Eigene Organisationsseite",
+            "Konfigurierbare Anti-Snipe-Timer",
+            "E-Mail-Whitelist-Verwaltung",
+            "Gewinner-Kontakte & Abschlussübersicht",
+          ],
+        },
+        {
+          name: "Enterprise",
+          description: "Für große B2B-Netzwerke",
+          price: "499 €",
+          period: "/Monat",
+          original: "649 €",
+          badge: "",
+          cta: "Vertrieb kontaktieren",
+          features: [
+            "Alles aus Wholesale Desk",
+            "Multi-Organisations-Steuerung",
+            "Persönlicher Ansprechpartner",
+            "Individuelle ERP- & Webhook-Anbindung",
+            "99,99 % Uptime-SLA",
+          ],
+        },
+      ],
+    },
+  },
+  Footer: {
+    Tagline:
+      "B2B-Großhandels-Auktionsplattform für maximale Geschwindigkeit in Echtzeit.",
+    Badge: "Live-Engine · Echtzeit-Sync",
+    Home: "Startseite",
+    Features: "Funktionen",
+    HowItWorks: "So funktioniert's",
+    LiveRoom: "Live-Auktionsraum",
+    NavTitle: "Navigation",
+    LegalTitle: "Rechtliches",
+    ContactTitle: "Kontakt",
+    Privacy: "Datenschutz",
+    Terms: "AGB",
+    Copyright: "© 2026 ArcBids. Alle Rechte vorbehalten.",
+    CraftedWith: "Hochverfügbare Echtzeit-Infrastruktur",
   },
   AuctionPage: {
     MetaTags: {
