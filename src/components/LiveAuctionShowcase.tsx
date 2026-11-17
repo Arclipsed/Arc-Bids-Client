@@ -46,12 +46,17 @@ function createInitialBids(now: number): UiBid[] {
 }
 
 export function LiveAuctionShowcase() {
-  const [nowMs, setNowMs] = useState<number>(() => Date.now());
-  const [endsAtMs, setEndsAtMs] = useState<number>(() => Date.now() + LOT_DURATION_MS);
-  const [bids, setBids] = useState<UiBid[]>(() => createInitialBids(Date.now()));
+  const [nowMs, setNowMs] = useState<number>(0);
+  const [endsAtMs, setEndsAtMs] = useState<number>(LOT_DURATION_MS);
+  const [bids, setBids] = useState<UiBid[]>(() => createInitialBids(0));
 
   // Smooth real-time countdown clock; resets cleanly when the timer reaches 0
   useEffect(() => {
+    const initialNow = Date.now();
+    setNowMs(initialNow);
+    setEndsAtMs(initialNow + LOT_DURATION_MS);
+    setBids(createInitialBids(initialNow));
+
     const timer = window.setInterval(() => {
       const now = Date.now();
       setNowMs(now);
