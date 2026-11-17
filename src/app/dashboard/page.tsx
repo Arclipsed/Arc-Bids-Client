@@ -38,6 +38,8 @@ import {
 } from "@/components/ui/glow-bento-card";
 import { OrganizationWidget } from "@/components/dashboard/OrganizationWidget";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
+import { LanguageSwitchButton } from "@/components/LanguageSwitchButton";
+import { Locale, Translations, getClientLocale } from "@/translations/Translations";
 import {
   CreateAuctionForm,
   type CreateAuctionPayload,
@@ -139,6 +141,8 @@ export default function DashboardPage() {
 
   const [authChecked, setAuthChecked] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [locale, setLocale] = useState<Locale>(Locale.EN);
+  const d = Translations[locale].DashboardPage.Copy;
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
   const [tablesSynced, setTablesSynced] = useState(false);
   const [connState, setConnState] = useState<"connecting" | "connected" | "error">(
@@ -159,6 +163,7 @@ export default function DashboardPage() {
   const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
+    setLocale(getClientLocale());
     let active = true;
     fetch("/api/auth/me")
       .then((res) => res.json())
@@ -564,7 +569,7 @@ export default function DashboardPage() {
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#05070c] text-zinc-100">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3ff2e0]/20 border-t-[#3ff2e0]" />
         <p className="mt-4 text-xs font-medium text-zinc-400">
-          Loading dashboard…
+          {d.Loading}
         </p>
       </div>
     );
@@ -594,7 +599,7 @@ export default function DashboardPage() {
                   connState === "connected" ? "bg-[#3ff2e0]" : "bg-amber-400"
                 }`}
               />
-              {connState === "connected" ? "Live" : "Connecting"}
+              {connState === "connected" ? d.LiveBadge : d.ConnectingBadge}
             </span>
           </div>
 
@@ -602,13 +607,14 @@ export default function DashboardPage() {
             <span className="hidden text-xs text-zinc-400 sm:inline">
               {userEmail}
             </span>
+            <LanguageSwitchButton currentLocale={locale} />
             <button
               type="button"
               onClick={handleLogout}
               className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08] hover:text-white"
             >
               <LogOut className="h-3.5 w-3.5" />
-              Sign Out
+              {d.SignOut}
             </button>
           </div>
         </div>
@@ -631,9 +637,9 @@ export default function DashboardPage() {
             <BentoGrid>
               <GlowCard accent="teal" className="lg:col-span-4">
                 <GlowCardHeader
-                  title="Active Auctions"
+                  title={d.ActiveAuctions}
                   icon={<Activity className="h-4 w-4 text-[#3ff2e0]" />}
-                  right={stats.activeAuctions > 0 ? <GlowLiveBadge /> : null}
+                  right={stats.activeAuctions > 0 ? <GlowLiveBadge label={d.LiveBadge} /> : null}
                 />
                 <p className="font-mono text-3xl font-bold tracking-tight text-white tabular-nums">
                   <NumberTicker
@@ -645,7 +651,7 @@ export default function DashboardPage() {
 
               <GlowCard accent="indigo" className="lg:col-span-4">
                 <GlowCardHeader
-                  title="Finished Auctions"
+                  title={d.FinishedAuctions}
                   icon={<CheckCircle2 className="h-4 w-4 text-indigo-300" />}
                 />
                 <p className="font-mono text-3xl font-bold tracking-tight text-white tabular-nums">
@@ -658,7 +664,7 @@ export default function DashboardPage() {
 
               <GlowCard accent="amber" className="lg:col-span-4">
                 <GlowCardHeader
-                  title="Total Sold"
+                  title={d.TotalSold}
                   icon={<DollarSign className="h-4 w-4 text-amber-300" />}
                 />
                 <p className="font-mono text-3xl font-bold tracking-tight text-[#e4fffb] tabular-nums">
@@ -673,13 +679,14 @@ export default function DashboardPage() {
                 name={myOrg.name}
                 slug={myOrg.slug}
                 onSave={handleUpdateOrg}
+                copy={d}
                 className="lg:col-span-5"
               />
 
               {/* Approved Buyers Widget */}
               <GlowCard accent="emerald" className="lg:col-span-7">
                 <GlowCardHeader
-                  title="Invited Buyers"
+                  title={d.InvitedBuyersTitle}
                   icon={<Users className="h-4 w-4 text-emerald-300" />}
                 />
                 <form onSubmit={handleAddBuyer} className="flex gap-2">
@@ -688,7 +695,7 @@ export default function DashboardPage() {
                     required
                     value={buyerCompany}
                     onChange={(e) => setBuyerCompany(e.target.value)}
-                    placeholder="Whitelist buyer email (e.g. buyer@company.com)"
+                    placeholder={d.InvitedBuyerPlaceholder}
                     className="h-9 min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
                   />
                   <button
@@ -696,14 +703,14 @@ export default function DashboardPage() {
                     className="inline-flex h-9 shrink-0 cursor-pointer items-center gap-1 rounded-xl bg-[#e4fffb] px-3.5 text-xs font-semibold text-[#04070b] hover:bg-white"
                   >
                     <UserPlus className="h-3.5 w-3.5" />
-                    Invite
+                    {d.WhitelistAction}
                   </button>
                 </form>
 
                 <div className="mt-4 space-y-2">
                   {myBuyers.length === 0 ? (
                     <p className="rounded-2xl border border-white/[0.05] bg-[#0e1420]/60 p-4 text-center text-xs text-zinc-400">
-                      No invited buyers yet.
+                      {d.NoBuyersYet}
                     </p>
                   ) : (
                     myBuyers.map((b) => {
@@ -762,15 +769,15 @@ export default function DashboardPage() {
             <BentoGrid>
               <GlowCard accent="indigo" className="lg:col-span-12">
                 <GlowCardHeader
-                  title="Auctions"
+                  title={d.AuctionsTitle}
                   icon={<Gavel className="h-4 w-4 text-indigo-300" />}
                   right={
                     <IconButton
                       variant="accent"
                       size="sm"
                       onClick={() => setCreateAuctionOpen(true)}
-                      aria-label="Create auction"
-                      title="Create auction"
+                      aria-label={d.CreateAuctionTitle}
+                      title={d.CreateAuctionTitle}
                     >
                       <Plus className="h-4 w-4" />
                     </IconButton>
@@ -780,7 +787,7 @@ export default function DashboardPage() {
                 <div className="space-y-2.5">
                   {myRooms.length === 0 ? (
                     <p className="rounded-2xl border border-white/[0.05] bg-[#0e1420]/60 p-6 text-center text-xs text-zinc-400">
-                      No auctions created yet. Click + to create your first auction.
+                      {d.NoAuctionsYet}
                     </p>
                   ) : (
                     myRooms.map((r) => {
@@ -831,7 +838,13 @@ export default function DashboardPage() {
                                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3ff2e0]" />
                                 )}
                                 {isEnded && <CheckCircle2 className="h-3 w-3 text-zinc-500" />}
-                                {r.status === "Draft" ? "Preview" : r.status}
+                                {r.status === "Draft"
+                                  ? d.PreviewStatus
+                                  : r.status === "Live"
+                                    ? d.LiveStatus
+                                    : r.status === "Ended"
+                                      ? d.EndedStatus
+                                      : r.status}
                               </span>
                               <span
                                 className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold ${
@@ -840,7 +853,7 @@ export default function DashboardPage() {
                                     : "border border-white/10 bg-white/[0.04] text-zinc-400"
                                 }`}
                               >
-                                {r.isPublic ? "Public" : "Invite Only"}
+                                {r.isPublic ? d.PublicBadge : d.InviteOnlyBadge}
                               </span>
                               {r.scheduledAtMs !== null && (
                                 <span className="inline-flex items-center gap-1 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono text-[10px] font-medium text-[#3ff2e0]">
@@ -850,8 +863,8 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <p className="mt-0.5 font-mono text-[11px] text-zinc-400">
-                              {r.lotDurationSec}s lot timer ·{" "}
-                              {formatCurrency(r.minBidIncrement, r.currency)} min increment
+                              {r.lotDurationSec}{d.LotTimerSuffix} ·{" "}
+                              {formatCurrency(r.minBidIncrement, r.currency)} {d.MinIncrementSuffix}
                             </p>
                           </div>
 
@@ -863,7 +876,7 @@ export default function DashboardPage() {
                               onClick={() => handleStartAuction(r.id)}
                               className="h-8 px-3.5 text-[11px]"
                             >
-                              Start
+                              {d.StartAction}
                             </InteractivePill>
                           )}
                           <Link
@@ -932,10 +945,11 @@ export default function DashboardPage() {
             <Dialog
               open={createAuctionOpen}
               onClose={() => setCreateAuctionOpen(false)}
-              title="Create Auction"
-              description="Configure your room rules and add the first wholesale lot."
+              title={d.CreateAuctionTitle}
+              description={d.CreateAuctionDesc}
             >
               <CreateAuctionForm
+                copy={d}
                 onSubmit={handleCreateAuction}
                 onCancel={() => setCreateAuctionOpen(false)}
               />
@@ -944,13 +958,14 @@ export default function DashboardPage() {
             <Dialog
               open={Boolean(editingRoom)}
               onClose={() => setEditingRoom(null)}
-              title="Edit Auction"
-              description="Update room settings or schedule before starting."
+              title={d.EditAuctionTitle}
+              description={d.EditAuctionDesc}
             >
               {editingRoom && (
                 <CreateAuctionForm
                   key={editingRoom.id.toString()}
                   mode="edit"
+                  copy={d}
                   initialValues={{
                     roomTitle: editingRoom.title,
                     currency: editingRoom.currency,
@@ -980,8 +995,8 @@ export default function DashboardPage() {
             <Dialog
               open={Boolean(resultsRoom)}
               onClose={() => setResultsRoom(null)}
-              title={resultsRoom ? `${resultsRoom.title} · Winners` : "Auction Results"}
-              description="Contact winning buyers directly to arrange invoicing and fulfillment."
+              title={resultsRoom ? `${resultsRoom.title} · ${d.WinnersTitleSuffix}` : d.WinnersTitleSuffix}
+              description={d.WinnersDesc}
             >
               {resultsRoom && (() => {
                 const roomLots = items
@@ -997,10 +1012,10 @@ export default function DashboardPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3 text-xs">
                       <span className="text-zinc-400">
-                        {soldLots.length} of {roomLots.length} lots sold
+                        {soldLots.length} / {roomLots.length} {d.LotsSoldSummary}
                       </span>
                       <span className="font-mono font-semibold text-[#3ff2e0]">
-                        Total {formatCurrency(totalSales, resultsRoom.currency)}
+                        {d.TotalLabel} {formatCurrency(totalSales, resultsRoom.currency)}
                       </span>
                     </div>
 
@@ -1029,7 +1044,7 @@ export default function DashboardPage() {
                                 </p>
                                 {isSold && winningBid ? (
                                   <p className="mt-1 text-xs text-zinc-300">
-                                    Winner:{" "}
+                                    {d.WinnerLabel}{" "}
                                     <span className="font-semibold text-white">
                                       {winningBid.buyerName}
                                     </span>
@@ -1041,7 +1056,7 @@ export default function DashboardPage() {
                                   </p>
                                 ) : (
                                   <p className="mt-1 text-xs text-zinc-500">
-                                    No winning bids placed
+                                    {d.NoWinningBids}
                                   </p>
                                 )}
                               </div>
@@ -1055,7 +1070,7 @@ export default function DashboardPage() {
                               >
                                 {isSold
                                   ? formatCurrency(lot.currentBid, resultsRoom.currency)
-                                  : "Unsold"}
+                                  : d.UnsoldLabel}
                               </span>
                             </div>
 
@@ -1070,7 +1085,7 @@ export default function DashboardPage() {
                                   className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[#e4fffb] px-3.5 text-xs font-semibold text-[#04070b] transition hover:bg-white"
                                 >
                                   <Mail className="h-3.5 w-3.5" />
-                                  Email Winner
+                                  {d.EmailWinner}
                                 </a>
                                 <button
                                   type="button"
@@ -1084,12 +1099,12 @@ export default function DashboardPage() {
                                   {copiedId === `winner-${lot.id.toString()}` ? (
                                     <>
                                       <Check className="h-3.5 w-3.5 text-[#3ff2e0]" />
-                                      Copied
+                                      {d.Copied}
                                     </>
                                   ) : (
                                     <>
                                       <Copy className="h-3.5 w-3.5" />
-                                      Copy Email
+                                      {d.CopyEmail}
                                     </>
                                   )}
                                 </button>

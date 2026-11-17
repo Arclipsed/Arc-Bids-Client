@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { Loader2, Upload, X } from "lucide-react";
+import type { ITranslation } from "@/translations/ITranslation";
+import { EN } from "@/translations/en/en";
 
 export interface DraftLot {
   id?: bigint;
@@ -16,6 +18,7 @@ interface CreateLotFormProps {
   currencySymbol: string;
   initialLot?: DraftLot;
   submitLabel?: string;
+  copy?: ITranslation["DashboardPage"]["Copy"];
   onSubmit: (lot: DraftLot) => void;
   onCancel: () => void;
 }
@@ -66,7 +69,8 @@ async function compressImageForUpload(file: File): Promise<File> {
 export function CreateLotForm({
   currencySymbol,
   initialLot,
-  submitLabel = "Add Lot",
+  submitLabel,
+  copy = EN.DashboardPage.Copy,
   onSubmit,
   onCancel,
 }: CreateLotFormProps) {
@@ -143,7 +147,9 @@ export function CreateLotForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-4">
         <div className="sm:col-span-2">
-          <label className="text-xs font-medium text-zinc-300">Lot Title</label>
+          <label className="text-xs font-medium text-zinc-300">
+            {copy.LotTitleLabel}
+          </label>
           <input
             type="text"
             required
@@ -156,7 +162,7 @@ export function CreateLotForm({
         </div>
         <div>
           <label className="text-xs font-medium text-zinc-300">
-            Quantity
+            {copy.QuantityLabel}
           </label>
           <input
             type="number"
@@ -169,7 +175,7 @@ export function CreateLotForm({
         </div>
         <div>
           <label className="text-xs font-medium text-zinc-300">
-            Start Price ({currencySymbol})
+            {copy.StartPriceLabel} ({currencySymbol})
           </label>
           <input
             type="number"
@@ -183,18 +189,22 @@ export function CreateLotForm({
       </div>
 
       <div>
-        <label className="text-xs font-medium text-zinc-300">Description</label>
+        <label className="text-xs font-medium text-zinc-300">
+          {copy.DescriptionLabel}
+        </label>
         <textarea
           rows={2}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Grade A wholesale batch, tested & factory sealed."
+          placeholder={copy.DescriptionPlaceholder}
           className="mt-1 w-full rounded-xl border border-white/10 bg-[#0e1420] p-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
         />
       </div>
 
       <div>
-        <label className="text-xs font-medium text-zinc-300">Lot Images</label>
+        <label className="text-xs font-medium text-zinc-300">
+          {copy.LotImagesLabel}
+        </label>
 
         <div
           onDragOver={(e) => {
@@ -226,17 +236,17 @@ export function CreateLotForm({
             <>
               <Loader2 className="h-5 w-5 animate-spin text-[#3ff2e0]" />
               <p className="text-xs font-medium text-zinc-300">
-                Uploading to storage…
+                {copy.UploadingPhotos}
               </p>
             </>
           ) : (
             <>
               <Upload className="h-5 w-5 text-[#3ff2e0]" />
               <p className="text-xs font-medium text-zinc-200">
-                Click or drag & drop lot photos
+                {copy.DropPhotos}
               </p>
               <p className="text-[11px] text-zinc-500">
-                PNG, JPG, WebP, GIF up to 10 MB
+                {copy.PhotoHint}
               </p>
             </>
           )}
@@ -280,13 +290,13 @@ export function CreateLotForm({
           onClick={onCancel}
           className="h-9 cursor-pointer rounded-full border border-white/10 bg-white/[0.04] px-4 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08]"
         >
-          Cancel
+          {copy.Cancel}
         </button>
         <button
           type="submit"
           className="h-9 cursor-pointer rounded-full bg-[#e4fffb] px-5 text-xs font-semibold text-[#04070b] transition hover:bg-white"
         >
-          {submitLabel}
+          {submitLabel ?? copy.AddLot}
         </button>
       </div>
     </form>

@@ -15,6 +15,8 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Dialog } from "@/components/ui/dialog";
 import Calendar14 from "@/components/ui/c-calendar-14";
 import { CreateLotForm, type DraftLot } from "@/components/dashboard/CreateLotForm";
+import type { ITranslation } from "@/translations/ITranslation";
+import { EN } from "@/translations/en/en";
 
 export type CurrencyCode = "EUR" | "USD";
 
@@ -45,6 +47,7 @@ export interface CreateAuctionFormInitialValues {
 interface CreateAuctionFormProps {
   mode?: "create" | "edit";
   initialValues?: CreateAuctionFormInitialValues;
+  copy?: ITranslation["DashboardPage"]["Copy"];
   onSubmit: (payload: CreateAuctionPayload) => void;
   onCancel: () => void;
 }
@@ -52,6 +55,7 @@ interface CreateAuctionFormProps {
 export function CreateAuctionForm({
   mode = "create",
   initialValues,
+  copy = EN.DashboardPage.Copy,
   onSubmit,
   onCancel,
 }: CreateAuctionFormProps) {
@@ -118,27 +122,27 @@ export function CreateAuctionForm({
         {/* Room Settings */}
         <div className="space-y-3">
           <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
-            Room Settings
+            {copy.RoomSettingsHeading}
           </p>
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-4">
             <div className="sm:col-span-3">
               <label className="text-xs font-medium text-zinc-300">
-                Auction Room Title
+                {copy.RoomTitleLabel}
               </label>
               <input
                 type="text"
                 required
                 value={roomTitle}
                 onChange={(e) => setRoomTitle(e.target.value)}
-                placeholder="Q1 Electronics Wholesale Drop"
+                placeholder={copy.RoomTitlePlaceholder}
                 className="mt-1.5 h-10 w-full rounded-xl border border-white/10 bg-[#0e1420] px-3 text-sm text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
               />
             </div>
 
             <div className="relative">
               <label className="text-xs font-medium text-zinc-300">
-                Currency
+                {copy.CurrencyLabel}
               </label>
               <button
                 type="button"
@@ -192,7 +196,7 @@ export function CreateAuctionForm({
           <div className="grid grid-cols-3 gap-2.5">
             <div>
               <label className="text-[11px] font-medium text-zinc-400">
-                Lot Timer (sec)
+                {copy.LotTimerLabel}
               </label>
               <input
                 type="number"
@@ -204,7 +208,7 @@ export function CreateAuctionForm({
             </div>
             <div>
               <label className="text-[11px] font-medium text-zinc-400">
-                Anti-Snipe (sec)
+                {copy.AntiSnipeLabel}
               </label>
               <input
                 type="number"
@@ -216,7 +220,7 @@ export function CreateAuctionForm({
             </div>
             <div>
               <label className="text-[11px] font-medium text-zinc-400">
-                Min Step ({currencySymbol})
+                {copy.MinStepLabel} ({currencySymbol})
               </label>
               <input
                 type="number"
@@ -231,11 +235,11 @@ export function CreateAuctionForm({
           {/* Public / Invite-Only Toggle */}
           <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5">
             <div>
-              <p className="text-xs font-medium text-white">Public Auction</p>
+              <p className="text-xs font-medium text-white">
+                {copy.PublicAuctionTitle}
+              </p>
               <p className="text-[11px] text-zinc-400">
-                {isPublic
-                  ? "Anyone with the link can join and bid"
-                  : "Invite-only · requires a whitelisted email"}
+                {isPublic ? copy.PublicAuctionOnDesc : copy.PublicAuctionOffDesc}
               </p>
             </div>
             <button
@@ -267,9 +271,11 @@ export function CreateAuctionForm({
           {/* Enable Auto-Bid Toggle */}
           <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5">
             <div>
-              <p className="text-xs font-medium text-white">Enable Auto-Bid</p>
+              <p className="text-xs font-medium text-white">
+                {copy.AutoBidTitle}
+              </p>
               <p className="text-[11px] text-zinc-400">
-                Allow buyers to set a maximum bid ceiling
+                {copy.AutoBidDesc}
               </p>
             </div>
             <button
@@ -309,12 +315,12 @@ export function CreateAuctionForm({
                 <CalendarIcon className="h-4 w-4 shrink-0 text-[#3ff2e0]" />
                 <div className="min-w-0">
                   <p className="text-xs font-medium text-white">
-                    Schedule Start Time
+                    {copy.ScheduleTitle}
                   </p>
                   <p className="truncate text-[11px] text-zinc-400">
                     {scheduledTime
-                      ? `${format(scheduledDate, "EEE, MMM d")} at ${scheduledTime}`
-                      : "Optional · Pick a date & time slot"}
+                      ? `${format(scheduledDate, "EEE, MMM d")} ${copy.ScheduleAtWord} ${scheduledTime}`
+                      : copy.ScheduleOptionalPrefix}
                   </p>
                 </div>
               </button>
@@ -368,7 +374,7 @@ export function CreateAuctionForm({
         <div className="space-y-3 border-t border-white/[0.06] pt-4">
           <div className="flex items-center justify-between">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
-              Lots ({lots.length})
+              {copy.LotsHeading} ({lots.length})
             </p>
           </div>
 
@@ -423,11 +429,11 @@ export function CreateAuctionForm({
             className="flex h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] text-xs font-semibold text-zinc-200 transition hover:border-[#3ff2e0]/40 hover:bg-[#3ff2e0]/[0.05] hover:text-[#3ff2e0]"
           >
             <Plus className="h-3.5 w-3.5" />
-            Add Lot
+            {copy.AddLot}
           </button>
           {lots.length === 0 && (
             <p className="text-[11px] text-amber-300/90">
-              Add at least one lot before {isEdit ? "saving" : "creating"} this auction.
+              {isEdit ? copy.AddLotHintEdit : copy.AddLotHintCreate}
             </p>
           )}
         </div>
@@ -439,14 +445,14 @@ export function CreateAuctionForm({
             onClick={onCancel}
             className="h-10 cursor-pointer rounded-full border border-white/10 bg-white/[0.04] px-5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08]"
           >
-            Cancel
+            {copy.Cancel}
           </button>
           <button
             type="submit"
             disabled={lots.length === 0}
             className="h-10 cursor-pointer rounded-full bg-[#e4fffb] px-6 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.2)] transition enabled:hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {isEdit ? "Save Changes" : "Create Auction"}
+            {isEdit ? copy.SaveChanges : copy.CreateAuctionAction}
           </button>
         </div>
       </form>
@@ -457,11 +463,9 @@ export function CreateAuctionForm({
           setAddLotOpen(false);
           setEditingLotIndex(null);
         }}
-        title={editingLotIndex !== null ? "Edit Lot" : "Add Lot"}
+        title={editingLotIndex !== null ? copy.EditLotTitle : copy.AddLotTitle}
         description={
-          editingLotIndex !== null
-            ? "Update this lot's title, starting price, or images."
-            : "Add an item or wholesale pallet to this auction."
+          editingLotIndex !== null ? copy.EditLotDesc : copy.AddLotDesc
         }
       >
         <CreateLotForm
@@ -470,7 +474,8 @@ export function CreateAuctionForm({
           initialLot={
             editingLotIndex !== null ? lots[editingLotIndex] : undefined
           }
-          submitLabel={editingLotIndex !== null ? "Save Lot" : "Add Lot"}
+          submitLabel={editingLotIndex !== null ? copy.SaveLotAction : copy.AddLot}
+          copy={copy}
           onSubmit={(lot) => {
             if (editingLotIndex !== null) {
               setLots((prev) =>
