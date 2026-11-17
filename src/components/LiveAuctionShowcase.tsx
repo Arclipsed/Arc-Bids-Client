@@ -104,28 +104,35 @@ export function LiveAuctionShowcase() {
   const previewItem: UiItem = {
     id: BigInt(1),
     orderIndex: 0,
-    title: "Pallet of 40× Refurbished MacBook Air M2",
+    title: "Refurbished MacBook Air M2 (Grade A)",
     description:
-      "Grade A wholesale batch, 8GB/256GB, tested & factory sealed with 90-day distributor warranty.",
+      "8GB / 256GB wholesale pallet, tested & factory sealed with 90-day distributor warranty.",
     images: [
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1200&auto=format&fit=crop",
     ],
     startingPrice: BASE_PRICE,
     currentBid: topBid ? topBid.amount : BASE_PRICE,
     highestBidderId: topBid ? BigInt(1) : null,
     status: "Active",
     endsAtMs,
+    quantity: 40,
   };
 
   return (
     <section id="live-preview" className="scroll-mt-24">
-      <div className="mb-8 max-w-xl">
+      <div className="mb-8 max-w-2xl">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
           Live Room Experience
         </p>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
           See every bid land in real time.
         </h2>
+        <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
+          Buyers browse lot photos, unit quantities, and per-unit pricing while
+          competing live—with automatic anti-snipe timer protection.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-stretch">
