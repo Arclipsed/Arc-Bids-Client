@@ -103,12 +103,12 @@ export interface ITranslation {
     Home: string;
     Features: string;
     HowItWorks: string;
-    LiveRoom: string;
     NavTitle: string;
     LegalTitle: string;
     ContactTitle: string;
     Privacy: string;
     Terms: string;
+    Imprint: string;
     Copyright: string;
     CraftedWith: string;
   };

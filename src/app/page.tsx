@@ -152,12 +152,13 @@ async function HomeContent() {
         homeLabel={t.Footer.Home}
         featuresLabel={t.Footer.Features}
         howItWorksLabel={t.Footer.HowItWorks}
-        liveRoomLabel={t.Footer.LiveRoom}
+        pricingLabel={t.Nav.Pricing}
         quickLinksTitle={t.Footer.NavTitle}
         legalTitle={t.Footer.LegalTitle}
         contactTitle={t.Footer.ContactTitle}
         privacyLabel={t.Footer.Privacy}
         termsLabel={t.Footer.Terms}
+        imprintLabel={t.Footer.Imprint}
         copyright={t.Footer.Copyright}
         craftedWith={t.Footer.CraftedWith}
       />

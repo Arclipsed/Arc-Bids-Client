@@ -7,14 +7,14 @@ interface FooterSectionProps {
   homeLabel?: string;
   featuresLabel?: string;
   howItWorksLabel?: string;
-  liveRoomLabel?: string;
+  pricingLabel?: string;
   quickLinksTitle?: string;
   legalTitle?: string;
   contactTitle?: string;
   privacyLabel?: string;
   termsLabel?: string;
+  imprintLabel?: string;
   address?: string;
-  phone?: string;
   email?: string;
   copyright?: string;
   craftedWith?: string;
@@ -27,14 +27,14 @@ export default function FooterSection({
   homeLabel = "Home",
   featuresLabel = "Features",
   howItWorksLabel = "How It Works",
-  liveRoomLabel = "Live Auction Room",
+  pricingLabel = "Pricing",
   quickLinksTitle = "Navigation",
   legalTitle = "Legal",
   contactTitle = "Contact",
   privacyLabel = "Privacy Policy",
   termsLabel = "Terms of Service",
-  address = "Stockholm, Sweden",
-  phone = "+46 8 500 123 45",
+  imprintLabel = "Imprint",
+  address = "Saarbrücken, Germany",
   email = "hello@arcbids.com",
   copyright = "© 2026 ArcBids. All rights reserved.",
   craftedWith = "High-availability real-time infrastructure",
@@ -79,15 +79,31 @@ export default function FooterSection({
               </li>
               <li>
                 <Link href="/pricing" className="transition-colors hover:text-[#e4fffb]">
-                  Pricing
+                  {pricingLabel}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/auction"
-                  className="font-semibold text-[#3ff2e0] transition-colors hover:text-[#e4fffb]"
+                  href="/solutions/itad-hardware-auctions"
+                  className="transition-colors hover:text-[#e4fffb]"
                 >
-                  {liveRoomLabel}
+                  ITAD Hardware Auctions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/solutions/liquidation-pallet-auctions"
+                  className="transition-colors hover:text-[#e4fffb]"
+                >
+                  Liquidation Pallet Auctions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/solutions/whatsapp-b2b-auction-alternative"
+                  className="transition-colors hover:text-[#e4fffb]"
+                >
+                  WhatsApp B2B Alternative
                 </Link>
               </li>
             </ul>
@@ -100,11 +116,6 @@ export default function FooterSection({
             </h4>
             <div className="space-y-1 text-xs text-zinc-400">
               <p>{address}</p>
-              <p>
-                <a href={`tel:${phone}`} className="transition-colors hover:text-[#e4fffb]">
-                  {phone}
-                </a>
-              </p>
               <p>
                 <a href={`mailto:${email}`} className="transition-colors hover:text-[#e4fffb]">
                   {email}
@@ -119,6 +130,11 @@ export default function FooterSection({
               {legalTitle}
             </h4>
             <ul className="space-y-1.5 text-xs">
+              <li>
+                <Link href="/imprint" className="transition-colors hover:text-[#e4fffb]">
+                  {imprintLabel}
+                </Link>
+              </li>
               <li>
                 <Link href="/terms" className="transition-colors hover:text-[#e4fffb]">
                   {termsLabel}
