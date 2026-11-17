@@ -38,7 +38,6 @@ import {
 } from "@/components/ui/glow-bento-card";
 import { OrganizationWidget } from "@/components/dashboard/OrganizationWidget";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
-import { LanguageSwitchButton } from "@/components/LanguageSwitchButton";
 import { Locale, Translations, getClientLocale } from "@/translations/Translations";
 import {
   CreateAuctionForm,
@@ -607,7 +606,6 @@ export default function DashboardPage() {
             <span className="hidden text-xs text-zinc-400 sm:inline">
               {userEmail}
             </span>
-            <LanguageSwitchButton currentLocale={locale} />
             <button
               type="button"
               onClick={handleLogout}

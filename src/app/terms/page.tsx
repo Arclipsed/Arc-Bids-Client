@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SiteNav } from "@/components/SiteNav";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
-import { LanguageSwitchButton } from "@/components/LanguageSwitchButton";
 import FooterSection from "@/components/FooterSection";
 import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
@@ -102,8 +101,7 @@ async function TermsContent() {
 
           <SiteNav nav={t.Nav} />
 
-          <div className="flex items-center gap-2">
-            <LanguageSwitchButton currentLocale={locale} />
+          <div className="hidden items-center gap-2 sm:flex">
             <Link
               href="/dashboard"
               className="group inline-flex items-center gap-1.5 rounded-full bg-[#e4fffb] px-4 py-2 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.18)] transition hover:bg-white hover:shadow-[0_0_26px_rgba(63,242,224,0.3)]"
