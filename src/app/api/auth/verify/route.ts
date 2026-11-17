@@ -2,21 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   SESSION_COOKIE_NAME,
   signSessionToken,
+  verifyCodeChallengeToken,
   verifyMagicLinkToken,
 } from "@/lib/email-auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as { token?: string };
+    const body = (await req.json()) as {
+      token?: string;
+      challengeToken?: string;
+      code?: string;
+    };
     const token = body.token?.trim() ?? "";
-    if (!token) {
-      return NextResponse.json({ error: "Missing token." }, { status: 400 });
-    }
+    const challengeToken = body.challengeToken?.trim() ?? "";
+    const code = body.code?.trim() ?? "";
 
-    const verified = await verifyMagicLinkToken(token);
+    const verified = token
+      ? await verifyMagicLinkToken(token)
+      : challengeToken && code
+        ? await verifyCodeChallengeToken(challengeToken, code)
+        : null;
+
     if (!verified) {
       return NextResponse.json(
-        { error: "This sign-in link has expired or is invalid." },
+        { error: "This sign-in code or link has expired or is invalid." },
         { status: 401 }
       );
     }

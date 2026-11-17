@@ -11,6 +11,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const [challengeToken, setChallengeToken] = useState<string | null>(null);
+  const [codeInput, setCodeInput] = useState("");
+  const [verifyingCode, setVerifyingCode] = useState(false);
   const [devVerifyUrl, setDevVerifyUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,17 +59,48 @@ export default function LoginPage() {
         ok?: boolean;
         error?: string;
         devVerifyUrl?: string;
+        challengeToken?: string;
       };
       if (!res.ok) {
         setError(data.error ?? "Failed to send sign-in link.");
         return;
       }
       setSentTo(email.trim().toLowerCase());
+      setChallengeToken(data.challengeToken ?? null);
+      setCodeInput("");
       setDevVerifyUrl(data.devVerifyUrl ?? null);
     } catch {
       setError("Network error. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!challengeToken || !codeInput.trim()) return;
+    setError(null);
+    setVerifyingCode(true);
+    try {
+      const res = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          challengeToken,
+          code: codeInput.trim(),
+        }),
+      });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok) {
+        setError(data.error ?? "Invalid or expired code.");
+        return;
+      }
+      router.replace("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setVerifyingCode(false);
     }
   };
 
@@ -155,10 +189,46 @@ export default function LoginPage() {
                 Check your inbox
               </h1>
               <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">
-                We sent a sign-in link to{" "}
-                <strong className="text-white">{sentTo}</strong>. Click the link
-                in the email to open your organization portal.
+                We sent a 6-digit code and sign-in link to{" "}
+                <strong className="text-white">{sentTo}</strong>. Enter the code
+                below to stay in this browser, or click the link in your email.
               </p>
+
+              <form onSubmit={handleVerifyCode} className="mt-5 space-y-3">
+                <div>
+                  <label
+                    htmlFor="login-code"
+                    className="block text-xs font-medium text-zinc-300"
+                  >
+                    6-digit code
+                  </label>
+                  <input
+                    id="login-code"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    required
+                    autoFocus
+                    maxLength={7}
+                    value={codeInput}
+                    onChange={(e) => setCodeInput(e.target.value)}
+                    placeholder="123456"
+                    className="mt-1.5 h-11 w-full rounded-2xl border border-white/10 bg-[#0e1420] px-4 text-center font-mono text-lg font-bold tracking-[0.25em] text-white placeholder:text-zinc-600 outline-none transition focus:border-[#3ff2e0]"
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-xs font-medium text-rose-400">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={verifyingCode || codeInput.replace(/\s+/g, "").length < 6}
+                  className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[#e4fffb] text-sm font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_24px_rgba(63,242,224,0.2)] transition enabled:hover:bg-white enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {verifyingCode ? "Verifying…" : "Verify & Sign In"}
+                </button>
+              </form>
 
               {devVerifyUrl && (
                 <div className="mt-5 rounded-2xl border border-[#3ff2e0]/25 bg-[#3ff2e0]/[0.06] p-3.5 text-xs">
@@ -182,6 +252,9 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => {
                   setSentTo(null);
+                  setChallengeToken(null);
+                  setCodeInput("");
+                  setError(null);
                   setDevVerifyUrl(null);
                 }}
                 className="mt-6 cursor-pointer text-xs font-medium text-zinc-400 transition hover:text-white"

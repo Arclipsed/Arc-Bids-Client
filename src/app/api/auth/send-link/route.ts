@@ -1,7 +1,9 @@
+import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import {
   buildMagicLinkEmailHtml,
+  signCodeChallengeToken,
   signMagicLinkToken,
 } from "@/lib/email-auth";
 
@@ -18,6 +20,8 @@ export async function POST(req: NextRequest) {
     }
 
     const token = await signMagicLinkToken(email);
+    const code = String(crypto.randomInt(100000, 1000000));
+    const challengeToken = await signCodeChallengeToken(email, code);
     const origin = req.nextUrl.origin;
     const verifyUrl = `${origin}/auth/verify?token=${encodeURIComponent(token)}`;
 
@@ -28,6 +32,8 @@ export async function POST(req: NextRequest) {
         ok: true,
         devMode: true,
         devVerifyUrl: verifyUrl,
+        devCode: code,
+        challengeToken,
       });
     }
 
@@ -37,8 +43,11 @@ export async function POST(req: NextRequest) {
     const { error } = await resend.emails.send({
       from,
       to: email,
-      subject: "Sign in to ArcBids",
-      html: buildMagicLinkEmailHtml(verifyUrl, email),
+      subject: `Sign in to ArcBids · Code ${code}`,
+      headers: {
+        "X-Entity-Ref-ID": crypto.randomUUID(),
+      },
+      html: buildMagicLinkEmailHtml(verifyUrl, email, code),
     });
 
     if (error) {
@@ -48,7 +57,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, challengeToken });
   } catch {
     return NextResponse.json(
       { error: "Unable to process sign-in request." },
