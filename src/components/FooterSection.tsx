@@ -1,0 +1,144 @@
+import Link from "next/link";
+
+interface FooterSectionProps {
+  brandName?: string;
+  tagline?: string;
+  badge?: string;
+  homeLabel?: string;
+  featuresLabel?: string;
+  howItWorksLabel?: string;
+  liveRoomLabel?: string;
+  quickLinksTitle?: string;
+  legalTitle?: string;
+  contactTitle?: string;
+  privacyLabel?: string;
+  termsLabel?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  copyright?: string;
+  craftedWith?: string;
+}
+
+export default function FooterSection({
+  brandName = "ArcBid",
+  tagline = "Enterprise-grade B2B wholesale auction platform built for real-time speed.",
+  badge = "Live Engine · Sub-Second Sync",
+  homeLabel = "Home",
+  featuresLabel = "Features",
+  howItWorksLabel = "How It Works",
+  liveRoomLabel = "Live Auction Room",
+  quickLinksTitle = "Navigation",
+  legalTitle = "Legal",
+  contactTitle = "Contact",
+  privacyLabel = "Privacy Policy",
+  termsLabel = "Terms of Service",
+  address = "Stockholm, Sweden",
+  phone = "+46 8 500 123 45",
+  email = "hello@arcbids.com",
+  copyright = "© 2026 ArcBid. All rights reserved.",
+  craftedWith = "High-availability real-time infrastructure",
+}: FooterSectionProps) {
+  return (
+    <footer className="border-t border-white/[0.06] bg-[#05070c] text-sm text-zinc-400">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          {/* Brand Column */}
+          <div className="space-y-3 md:col-span-1">
+            <Link href="/" className="group inline-flex items-center gap-2">
+              <span className="text-lg font-extrabold tracking-tight text-[#e4fffb] transition-colors group-hover:text-[#3ff2e0]">
+                {brandName}
+              </span>
+            </Link>
+            <p className="text-xs leading-relaxed text-zinc-400">{tagline}</p>
+            <span className="inline-block rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-1 text-[10px] font-semibold text-[#3ff2e0]">
+              {badge}
+            </span>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
+              {quickLinksTitle}
+            </h4>
+            <ul className="space-y-1.5 text-xs">
+              <li>
+                <Link href="/" className="transition-colors hover:text-[#e4fffb]">
+                  {homeLabel}
+                </Link>
+              </li>
+              <li>
+                <a href="/#features" className="transition-colors hover:text-[#e4fffb]">
+                  {featuresLabel}
+                </a>
+              </li>
+              <li>
+                <a href="/#how-it-works" className="transition-colors hover:text-[#e4fffb]">
+                  {howItWorksLabel}
+                </a>
+              </li>
+              <li>
+                <Link href="/pricing" className="transition-colors hover:text-[#e4fffb]">
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/auction"
+                  className="font-semibold text-[#3ff2e0] transition-colors hover:text-[#e4fffb]"
+                >
+                  {liveRoomLabel}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
+              {contactTitle}
+            </h4>
+            <div className="space-y-1 text-xs text-zinc-400">
+              <p>{address}</p>
+              <p>
+                <a href={`tel:${phone}`} className="transition-colors hover:text-[#e4fffb]">
+                  {phone}
+                </a>
+              </p>
+              <p>
+                <a href={`mailto:${email}`} className="transition-colors hover:text-[#e4fffb]">
+                  {email}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          {/* Legal */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
+              {legalTitle}
+            </h4>
+            <ul className="space-y-1.5 text-xs">
+              <li>
+                <Link href="/auction" className="transition-colors hover:text-[#e4fffb]">
+                  {termsLabel}
+                </Link>
+              </li>
+              <li>
+                <Link href="/auction" className="transition-colors hover:text-[#e4fffb]">
+                  {privacyLabel}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 text-xs text-zinc-500 sm:flex-row">
+          <p>{copyright}</p>
+          <p>{craftedWith}</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
