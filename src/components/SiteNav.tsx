@@ -30,7 +30,7 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
 
   return (
     <>
-      <NavigationMenu className="hidden sm:flex">
+      <NavigationMenu className="hidden min-[850px]:flex">
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
@@ -137,7 +137,7 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <div className="sm:hidden">
+      <div className="min-[850px]:hidden">
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
