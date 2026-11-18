@@ -51,6 +51,8 @@ import ForceNextItemReducer from "./force_next_item_reducer";
 import JoinRoomReducer from "./join_room_reducer";
 import LeaveRoomReducer from "./leave_room_reducer";
 import PlaceBidReducer from "./place_bid_reducer";
+import RegisterDeviceReducer from "./register_device_reducer";
+import RemoveDeviceReducer from "./remove_device_reducer";
 import SetAutoBidReducer from "./set_auto_bid_reducer";
 import SetBuyerBannedReducer from "./set_buyer_banned_reducer";
 import SetBuyerListMemberBannedReducer from "./set_buyer_list_member_banned_reducer";
@@ -72,6 +74,7 @@ import AuctionPresenceRow from "./auction_presence_table";
 import BuyerListRow from "./buyer_list_table";
 import BuyerListMemberRow from "./buyer_list_member_table";
 import MyAutoBidsRow from "./my_auto_bids_table";
+import MyDevicesRow from "./my_devices_table";
 import OrganizationRow from "./organization_table";
 import OrganizationWhitelistRow from "./organization_whitelist_table";
 
@@ -212,6 +215,13 @@ const tablesSchema = __schema({
     constraints: [
     ],
   }, MyAutoBidsRow),
+  myDevices: __table({
+    name: 'my_devices',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, MyDevicesRow),
 });
 
 /** The schema information for all reducers in this module. This is defined the same way as the reducers would have been defined in the server, except the body of the reducer is omitted in code generation. */
@@ -233,6 +243,8 @@ const reducersSchema = __reducers(
   __reducerSchema("join_room", JoinRoomReducer),
   __reducerSchema("leave_room", LeaveRoomReducer),
   __reducerSchema("place_bid", PlaceBidReducer),
+  __reducerSchema("register_device", RegisterDeviceReducer),
+  __reducerSchema("remove_device", RemoveDeviceReducer),
   __reducerSchema("set_auto_bid", SetAutoBidReducer),
   __reducerSchema("set_buyer_banned", SetBuyerBannedReducer),
   __reducerSchema("set_buyer_list_member_banned", SetBuyerListMemberBannedReducer),
@@ -269,6 +281,8 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "OrganizationWhitelist": Omit<typeof tablesSchema.schemaType.tables["organizationWhitelist"], "accessorName"> & { readonly accessorName: "OrganizationWhitelist" };
     /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
     readonly "MyAutoBids": Omit<typeof tablesSchema.schemaType.tables["myAutoBids"], "accessorName"> & { readonly accessorName: "MyAutoBids" };
+    /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
+    readonly "MyDevices": Omit<typeof tablesSchema.schemaType.tables["myDevices"], "accessorName"> & { readonly accessorName: "MyDevices" };
   };
 };
 
@@ -296,6 +310,7 @@ const tableAccessorAliases = {
   "Organization": "organization",
   "OrganizationWhitelist": "organizationWhitelist",
   "MyAutoBids": "myAutoBids",
+  "MyDevices": "myDevices",
 } as const;
 
 function __withTableAccessorAliases<T extends object>(target: T, freeze = false): T {
@@ -334,6 +349,8 @@ export type DbView = __DbViewBase & {
   readonly "OrganizationWhitelist": __DbViewBase["organizationWhitelist"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __DbViewBase["myAutoBids"];
+  /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
+  readonly "MyDevices": __DbViewBase["myDevices"];
 };
 
 type __TablesBase = __QueryBuilder<typeof tablesSchema.schemaType>;
@@ -356,6 +373,8 @@ export type Tables = __TablesBase & {
   readonly "OrganizationWhitelist": __TablesBase["organizationWhitelist"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __TablesBase["myAutoBids"];
+  /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
+  readonly "MyDevices": __TablesBase["myDevices"];
 };
 
 /** The tables available in this remote SpacetimeDB module. Each table reference doubles as a query builder. */

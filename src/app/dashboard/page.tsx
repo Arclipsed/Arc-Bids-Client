@@ -47,6 +47,11 @@ import {
   type BuyerListRow,
 } from "@/components/dashboard/BuyerListsWidget";
 import { DangerZoneWidget } from "@/components/dashboard/DangerZoneWidget";
+import {
+  DevicesWidget,
+  type DeviceRow,
+} from "@/components/dashboard/DevicesWidget";
+import { getDeviceDetails } from "@/lib/device-info";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { Locale, Translations, getClientLocale } from "@/translations/Translations";
 import {
@@ -167,6 +172,10 @@ export default function DashboardPage() {
   const [buyerLists, setBuyerLists] = useState<BuyerListRow[]>([]);
   const [buyerListMembers, setBuyerListMembers] = useState<BuyerListMemberRow[]>([]);
   const [bids, setBids] = useState<BidRow[]>([]);
+  const [devices, setDevices] = useState<DeviceRow[]>([]);
+  const [currentDeviceId] = useState<string>(() =>
+    typeof window !== "undefined" ? getDeviceDetails().deviceId : ""
+  );
 
   const [createAuctionOpen, setCreateAuctionOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<RoomRow | null>(null);
@@ -294,12 +303,32 @@ export default function DashboardPage() {
           amount: b.amount,
         }))
       );
+      setDevices(
+        Array.from(conn.db.myDevices.iter()).map((d) => ({
+          id: d.id,
+          deviceId: d.deviceId,
+          deviceName: d.deviceName,
+          deviceType: d.deviceType,
+          isOnline: d.isOnline,
+          lastSeenMs: Number(d.lastSeenAt.toMillis()),
+        }))
+      );
     };
 
     const conn = createSpacetimeConnection({
       onConnect: (connectedConn, _tok, identity: Identity) => {
         setConnState("connected");
         setMyIdentityHex(identity.toHexString());
+        try {
+          const info = getDeviceDetails();
+          connectedConn.reducers.registerDevice({
+            deviceId: info.deviceId,
+            deviceName: info.deviceName,
+            deviceType: info.deviceType,
+          });
+        } catch {
+          // Ignore device registration errors
+        }
         connectedConn
           .subscriptionBuilder()
           .onApplied(() => {
@@ -314,6 +343,7 @@ export default function DashboardPage() {
             "SELECT * FROM buyer_list",
             "SELECT * FROM buyer_list_member",
             "SELECT * FROM auction_item_bid",
+            "SELECT * FROM my_devices",
           ]);
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
         connectedConn.db.organization.onUpdate(() => sync(connectedConn));
@@ -357,6 +387,9 @@ export default function DashboardPage() {
         connectedConn.db.buyerListMember.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
+        connectedConn.db.myDevices.onInsert(() => sync(connectedConn));
+        connectedConn.db.myDevices.onUpdate(() => sync(connectedConn));
+        connectedConn.db.myDevices.onDelete(() => sync(connectedConn));
       },
       onDisconnect: () => setConnState("error"),
       onError: () => setConnState("error"),
@@ -597,6 +630,17 @@ export default function DashboardPage() {
       conn.reducers.deleteBuyerListMember({ memberId });
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to remove buyer.");
+    }
+  };
+
+  const handleRemoveDevice = (deviceRowId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.removeDevice({ deviceRowId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to remove device.");
     }
   };
 
@@ -1100,6 +1144,16 @@ export default function DashboardPage() {
                 onAddMember={handleAddBuyerListMember}
                 onToggleBan={handleToggleBuyerListMemberBan}
                 onDeleteMember={handleDeleteBuyerListMember}
+                className="lg:col-span-12"
+              />
+            </BentoGrid>
+
+            {/* Logged-In Devices */}
+            <BentoGrid>
+              <DevicesWidget
+                devices={devices}
+                currentDeviceId={currentDeviceId}
+                onRemoveDevice={handleRemoveDevice}
                 className="lg:col-span-12"
               />
             </BentoGrid>

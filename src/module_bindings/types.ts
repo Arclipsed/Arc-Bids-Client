@@ -163,3 +163,16 @@ export const RoomStatus = __t.enum("RoomStatus", {
 });
 export type RoomStatus = __Infer<typeof RoomStatus>;
 
+export const UserDevice = __t.object("UserDevice", {
+  id: __t.u64(),
+  identity: __t.identity(),
+  deviceKey: __t.string(),
+  deviceId: __t.string(),
+  deviceName: __t.string(),
+  deviceType: __t.string(),
+  lastConnectionId: __t.string(),
+  isOnline: __t.bool(),
+  lastSeenAt: __t.timestamp(),
+});
+export type UserDevice = __Infer<typeof UserDevice>;
+
