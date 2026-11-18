@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
+import { Pattern as OtpPattern } from "@/components/ui/c-input-otp-1";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -193,28 +194,16 @@ export default function LoginPage() {
                 below to stay in this browser, or click the link in your email.
               </p>
 
-              <form onSubmit={handleVerifyCode} className="mt-5 space-y-3">
-                <div>
-                  <label
-                    htmlFor="login-code"
-                    className="block text-xs font-medium text-zinc-300"
-                  >
-                    6-digit code
-                  </label>
-                  <input
-                    id="login-code"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    required
-                    autoFocus
-                    maxLength={7}
-                    value={codeInput}
-                    onChange={(e) => setCodeInput(e.target.value)}
-                    placeholder="123456"
-                    className="mt-1.5 h-11 w-full rounded-2xl border border-white/10 bg-[#0e1420] px-4 text-center font-mono text-lg font-bold tracking-[0.25em] text-white placeholder:text-zinc-600 outline-none transition focus:border-[#3ff2e0]"
-                  />
-                </div>
+              <form onSubmit={handleVerifyCode} className="mt-5 space-y-4">
+                <OtpPattern
+                  id="login-code"
+                  label="6-digit code"
+                  value={codeInput}
+                  onChange={(value) => setCodeInput(value)}
+                  disabled={verifyingCode}
+                  autoFocus
+                  className="justify-start"
+                />
 
                 {error && (
                   <p className="text-xs font-medium text-rose-400">{error}</p>

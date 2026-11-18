@@ -29,4 +29,6 @@ export default __t.row({
   scheduledAt: __t.option(__t.timestamp()).name("scheduled_at"),
   isPublic: __t.bool().name("is_public"),
   roomCode: __t.string().name("room_code"),
+  allowedListIds: __t.array(__t.u64()).name("allowed_list_ids"),
+  allowAutoBid: __t.bool().name("allow_auto_bid"),
 });

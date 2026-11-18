@@ -13,6 +13,8 @@ export interface UiRoom {
   scheduledAtMs?: number | null;
   isPublic?: boolean;
   roomCode?: string;
+  allowedListIds?: bigint[];
+  allowAutoBid?: boolean;
 }
 
 export interface UiItem {
@@ -27,6 +29,8 @@ export interface UiItem {
   status: ItemStatusTag;
   endsAtMs: number | null;
   quantity?: number;
+  category?: string;
+  metadataJson?: string;
 }
 
 export interface UiBid {

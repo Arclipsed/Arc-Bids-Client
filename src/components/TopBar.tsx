@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LayoutDashboard } from "lucide-react";
 import type { RoomStatusTag } from "@/lib/auction-types";
 
 interface TopBarProps {
@@ -9,6 +10,7 @@ interface TopBarProps {
   viewerCount: number;
   connectionState: "connecting" | "connected" | "error";
   isDemo: boolean;
+  showDashboardLink?: boolean;
 }
 
 export function TopBar({
@@ -17,6 +19,7 @@ export function TopBar({
   viewerCount,
   connectionState,
   isDemo,
+  showDashboardLink = false,
 }: TopBarProps) {
   const isLive = status === "Live";
 
@@ -50,35 +53,67 @@ export function TopBar({
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          {showDashboardLink && (
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-200 transition hover:border-[#3ff2e0]/40 hover:bg-white/[0.08] hover:text-white"
+            >
+              <LayoutDashboard className="h-3.5 w-3.5 text-[#3ff2e0]" />
+              Dashboard
+            </Link>
+          )}
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
+            title={
               isDemo
-                ? "border-sky-500/20 bg-sky-500/10 text-sky-400"
+                ? "Demo"
                 : connectionState === "connected"
-                  ? "border-white/[0.08] bg-white/[0.04] text-zinc-200"
+                  ? "Connected"
                   : connectionState === "error"
-                    ? "border-rose-500/20 bg-rose-500/10 text-rose-400"
-                    : "border-white/[0.08] bg-white/[0.04] text-zinc-400"
+                    ? "Offline"
+                    : "Connecting"
+            }
+            aria-label={
+              isDemo
+                ? "Demo"
+                : connectionState === "connected"
+                  ? "Connected"
+                  : connectionState === "error"
+                    ? "Offline"
+                    : "Connecting"
+            }
+            className={`inline-flex items-center gap-1.5 rounded-full border text-xs font-medium ${
+              !isDemo && connectionState === "connected"
+                ? "border-white/[0.08] bg-white/[0.04] p-2"
+                : isDemo
+                  ? "border-sky-500/20 bg-sky-500/10 px-2.5 py-1 text-sky-400"
+                  : connectionState === "error"
+                    ? "border-rose-500/20 bg-rose-500/10 px-2.5 py-1 text-rose-400"
+                    : "border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-zinc-400"
             }`}
           >
-            <span
-              className={`h-1.5 w-1.5 rounded-full ${
-                isDemo
-                  ? "bg-sky-400"
-                  : connectionState === "connected"
-                    ? "bg-emerald-400"
-                    : connectionState === "error"
-                      ? "bg-rose-400"
-                      : "bg-amber-400"
-              }`}
-            />
-            {isDemo
-              ? "Demo"
-              : connectionState === "connected"
-                ? "Connected"
-                : connectionState === "error"
-                  ? "Offline"
-                  : "Connecting"}
+            {!isDemo && connectionState === "connected" ? (
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+            ) : (
+              <>
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    isDemo
+                      ? "bg-sky-400"
+                      : connectionState === "error"
+                        ? "bg-rose-400"
+                        : "bg-amber-400"
+                  }`}
+                />
+                {isDemo
+                  ? "Demo"
+                  : connectionState === "error"
+                    ? "Offline"
+                    : "Connecting"}
+              </>
+            )}
           </span>
         </div>
       </div>

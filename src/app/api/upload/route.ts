@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { put } from "@vercel/blob";
+import { del, put } from "@vercel/blob";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/email-auth";
 
 const ALLOWED_TYPES = new Set([
@@ -59,4 +59,41 @@ export async function POST(request: Request) {
   });
 
   return NextResponse.json({ url: blob.url });
+}
+
+export async function DELETE(request: Request) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const session = token ? await verifySessionToken(token) : null;
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      { error: "Blob storage is not configured." },
+      { status: 500 }
+    );
+  }
+
+  try {
+    const body = (await request.json()) as { urls?: unknown };
+    const rawUrls = Array.isArray(body.urls) ? body.urls : [];
+    const blobUrls = rawUrls.filter(
+      (u): u is string =>
+        typeof u === "string" && u.includes(".blob.vercel-storage.com/")
+    );
+
+    if (blobUrls.length > 0) {
+      await del(blobUrls);
+    }
+
+    return NextResponse.json({ ok: true, deleted: blobUrls.length });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to delete images from storage." },
+      { status: 500 }
+    );
+  }
 }

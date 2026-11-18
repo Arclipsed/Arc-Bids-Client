@@ -24,9 +24,12 @@ export default __t.row({
   startingPrice: __t.u64().name("starting_price"),
   currentBid: __t.u64().name("current_bid"),
   highestBidderId: __t.option(__t.u64()).name("highest_bidder_id"),
+  highestBidderIdentity: __t.option(__t.identity()).name("highest_bidder_identity"),
   get status() {
     return ItemStatus;
   },
   endsAt: __t.option(__t.timestamp()).name("ends_at"),
   quantity: __t.u32(),
+  category: __t.string(),
+  metadataJson: __t.string().name("metadata_json"),
 });

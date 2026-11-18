@@ -36,7 +36,15 @@ import {
   GlowCardHeader,
   GlowLiveBadge,
 } from "@/components/ui/glow-bento-card";
-import { OrganizationWidget } from "@/components/dashboard/OrganizationWidget";
+import {
+  OrganizationWidget,
+  type OrganizationProfile,
+} from "@/components/dashboard/OrganizationWidget";
+import {
+  BuyerListsWidget,
+  type BuyerListMemberRow,
+  type BuyerListRow,
+} from "@/components/dashboard/BuyerListsWidget";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { Locale, Translations, getClientLocale } from "@/translations/Translations";
 import {
@@ -44,11 +52,9 @@ import {
   type CreateAuctionPayload,
 } from "@/components/dashboard/CreateAuctionForm";
 
-interface OrgRow {
+interface OrgRow extends OrganizationProfile {
   id: bigint;
   ownerHex: string;
-  name: string;
-  slug: string;
 }
 
 interface RoomRow {
@@ -64,6 +70,8 @@ interface RoomRow {
   scheduledAtMs: number | null;
   isPublic: boolean;
   roomCode: string;
+  allowedListIds: bigint[];
+  allowAutoBid: boolean;
 }
 
 interface ItemRow {
@@ -77,6 +85,8 @@ interface ItemRow {
   status: string;
   currentBid: bigint;
   quantity: number;
+  category: string;
+  metadataJson: string;
 }
 
 interface BuyerRow {
@@ -152,6 +162,8 @@ export default function DashboardPage() {
   const [rooms, setRooms] = useState<RoomRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
   const [buyers, setBuyers] = useState<BuyerRow[]>([]);
+  const [buyerLists, setBuyerLists] = useState<BuyerListRow[]>([]);
+  const [buyerListMembers, setBuyerListMembers] = useState<BuyerListMemberRow[]>([]);
   const [bids, setBids] = useState<BidRow[]>([]);
 
   const [createAuctionOpen, setCreateAuctionOpen] = useState(false);
@@ -193,6 +205,17 @@ export default function DashboardPage() {
           ownerHex: o.ownerIdentity.toHexString(),
           name: o.name,
           slug: o.slug,
+          contactEmail: o.contactEmail ?? "",
+          phone: o.phone ?? "",
+          website: o.website ?? "",
+          addressLine1: o.addressLine1 ?? "",
+          addressLine2: o.addressLine2 ?? "",
+          city: o.city ?? "",
+          state: o.state ?? "",
+          postalCode: o.postalCode ?? "",
+          country: o.country ?? "",
+          vatNumber: o.vatNumber ?? "",
+          description: o.description ?? "",
         }))
       );
       setRooms(
@@ -209,6 +232,8 @@ export default function DashboardPage() {
           scheduledAtMs: r.scheduledAt ? Number(r.scheduledAt.toMillis()) : null,
           isPublic: r.isPublic,
           roomCode: r.roomCode || r.id.toString(),
+          allowedListIds: r.allowedListIds ?? [],
+          allowAutoBid: r.allowAutoBid ?? true,
         }))
       );
       setItems(
@@ -223,6 +248,8 @@ export default function DashboardPage() {
           status: i.status.tag,
           currentBid: i.currentBid,
           quantity: i.quantity ?? 1,
+          category: i.category || "General",
+          metadataJson: i.metadataJson || "",
         }))
       );
       setBuyers(
@@ -232,6 +259,24 @@ export default function DashboardPage() {
           companyName: b.companyName,
           magicToken: b.magicToken,
           isBanned: b.isBanned,
+        }))
+      );
+      setBuyerLists(
+        Array.from(conn.db.buyerList.iter()).map((l) => ({
+          id: l.id,
+          orgId: l.orgId,
+          name: l.name,
+          description: l.description,
+        }))
+      );
+      setBuyerListMembers(
+        Array.from(conn.db.buyerListMember.iter()).map((m) => ({
+          id: m.id,
+          listId: m.listId,
+          orgId: m.orgId,
+          companyName: m.companyName,
+          email: m.email,
+          isBanned: m.isBanned,
         }))
       );
       setBids(
@@ -261,6 +306,8 @@ export default function DashboardPage() {
             "SELECT * FROM auction",
             "SELECT * FROM auction_item",
             "SELECT * FROM organization_whitelist",
+            "SELECT * FROM buyer_list",
+            "SELECT * FROM buyer_list_member",
             "SELECT * FROM auction_item_bid",
           ]);
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
@@ -280,6 +327,8 @@ export default function DashboardPage() {
                   images: lot.images,
                   startingPrice: lot.startingPriceCents,
                   quantity: lot.quantity,
+                  category: lot.category ?? "General",
+                  metadataJson: lot.metadataJson ?? "",
                 });
               } catch {
                 // Ignore if item insert fails
@@ -295,6 +344,12 @@ export default function DashboardPage() {
         connectedConn.db.organizationWhitelist.onInsert(() => sync(connectedConn));
         connectedConn.db.organizationWhitelist.onUpdate(() => sync(connectedConn));
         connectedConn.db.organizationWhitelist.onDelete(() => sync(connectedConn));
+        connectedConn.db.buyerList.onInsert(() => sync(connectedConn));
+        connectedConn.db.buyerList.onUpdate(() => sync(connectedConn));
+        connectedConn.db.buyerList.onDelete(() => sync(connectedConn));
+        connectedConn.db.buyerListMember.onInsert(() => sync(connectedConn));
+        connectedConn.db.buyerListMember.onUpdate(() => sync(connectedConn));
+        connectedConn.db.buyerListMember.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
       },
@@ -324,7 +379,21 @@ export default function DashboardPage() {
     autoCreatedRef.current = true;
     const { name, slug } = buildRandomDefaultOrg();
     try {
-      conn.reducers.createOrganization({ name, slug });
+      conn.reducers.createOrganization({
+        name,
+        slug,
+        contactEmail: userEmail,
+        phone: "",
+        website: "",
+        addressLine1: "",
+        addressLine2: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        country: "",
+        vatNumber: "",
+        description: "",
+      });
     } catch {
       // Ignore if already created concurrently
     }
@@ -376,18 +445,121 @@ export default function DashboardPage() {
     router.replace("/login");
   };
 
-  const handleUpdateOrg = (name: string, slug: string) => {
+  const myBuyerLists = useMemo(() => {
+    if (!myOrg) return [];
+    return buyerLists.filter((l) => l.orgId === myOrg.id);
+  }, [buyerLists, myOrg]);
+
+  const myBuyerListMembers = useMemo(() => {
+    if (!myOrg) return [];
+    return buyerListMembers.filter((m) => m.orgId === myOrg.id);
+  }, [buyerListMembers, myOrg]);
+
+  const buyerListOptions = useMemo(() => {
+    return myBuyerLists.map((l) => ({
+      id: l.id,
+      name: l.name,
+      memberCount: myBuyerListMembers.filter((m) => m.listId === l.id).length,
+    }));
+  }, [myBuyerLists, myBuyerListMembers]);
+
+  const handleUpdateOrg = (profile: OrganizationProfile) => {
     setActionError(null);
     const conn = connRef.current;
     if (!conn || !myOrg) return;
     try {
       conn.reducers.updateOrganization({
         orgId: myOrg.id,
-        name,
-        slug,
+        name: profile.name,
+        slug: profile.slug,
+        contactEmail: profile.contactEmail,
+        phone: profile.phone,
+        website: profile.website,
+        addressLine1: profile.addressLine1,
+        addressLine2: profile.addressLine2,
+        city: profile.city,
+        state: profile.state,
+        postalCode: profile.postalCode,
+        country: profile.country,
+        vatNumber: profile.vatNumber,
+        description: profile.description,
       });
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to update organization.");
+    }
+  };
+
+  const handleCreateBuyerList = (name: string, description = "") => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn || !myOrg) return;
+    try {
+      conn.reducers.createBuyerList({ orgId: myOrg.id, name, description });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to create list.");
+    }
+  };
+
+  const handleUpdateBuyerList = (
+    listId: bigint,
+    name: string,
+    description = ""
+  ) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.updateBuyerList({ listId, name, description });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to update list.");
+    }
+  };
+
+  const handleDeleteBuyerList = (listId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.deleteBuyerList({ listId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete list.");
+    }
+  };
+
+  const handleAddBuyerListMember = (
+    listId: bigint,
+    companyName: string,
+    email: string
+  ) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.addBuyerListMember({ listId, companyName, email });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to add buyer to list.");
+    }
+  };
+
+  const handleToggleBuyerListMemberBan = (memberId: bigint, isBanned: boolean) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.setBuyerListMemberBanned({ memberId, isBanned });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to update buyer status.");
+    }
+  };
+
+  const handleDeleteBuyerListMember = (memberId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.deleteBuyerListMember({ memberId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to remove buyer.");
     }
   };
 
@@ -415,6 +587,8 @@ export default function DashboardPage() {
         currency: payload.currency,
         scheduledAt,
         isPublic: payload.isPublic,
+        allowedListIds: payload.allowedListIds,
+        allowAutoBid: payload.allowAutoBid,
       });
       setCreateAuctionOpen(false);
     } catch (err) {
@@ -446,6 +620,8 @@ export default function DashboardPage() {
         currency: payload.currency,
         scheduledAt,
         isPublic: payload.isPublic,
+        allowedListIds: payload.allowedListIds,
+        allowAutoBid: payload.allowAutoBid,
       });
 
       const existingRoomLots = items.filter((i) => i.roomId === editingRoom.id);
@@ -470,6 +646,8 @@ export default function DashboardPage() {
             images: lot.images,
             startingPrice: lot.startingPriceCents,
             quantity: lot.quantity,
+            category: lot.category ?? "General",
+            metadataJson: lot.metadataJson ?? "",
           });
         } else {
           conn.reducers.addAuctionItem({
@@ -480,6 +658,8 @@ export default function DashboardPage() {
             images: lot.images,
             startingPrice: lot.startingPriceCents,
             quantity: lot.quantity,
+            category: lot.category ?? "General",
+            metadataJson: lot.metadataJson ?? "",
           });
         }
       });
@@ -505,8 +685,22 @@ export default function DashboardPage() {
     setActionError(null);
     const conn = connRef.current;
     if (!conn) return;
+    const roomImageUrls = items
+      .filter((i) => i.roomId === roomId)
+      .flatMap((i) => i.images)
+      .filter((u) => Boolean(u.trim()));
+
     try {
       conn.reducers.deleteRoom({ roomId });
+      if (roomImageUrls.length > 0) {
+        void fetch("/api/upload", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ urls: roomImageUrls }),
+        }).catch(() => {
+          // Best-effort cleanup
+        });
+      }
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to delete auction.");
     }
@@ -671,96 +865,14 @@ export default function DashboardPage() {
               </GlowCard>
             </BentoGrid>
 
-            {/* Organization & Invited Buyers Row */}
+            {/* Full-Width Organization Card */}
             <BentoGrid>
               <OrganizationWidget
-                name={myOrg.name}
-                slug={myOrg.slug}
+                org={myOrg}
                 onSave={handleUpdateOrg}
                 copy={d}
-                className="lg:col-span-5"
+                className="lg:col-span-12"
               />
-
-              {/* Approved Buyers Widget */}
-              <GlowCard accent="emerald" className="lg:col-span-7">
-                <GlowCardHeader
-                  title={d.InvitedBuyersTitle}
-                  icon={<Users className="h-4 w-4 text-emerald-300" />}
-                />
-                <form onSubmit={handleAddBuyer} className="flex gap-2">
-                  <input
-                    type="email"
-                    required
-                    value={buyerCompany}
-                    onChange={(e) => setBuyerCompany(e.target.value)}
-                    placeholder={d.InvitedBuyerPlaceholder}
-                    className="h-9 min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
-                  />
-                  <button
-                    type="submit"
-                    className="inline-flex h-9 shrink-0 cursor-pointer items-center gap-1 rounded-xl bg-[#e4fffb] px-3.5 text-xs font-semibold text-[#04070b] hover:bg-white"
-                  >
-                    <UserPlus className="h-3.5 w-3.5" />
-                    {d.WhitelistAction}
-                  </button>
-                </form>
-
-                <div className="mt-4 space-y-2">
-                  {myBuyers.length === 0 ? (
-                    <p className="rounded-2xl border border-white/[0.05] bg-[#0e1420]/60 p-4 text-center text-xs text-zinc-400">
-                      {d.NoBuyersYet}
-                    </p>
-                  ) : (
-                    myBuyers.map((b) => {
-                      const key = b.id.toString();
-                      const isCopied = copiedId === key;
-                      return (
-                        <div
-                          key={key}
-                          className="flex items-center justify-between gap-2 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5"
-                        >
-                          <div className="min-w-0">
-                            <p className="truncate text-xs font-semibold text-white">
-                              {b.companyName}
-                            </p>
-                            <p className="truncate font-mono text-[10px] text-zinc-400">
-                              {b.magicToken}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <InteractivePill
-                              tone="subtle"
-                              onClick={() => copyInviteLink(b.magicToken, key)}
-                              className="shrink-0 gap-1 px-2.5 py-1 text-[10px]"
-                            >
-                              {isCopied ? (
-                                <>
-                                  <Check className="h-3 w-3 text-[#3ff2e0]" />
-                                  Copied
-                                </>
-                              ) : (
-                                <>
-                                  <Copy className="h-3 w-3" />
-                                  Copy Link
-                                </>
-                              )}
-                            </InteractivePill>
-                            <IconButton
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDeleteBuyer(b.id)}
-                              aria-label={`Delete ${b.companyName}`}
-                              className="enabled:hover:text-rose-400"
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </IconButton>
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              </GlowCard>
             </BentoGrid>
 
             {/* Full-Width Auctions Widget */}
@@ -940,6 +1052,21 @@ export default function DashboardPage() {
               </GlowCard>
             </BentoGrid>
 
+            {/* Full-Width Buyer Email Lists Widget */}
+            <BentoGrid>
+              <BuyerListsWidget
+                lists={myBuyerLists}
+                members={myBuyerListMembers}
+                onCreateList={handleCreateBuyerList}
+                onUpdateList={handleUpdateBuyerList}
+                onDeleteList={handleDeleteBuyerList}
+                onAddMember={handleAddBuyerListMember}
+                onToggleBan={handleToggleBuyerListMemberBan}
+                onDeleteMember={handleDeleteBuyerListMember}
+                className="lg:col-span-12"
+              />
+            </BentoGrid>
+
             <Dialog
               open={createAuctionOpen}
               onClose={() => setCreateAuctionOpen(false)}
@@ -947,6 +1074,7 @@ export default function DashboardPage() {
               description={d.CreateAuctionDesc}
             >
               <CreateAuctionForm
+                buyerLists={buyerListOptions}
                 copy={d}
                 onSubmit={handleCreateAuction}
                 onCancel={() => setCreateAuctionOpen(false)}
@@ -963,6 +1091,7 @@ export default function DashboardPage() {
                 <CreateAuctionForm
                   key={editingRoom.id.toString()}
                   mode="edit"
+                  buyerLists={buyerListOptions}
                   copy={d}
                   initialValues={{
                     roomTitle: editingRoom.title,
@@ -971,6 +1100,8 @@ export default function DashboardPage() {
                     antiSnipeSec: editingRoom.antiSnipeSec,
                     minBidIncrementCents: editingRoom.minBidIncrement,
                     isPublic: editingRoom.isPublic,
+                    allowedListIds: editingRoom.allowedListIds,
+                    allowAutoBid: editingRoom.allowAutoBid,
                     scheduledAtMs: editingRoom.scheduledAtMs,
                     lots: items
                       .filter((i) => i.roomId === editingRoom.id)
@@ -982,6 +1113,8 @@ export default function DashboardPage() {
                         startingPriceCents: i.startingPrice,
                         quantity: i.quantity,
                         images: i.images,
+                        category: i.category === "Car" ? "Car" : "General",
+                        metadataJson: i.metadataJson,
                       })),
                   }}
                   onSubmit={handleUpdateAuction}

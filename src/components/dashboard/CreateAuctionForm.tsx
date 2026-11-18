@@ -3,7 +3,9 @@
 import { useState } from "react";
 import {
   Calendar as CalendarIcon,
+  Check,
   ChevronDown,
+  Lock,
   Pencil,
   Plus,
   Trash2,
@@ -20,6 +22,12 @@ import { EN } from "@/translations/en/en";
 
 export type CurrencyCode = "EUR" | "USD";
 
+export interface BuyerListOption {
+  id: bigint;
+  name: string;
+  memberCount: number;
+}
+
 export interface CreateAuctionPayload {
   roomTitle: string;
   currency: CurrencyCode;
@@ -28,6 +36,7 @@ export interface CreateAuctionPayload {
   minBidIncrementCents: bigint;
   allowAutoBid: boolean;
   isPublic: boolean;
+  allowedListIds: bigint[];
   scheduledDate?: Date;
   scheduledTime?: string | null;
   lots: DraftLot[];
@@ -40,6 +49,8 @@ export interface CreateAuctionFormInitialValues {
   antiSnipeSec?: number;
   minBidIncrementCents?: bigint;
   isPublic?: boolean;
+  allowedListIds?: bigint[];
+  allowAutoBid?: boolean;
   scheduledAtMs?: number | null;
   lots?: DraftLot[];
 }
@@ -47,6 +58,7 @@ export interface CreateAuctionFormInitialValues {
 interface CreateAuctionFormProps {
   mode?: "create" | "edit";
   initialValues?: CreateAuctionFormInitialValues;
+  buyerLists?: BuyerListOption[];
   copy?: ITranslation["DashboardPage"]["Copy"];
   onSubmit: (payload: CreateAuctionPayload) => void;
   onCancel: () => void;
@@ -55,6 +67,7 @@ interface CreateAuctionFormProps {
 export function CreateAuctionForm({
   mode = "create",
   initialValues,
+  buyerLists = [],
   copy = EN.DashboardPage.Copy,
   onSubmit,
   onCancel,
@@ -80,8 +93,13 @@ export function CreateAuctionForm({
       ? String(Number(initialValues.minBidIncrementCents) / 100)
       : "50"
   );
-  const [allowAutoBid, setAllowAutoBid] = useState(true);
+  const [allowAutoBid, setAllowAutoBid] = useState(
+    initialValues?.allowAutoBid ?? true
+  );
   const [isPublic, setIsPublic] = useState(initialValues?.isPublic ?? false);
+  const [allowedListIds, setAllowedListIds] = useState<bigint[]>(
+    initialValues?.allowedListIds ?? []
+  );
   const [showSchedule, setShowSchedule] = useState(Boolean(initialScheduled));
   const [scheduledDate, setScheduledDate] = useState<Date>(
     () => initialScheduled ?? new Date()
@@ -108,6 +126,7 @@ export function CreateAuctionForm({
       ),
       allowAutoBid,
       isPublic,
+      allowedListIds: isPublic ? [] : allowedListIds,
       scheduledDate: scheduledTime ? scheduledDate : undefined,
       scheduledTime,
       lots,
@@ -232,40 +251,97 @@ export function CreateAuctionForm({
             </div>
           </div>
 
-          {/* Public / Invite-Only Toggle */}
-          <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5">
-            <div>
-              <p className="text-xs font-medium text-white">
-                {copy.PublicAuctionTitle}
-              </p>
-              <p className="text-[11px] text-zinc-400">
-                {isPublic ? copy.PublicAuctionOnDesc : copy.PublicAuctionOffDesc}
-              </p>
-            </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={isPublic}
-              aria-label="Public Auction"
-              onClick={() => setIsPublic((v) => !v)}
-              className="inline-flex cursor-pointer items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3ff2e0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e1420]"
-            >
-              <span
-                className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors duration-200 ${
-                  isPublic
-                    ? "border-[#3ff2e0]/50 bg-[#3ff2e0]/25"
-                    : "border-white/15 bg-white/[0.06]"
-                }`}
+          {/* Private Auction Only Toggle + Whitelisted Lists */}
+          <div className="rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="flex items-center gap-1.5 text-xs font-medium text-white">
+                  <Lock className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                  Private Auction Only
+                </p>
+                <p className="text-[11px] text-zinc-400">
+                  {!isPublic
+                    ? "Enabled · only whitelisted buyers can enter and bid"
+                    : "Disabled · anyone with the link can join"}
+                </p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={!isPublic}
+                aria-label="Private Auction Only"
+                onClick={() => setIsPublic((v) => !v)}
+                className="inline-flex cursor-pointer items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3ff2e0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e1420]"
               >
                 <span
-                  className={`inline-block h-3.5 w-3.5 rounded-full transition-transform duration-200 ${
-                    isPublic
-                      ? "translate-x-[18px] bg-[#3ff2e0] shadow-[0_0_8px_rgba(63,242,224,0.6)]"
-                      : "translate-x-[3px] bg-zinc-400"
+                  className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors duration-200 ${
+                    !isPublic
+                      ? "border-[#3ff2e0]/50 bg-[#3ff2e0]/25"
+                      : "border-white/15 bg-white/[0.06]"
                   }`}
-                />
-              </span>
-            </button>
+                >
+                  <span
+                    className={`inline-block h-3.5 w-3.5 rounded-full transition-transform duration-200 ${
+                      !isPublic
+                        ? "translate-x-[18px] bg-[#3ff2e0] shadow-[0_0_8px_rgba(63,242,224,0.6)]"
+                        : "translate-x-[3px] bg-zinc-400"
+                    }`}
+                  />
+                </span>
+              </button>
+            </div>
+
+            {!isPublic && (
+              <div className="mt-3 space-y-2 border-t border-white/[0.06] pt-3">
+                <p className="text-[11px] font-medium text-zinc-300">
+                  Choose Email Lists to Whitelist
+                </p>
+                {buyerLists.length === 0 ? (
+                  <p className="text-[11px] text-zinc-400">
+                    No email lists created yet. Create a list on your dashboard to
+                    restrict access to specific buyers.
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {buyerLists.map((list) => {
+                      const selected = allowedListIds.some((id) => id === list.id);
+                      return (
+                        <button
+                          key={list.id.toString()}
+                          type="button"
+                          onClick={() =>
+                            setAllowedListIds((prev) =>
+                              selected
+                                ? prev.filter((id) => id !== list.id)
+                                : [...prev, list.id]
+                            )
+                          }
+                          className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${
+                            selected
+                              ? "border-[#3ff2e0]/50 bg-[#3ff2e0]/15 text-[#3ff2e0]"
+                              : "border-white/10 bg-[#090d14] text-zinc-300 hover:border-white/25"
+                          }`}
+                        >
+                          <span
+                            className={`flex h-3.5 w-3.5 items-center justify-center rounded-full border ${
+                              selected
+                                ? "border-[#3ff2e0] bg-[#3ff2e0] text-[#04070b]"
+                                : "border-white/25"
+                            }`}
+                          >
+                            {selected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
+                          </span>
+                          <span>{list.name}</span>
+                          <span className="font-mono text-[10px] opacity-75">
+                            ({list.memberCount})
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Enable Auto-Bid Toggle */}
@@ -386,9 +462,16 @@ export function CreateAuctionForm({
                   className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5"
                 >
                   <div className="min-w-0">
-                    <p className="truncate text-xs font-semibold text-white">
-                      #{idx + 1} · {lot.title}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="truncate text-xs font-semibold text-white">
+                        #{idx + 1} · {lot.title}
+                      </p>
+                      {lot.category === "Car" && (
+                        <span className="shrink-0 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#3ff2e0]">
+                          Car
+                        </span>
+                      )}
+                    </div>
                     <p className="font-mono text-[11px] text-zinc-400">
                       {lot.quantity > 1 ? `${lot.quantity} units · ` : ""}
                       Start {formatCurrency(lot.startingPriceCents, currency)}

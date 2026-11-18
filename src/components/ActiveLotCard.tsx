@@ -1,9 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, ShieldCheck, Timer } from "lucide-react";
+import {
+  Car,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  ShieldCheck,
+  Timer,
+} from "lucide-react";
 import type { UiItem } from "@/lib/auction-types";
 import { formatCountdown, formatCurrency } from "@/lib/format";
+import {
+  getCarHighlights,
+  getCarSpecRows,
+  normalizeCategory,
+  parseLotMetadata,
+} from "@/lib/lot-categories";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
 interface ActiveLotCardProps {
@@ -22,6 +36,13 @@ export function ActiveLotCard({
   bidCount,
 }: ActiveLotCardProps) {
   const [activeImg, setActiveImg] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+
+  const category = normalizeCategory(item.category);
+  const carMeta = parseLotMetadata(item.category, item.metadataJson);
+  const carHighlights = carMeta ? getCarHighlights(carMeta) : [];
+  const carSpecRows = carMeta ? getCarSpecRows(carMeta) : [];
+  const hasExpandableDetails = Boolean(item.description?.trim()) || carSpecRows.length > 0;
 
   const remainingMs = item.endsAtMs !== null ? Math.max(0, item.endsAtMs - nowMs) : 0;
   const totalMs = Math.max(1, lotDurationSec * 1000);
@@ -148,11 +169,23 @@ export function ActiveLotCard({
       {/* Details & Hero Price */}
       <div className="p-5 sm:p-6">
         <div className="min-w-0">
-          <h2 className="text-lg font-bold tracking-tight text-white sm:text-xl">
-            {item.title}
-          </h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-lg font-bold tracking-tight text-white sm:text-xl">
+              {item.title}
+            </h2>
+            {category === "Car" && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[#3ff2e0]">
+                <Car className="h-3 w-3" />
+                Vehicle
+              </span>
+            )}
+          </div>
           {item.description && (
-            <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-zinc-400">
+            <p
+              className={`mt-1.5 text-sm leading-relaxed text-zinc-400 ${
+                expanded ? "whitespace-pre-line" : "line-clamp-2"
+              }`}
+            >
               {item.description}
             </p>
           )}
@@ -169,6 +202,14 @@ export function ActiveLotCard({
               {item.quantity} units
             </span>
           )}
+          {carHighlights.map((highlight) => (
+            <span
+              key={highlight}
+              className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 font-mono text-[11px] font-medium text-zinc-200"
+            >
+              {highlight}
+            </span>
+          ))}
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 font-mono text-[11px] font-medium text-zinc-300">
             Start {formatCurrency(item.startingPrice)}
           </span>
@@ -176,6 +217,46 @@ export function ActiveLotCard({
             +{formatCurrency(minIncrement)} min step
           </span>
         </div>
+
+        {hasExpandableDetails && (
+          <div className="mt-3">
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-[#3ff2e0] transition hover:text-[#e4fffb]"
+            >
+              {expanded ? (
+                <>
+                  <ChevronUp className="h-3.5 w-3.5" />
+                  Hide lot details
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-3.5 w-3.5" />
+                  {carSpecRows.length > 0
+                    ? `Expand vehicle specs (${carSpecRows.length})`
+                    : "Expand full description"}
+                </>
+              )}
+            </button>
+
+            {expanded && carSpecRows.length > 0 && (
+              <dl className="mt-3 grid grid-cols-2 gap-2.5 rounded-2xl border border-white/[0.08] bg-[#0e1420]/70 p-3.5 sm:grid-cols-3">
+                {carSpecRows.map((row) => (
+                  <div key={row.label} className="min-w-0">
+                    <dt className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+                      {row.label}
+                    </dt>
+                    <dd className="mt-0.5 truncate text-xs font-medium text-zinc-100">
+                      {row.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+        )}
 
         {/* Price Block */}
         <div className="mt-5 rounded-2xl border border-[#3ff2e0]/20 bg-gradient-to-b from-[#0e1722] to-[#080d14] p-4 shadow-[inset_0_1px_0_rgba(63,242,224,0.08)]">

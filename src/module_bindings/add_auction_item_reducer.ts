@@ -18,4 +18,6 @@ export default {
   images: __t.array(__t.string()),
   startingPrice: __t.u64(),
   quantity: __t.u32(),
+  category: __t.string(),
+  metadataJson: __t.string(),
 };

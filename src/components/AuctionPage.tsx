@@ -21,6 +21,7 @@ export function AuctionPage() {
     "connecting"
   );
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [notFoundReady, setNotFoundReady] = useState(false);
   const [nowMs, setNowMs] = useState<number>(0);
   const [selectedRoomKey, setSelectedRoomKey] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
@@ -41,11 +42,19 @@ export function AuctionPage() {
   const [approvedBuyers, setApprovedBuyers] = useState<
     Array<{ orgId: bigint; magicToken: string; isBanned: boolean }>
   >([]);
-  const [orgs, setOrgs] = useState<Array<{ id: bigint; ownerHex: string }>>([]);
+  const [buyerListMembers, setBuyerListMembers] = useState<
+    Array<{ orgId: bigint; listId: bigint; email: string; isBanned: boolean }>
+  >([]);
+  const [myAutoBids, setMyAutoBids] = useState<
+    Array<{ itemId: bigint; maxAmount: bigint }>
+  >([]);
+  const [orgs, setOrgs] = useState<Array<{ id: bigint; ownerHex: string; name: string }>>([]);
   const [roomPresences, setRoomPresences] = useState<
     Array<{ identityHex: string; roomId: bigint; email: string }>
   >([]);
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
+  const [sessionEmail, setSessionEmail] = useState<string | null>(null);
+  const isLoggedIn = Boolean(sessionEmail);
   const [liveViewers, setLiveViewers] = useState<number>(0);
   const joinedKeyRef = useRef<string | null>(null);
 
@@ -57,14 +66,16 @@ export function AuctionPage() {
       setSelectedRoomKey(roomParam);
     }
     const tokenFromUrl = params.get("token")?.trim() ?? "";
-    const saved = window.localStorage.getItem("arcbid_buyer_token")?.trim() ?? "";
-    const savedName = window.localStorage.getItem("arcbid_buyer_name")?.trim() ?? "";
+    window.localStorage.removeItem("arcbid_buyer_token");
+    window.localStorage.removeItem("arcbid_buyer_name");
+    const saved = window.sessionStorage.getItem("arcbid_buyer_token")?.trim() ?? "";
+    const savedName = window.sessionStorage.getItem("arcbid_buyer_name")?.trim() ?? "";
     const resolved = tokenFromUrl || saved;
     if (resolved) {
       setMagicToken(resolved);
       setInviteEmailInput(resolved);
       if (tokenFromUrl) {
-        window.localStorage.setItem("arcbid_buyer_token", tokenFromUrl);
+        window.sessionStorage.setItem("arcbid_buyer_token", tokenFromUrl);
       }
     }
     if (savedName) {
@@ -72,8 +83,23 @@ export function AuctionPage() {
       setInviteNameInput(savedName);
     }
 
+    let active = true;
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data: { email?: string | null }) => {
+        if (active && data.email) {
+          setSessionEmail(data.email.trim().toLowerCase());
+        }
+      })
+      .catch(() => {
+        // Ignore auth check failures for public spectators
+      });
+
     const interval = window.setInterval(() => setNowMs(Date.now()), 250);
-    return () => window.clearInterval(interval);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
@@ -93,6 +119,8 @@ export function AuctionPage() {
         scheduledAtMs: r.scheduledAt ? Number(r.scheduledAt.toMillis()) : null,
         isPublic: r.isPublic,
         roomCode: r.roomCode || "",
+        allowedListIds: r.allowedListIds ?? [],
+        allowAutoBid: r.allowAutoBid ?? true,
       }));
 
       const items: UiItem[] = Array.from(conn.db.auctionItem.iter()).map((i) => ({
@@ -107,6 +135,8 @@ export function AuctionPage() {
         status: i.status.tag,
         endsAtMs: i.endsAt ? Number(i.endsAt.toMillis()) : null,
         quantity: i.quantity ?? 1,
+        category: i.category || "General",
+        metadataJson: i.metadataJson || "",
       }));
 
       const bids: UiBid[] = Array.from(conn.db.auctionItemBid.iter()).map((b) => ({
@@ -130,15 +160,30 @@ export function AuctionPage() {
         isBanned: b.isBanned,
       }));
 
+      const listMembers = Array.from(conn.db.buyerListMember.iter()).map((m) => ({
+        orgId: m.orgId,
+        listId: m.listId,
+        email: m.email.toLowerCase(),
+        isBanned: m.isBanned,
+      }));
+
       const orgRows = Array.from(conn.db.organization.iter()).map((o) => ({
         id: o.id,
         ownerHex: o.ownerIdentity.toHexString(),
+        name: o.name,
+      }));
+
+      const autoBids = Array.from(conn.db.myAutoBids.iter()).map((a) => ({
+        itemId: a.itemId,
+        maxAmount: a.maxAmount,
       }));
 
       setLiveRooms(rooms);
       setLiveItems(items);
       setLiveBids(bids);
       setApprovedBuyers(buyers);
+      setBuyerListMembers(listMembers);
+      setMyAutoBids(autoBids);
       setOrgs(orgRows);
       setRoomPresences(presences);
       setLiveViewers(viewers);
@@ -162,7 +207,9 @@ export function AuctionPage() {
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
             "SELECT * FROM organization_whitelist",
+            "SELECT * FROM buyer_list_member",
             "SELECT * FROM organization",
+            "SELECT * FROM my_auto_bids",
           ]);
 
         connectedConn.db.organization.onInsert(() => syncTables(connectedConn));
@@ -179,6 +226,12 @@ export function AuctionPage() {
         connectedConn.db.organizationWhitelist.onInsert(() => syncTables(connectedConn));
         connectedConn.db.organizationWhitelist.onUpdate(() => syncTables(connectedConn));
         connectedConn.db.organizationWhitelist.onDelete(() => syncTables(connectedConn));
+        connectedConn.db.buyerListMember.onInsert(() => syncTables(connectedConn));
+        connectedConn.db.buyerListMember.onUpdate(() => syncTables(connectedConn));
+        connectedConn.db.buyerListMember.onDelete(() => syncTables(connectedConn));
+        connectedConn.db.myAutoBids.onInsert(() => syncTables(connectedConn));
+        connectedConn.db.myAutoBids.onUpdate(() => syncTables(connectedConn));
+        connectedConn.db.myAutoBids.onDelete(() => syncTables(connectedConn));
       },
       onDisconnect: () => {
         if (isCancelled) return;
@@ -214,6 +267,15 @@ export function AuctionPage() {
     return liveRooms.find((r) => r.status === "Live") ?? liveRooms[0] ?? null;
   }, [liveRooms, selectedRoomKey]);
 
+  useEffect(() => {
+    if (!hasLoaded || activeRoom) {
+      const resetTimer = window.setTimeout(() => setNotFoundReady(false), 0);
+      return () => window.clearTimeout(resetTimer);
+    }
+    const timer = window.setTimeout(() => setNotFoundReady(true), 800);
+    return () => window.clearTimeout(timer);
+  }, [hasLoaded, activeRoom]);
+
   const roomItems = useMemo(() => {
     if (!activeRoom) return [];
     if (connRef.current) {
@@ -233,6 +295,8 @@ export function AuctionPage() {
           status: i.status.tag,
           endsAtMs: i.endsAt ? Number(i.endsAt.toMillis()) : null,
           quantity: i.quantity ?? 1,
+          category: i.category || "General",
+          metadataJson: i.metadataJson || "",
         }))
         .sort((a, b) => a.orderIndex - b.orderIndex);
     }
@@ -287,15 +351,70 @@ export function AuctionPage() {
       conn.reducers.placeBid({
         roomId: activeRoom.id,
         itemId: activeItem.id,
-        magicToken: magicToken.trim(),
+        magicToken: effectiveMagicToken.trim(),
         amount,
-        bidderName: buyerName.trim() || undefined,
-        bidderEmail: magicToken.trim().toLowerCase() || undefined,
+        bidderName: effectiveBuyerName.trim() || undefined,
+        bidderEmail: effectiveMagicToken.trim().toLowerCase() || undefined,
       });
     } catch (err) {
       setBidError(err instanceof Error ? err.message : "Failed to place bid.");
     }
   };
+
+  const myAutoBidMax = useMemo(() => {
+    if (!activeItem) return null;
+    const match = myAutoBids.find((a) => a.itemId === activeItem.id);
+    return match ? match.maxAmount : null;
+  }, [myAutoBids, activeItem]);
+
+  const handleSetAutoBid = (maxAmount: bigint) => {
+    if (!activeItem || !activeRoom) return;
+    setBidError(null);
+    const conn = connRef.current;
+    if (!conn) {
+      setBidError("Not connected to server.");
+      return;
+    }
+    try {
+      conn.reducers.setAutoBid({
+        roomId: activeRoom.id,
+        itemId: activeItem.id,
+        magicToken: effectiveMagicToken.trim(),
+        maxAmount,
+        bidderName: effectiveBuyerName.trim() || undefined,
+        bidderEmail: effectiveMagicToken.trim().toLowerCase() || undefined,
+      });
+    } catch (err) {
+      setBidError(err instanceof Error ? err.message : "Failed to set auto-bid.");
+    }
+  };
+
+  const handleCancelAutoBid = () => {
+    if (!activeItem) return;
+    setBidError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.cancelAutoBid({ itemId: activeItem.id });
+    } catch (err) {
+      setBidError(err instanceof Error ? err.message : "Failed to cancel auto-bid.");
+    }
+  };
+
+  const myOrg = useMemo(() => {
+    if (!myIdentityHex) return null;
+    return orgs.find((o) => o.ownerHex === myIdentityHex) ?? null;
+  }, [orgs, myIdentityHex]);
+
+  const effectiveBuyerName = useMemo(() => {
+    if (sessionEmail && myOrg?.name) return myOrg.name;
+    return buyerName;
+  }, [sessionEmail, myOrg, buyerName]);
+
+  const effectiveMagicToken = useMemo(() => {
+    if (sessionEmail) return sessionEmail;
+    return magicToken;
+  }, [sessionEmail, magicToken]);
 
   const isRoomOwner = useMemo(() => {
     if (!activeRoom || !myIdentityHex || activeRoom.orgId === undefined) return false;
@@ -303,25 +422,39 @@ export function AuctionPage() {
     return roomOrg?.ownerHex === myIdentityHex;
   }, [myIdentityHex, activeRoom, orgs]);
 
+  const isEmailApprovedForRoom = (room: UiRoom, normalizedEmail: string) => {
+    const allowedLists = room.allowedListIds ?? [];
+    if (allowedLists.length === 0) return false;
+    return buyerListMembers.some(
+      (m) =>
+        m.orgId === room.orgId &&
+        allowedLists.some((id) => id === m.listId) &&
+        m.email === normalizedEmail &&
+        !m.isBanned
+    );
+  };
+
   const isInviteVerified = useMemo(() => {
     if (!activeRoom) return false;
     if (isRoomOwner) return true;
-    const normalizedEmail = magicToken.trim().toLowerCase();
+    const normalizedEmail = effectiveMagicToken.trim().toLowerCase();
     if (!normalizedEmail) return false;
     if (activeRoom.isPublic) {
-      return Boolean(buyerName.trim());
+      return Boolean(effectiveBuyerName.trim());
     }
-    return approvedBuyers.some(
-      (b) =>
-        b.orgId === activeRoom.orgId &&
-        b.magicToken === normalizedEmail &&
-        !b.isBanned
-    );
-  }, [activeRoom, isRoomOwner, magicToken, buyerName, approvedBuyers]);
+    return isEmailApprovedForRoom(activeRoom, normalizedEmail);
+  }, [
+    activeRoom,
+    isRoomOwner,
+    effectiveMagicToken,
+    effectiveBuyerName,
+    approvedBuyers,
+    buyerListMembers,
+  ]);
 
   const isDuplicateEmailSession = useMemo(() => {
     if (!activeRoom || isRoomOwner || !myIdentityHex) return false;
-    const normalizedEmail = magicToken.trim().toLowerCase();
+    const normalizedEmail = effectiveMagicToken.trim().toLowerCase();
     if (!normalizedEmail) return false;
     return roomPresences.some(
       (p) =>
@@ -329,7 +462,7 @@ export function AuctionPage() {
         p.email === normalizedEmail &&
         p.identityHex !== myIdentityHex
     );
-  }, [isRoomOwner, myIdentityHex, magicToken, roomPresences, activeRoom]);
+  }, [isRoomOwner, myIdentityHex, effectiveMagicToken, roomPresences, activeRoom]);
 
   useEffect(() => {
     if (!hasLoaded || !activeRoom || !isInviteVerified || isDuplicateEmailSession) {
@@ -337,7 +470,7 @@ export function AuctionPage() {
     }
     const conn = connRef.current;
     if (!conn) return;
-    const email = magicToken.trim().toLowerCase();
+    const email = effectiveMagicToken.trim().toLowerCase();
     const key = `${activeRoom.id.toString()}:${email}`;
     if (joinedKeyRef.current === key) return;
     joinedKeyRef.current = key;
@@ -349,7 +482,7 @@ export function AuctionPage() {
     } catch {
       // Ignore if rejected; roomPresence subscription will reflect state
     }
-  }, [hasLoaded, activeRoom, isInviteVerified, isDuplicateEmailSession, magicToken]);
+  }, [hasLoaded, activeRoom, isInviteVerified, isDuplicateEmailSession, effectiveMagicToken]);
 
   const handleVerifyInviteEmail = (e: React.FormEvent) => {
     e.preventDefault();
@@ -360,14 +493,23 @@ export function AuctionPage() {
     if (!trimmedName || !normalized) return;
 
     if (!activeRoom.isPublic) {
-      const match = approvedBuyers.find(
-        (b) => b.orgId === activeRoom.orgId && b.magicToken === normalized
+      const allowedLists = activeRoom.allowedListIds ?? [];
+      if (allowedLists.length === 0) {
+        setInviteGateError("No buyer lists are whitelisted for this private auction.");
+        return;
+      }
+      const listMatches = buyerListMembers.filter(
+        (m) =>
+          m.orgId === activeRoom.orgId &&
+          m.email === normalized &&
+          allowedLists.some((id) => id === m.listId)
       );
-      if (!match) {
+
+      if (listMatches.length === 0) {
         setInviteGateError("This email is not whitelisted for this auction.");
         return;
       }
-      if (match.isBanned) {
+      if (!listMatches.some((m) => !m.isBanned)) {
         setInviteGateError("Access for this email has been revoked.");
         return;
       }
@@ -391,8 +533,8 @@ export function AuctionPage() {
 
     setBuyerName(trimmedName);
     setMagicToken(normalized);
-    window.localStorage.setItem("arcbid_buyer_name", trimmedName);
-    window.localStorage.setItem("arcbid_buyer_token", normalized);
+    window.sessionStorage.setItem("arcbid_buyer_name", trimmedName);
+    window.sessionStorage.setItem("arcbid_buyer_token", normalized);
   };
 
   const handleDownloadIcs = () => {
@@ -428,7 +570,7 @@ export function AuctionPage() {
     URL.revokeObjectURL(url);
   };
 
-  if (!hasLoaded) {
+  if (!hasLoaded || (!activeRoom && !notFoundReady && connectionState !== "error")) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#05070c] text-zinc-100">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3ff2e0]/20 border-t-[#3ff2e0]" />
@@ -463,6 +605,7 @@ export function AuctionPage() {
           viewerCount={liveViewers}
           connectionState={connectionState}
           isDemo={false}
+          showDashboardLink={isLoggedIn}
         />
 
         <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
@@ -544,6 +687,7 @@ export function AuctionPage() {
         viewerCount={liveViewers}
         connectionState={connectionState}
         isDemo={false}
+        showDashboardLink={isLoggedIn}
       />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-32 pt-5 sm:px-6 sm:pb-28 sm:pt-8">
@@ -650,9 +794,15 @@ export function AuctionPage() {
           hasBids={activeItem.highestBidderId !== null}
           currency={activeRoom.currency}
           ended={activeRoom.status === "Ended"}
+          endsAtMs={activeItem.endsAtMs}
+          nowMs={nowMs}
+          allowAutoBid={activeRoom.allowAutoBid ?? true}
+          myAutoBidMax={myAutoBidMax}
           disabled={activeRoom.status !== "Live" || activeItem.status !== "Active"}
           errorMessage={bidError}
           onPlaceBid={handlePlaceBid}
+          onSetAutoBid={handleSetAutoBid}
+          onCancelAutoBid={handleCancelAutoBid}
         />
       )}
     </div>

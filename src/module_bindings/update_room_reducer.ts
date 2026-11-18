@@ -19,4 +19,6 @@ export default {
   currency: __t.option(__t.string()),
   scheduledAt: __t.option(__t.timestamp()),
   isPublic: __t.bool(),
+  allowedListIds: __t.option(__t.array(__t.u64())),
+  allowAutoBid: __t.bool(),
 };

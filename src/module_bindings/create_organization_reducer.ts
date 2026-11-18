@@ -13,4 +13,15 @@ import {
 export default {
   name: __t.string(),
   slug: __t.string(),
+  contactEmail: __t.string(),
+  phone: __t.string(),
+  website: __t.string(),
+  addressLine1: __t.string(),
+  addressLine2: __t.string(),
+  city: __t.string(),
+  state: __t.string(),
+  postalCode: __t.string(),
+  country: __t.string(),
+  vatNumber: __t.string(),
+  description: __t.string(),
 };

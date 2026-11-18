@@ -25,6 +25,8 @@ export const Auction = __t.object("Auction", {
   scheduledAt: __t.option(__t.timestamp()),
   isPublic: __t.bool(),
   roomCode: __t.string(),
+  allowedListIds: __t.array(__t.u64()),
+  allowAutoBid: __t.bool(),
 });
 export type Auction = __Infer<typeof Auction>;
 
@@ -38,11 +40,14 @@ export const AuctionItem = __t.object("AuctionItem", {
   startingPrice: __t.u64(),
   currentBid: __t.u64(),
   highestBidderId: __t.option(__t.u64()),
+  highestBidderIdentity: __t.option(__t.identity()),
   get status() {
     return ItemStatus;
   },
   endsAt: __t.option(__t.timestamp()),
   quantity: __t.u32(),
+  category: __t.string(),
+  metadataJson: __t.string(),
 });
 export type AuctionItem = __Infer<typeof AuctionItem>;
 
@@ -81,6 +86,37 @@ export const AuctionStartTimer = __t.object("AuctionStartTimer", {
 });
 export type AuctionStartTimer = __Infer<typeof AuctionStartTimer>;
 
+export const AutoBid = __t.object("AutoBid", {
+  id: __t.u64(),
+  itemId: __t.u64(),
+  bidderIdentity: __t.identity(),
+  roomId: __t.u64(),
+  buyerId: __t.u64(),
+  buyerName: __t.string(),
+  buyerEmail: __t.string(),
+  maxAmount: __t.u64(),
+  updatedAt: __t.timestamp(),
+});
+export type AutoBid = __Infer<typeof AutoBid>;
+
+export const BuyerList = __t.object("BuyerList", {
+  id: __t.u64(),
+  orgId: __t.u64(),
+  name: __t.string(),
+  description: __t.string(),
+});
+export type BuyerList = __Infer<typeof BuyerList>;
+
+export const BuyerListMember = __t.object("BuyerListMember", {
+  id: __t.u64(),
+  listId: __t.u64(),
+  orgId: __t.u64(),
+  companyName: __t.string(),
+  email: __t.string(),
+  isBanned: __t.bool(),
+});
+export type BuyerListMember = __Infer<typeof BuyerListMember>;
+
 // The tagged union or sum type for the algebraic type `ItemStatus`.
 export const ItemStatus = __t.enum("ItemStatus", {
   Queued: __t.unit(),
@@ -95,6 +131,17 @@ export const Organization = __t.object("Organization", {
   ownerIdentity: __t.identity(),
   name: __t.string(),
   slug: __t.string(),
+  contactEmail: __t.string(),
+  phone: __t.string(),
+  website: __t.string(),
+  addressLine1: __t.string(),
+  addressLine2: __t.string(),
+  city: __t.string(),
+  state: __t.string(),
+  postalCode: __t.string(),
+  country: __t.string(),
+  vatNumber: __t.string(),
+  description: __t.string(),
 });
 export type Organization = __Infer<typeof Organization>;
 

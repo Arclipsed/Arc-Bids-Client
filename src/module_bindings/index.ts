@@ -36,19 +36,27 @@ import {
 // Import all reducer arg schemas
 import AddApprovedBuyerReducer from "./add_approved_buyer_reducer";
 import AddAuctionItemReducer from "./add_auction_item_reducer";
+import AddBuyerListMemberReducer from "./add_buyer_list_member_reducer";
+import CancelAutoBidReducer from "./cancel_auto_bid_reducer";
+import CreateBuyerListReducer from "./create_buyer_list_reducer";
 import CreateOrganizationReducer from "./create_organization_reducer";
 import CreateRoomReducer from "./create_room_reducer";
 import DeleteApprovedBuyerReducer from "./delete_approved_buyer_reducer";
 import DeleteAuctionItemReducer from "./delete_auction_item_reducer";
+import DeleteBuyerListReducer from "./delete_buyer_list_reducer";
+import DeleteBuyerListMemberReducer from "./delete_buyer_list_member_reducer";
 import DeleteRoomReducer from "./delete_room_reducer";
 import ForceNextItemReducer from "./force_next_item_reducer";
 import JoinRoomReducer from "./join_room_reducer";
 import LeaveRoomReducer from "./leave_room_reducer";
 import PlaceBidReducer from "./place_bid_reducer";
+import SetAutoBidReducer from "./set_auto_bid_reducer";
 import SetBuyerBannedReducer from "./set_buyer_banned_reducer";
+import SetBuyerListMemberBannedReducer from "./set_buyer_list_member_banned_reducer";
 import SetRoomStatusReducer from "./set_room_status_reducer";
 import StartAuctionReducer from "./start_auction_reducer";
 import UpdateAuctionItemReducer from "./update_auction_item_reducer";
+import UpdateBuyerListReducer from "./update_buyer_list_reducer";
 import UpdateOrganizationReducer from "./update_organization_reducer";
 import UpdateRoomReducer from "./update_room_reducer";
 import VoidLastBidReducer from "./void_last_bid_reducer";
@@ -60,6 +68,9 @@ import AuctionRow from "./auction_table";
 import AuctionItemRow from "./auction_item_table";
 import AuctionItemBidRow from "./auction_item_bid_table";
 import AuctionPresenceRow from "./auction_presence_table";
+import BuyerListRow from "./buyer_list_table";
+import BuyerListMemberRow from "./buyer_list_member_table";
+import MyAutoBidsRow from "./my_auto_bids_table";
 import OrganizationRow from "./organization_table";
 import OrganizationWhitelistRow from "./organization_whitelist_table";
 
@@ -123,6 +134,40 @@ const tablesSchema = __schema({
       { name: 'auction_presence_identity_key', constraint: 'unique', columns: ['identity'] },
     ],
   }, AuctionPresenceRow),
+  buyerList: __table({
+    name: 'buyer_list',
+    indexes: [
+      { accessor: 'Id', name: 'buyer_list_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'OrgId', name: 'buyer_list_org_id_idx_btree', algorithm: 'btree', columns: [
+        'orgId',
+      ] },
+    ],
+    constraints: [
+      { name: 'buyer_list_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, BuyerListRow),
+  buyerListMember: __table({
+    name: 'buyer_list_member',
+    indexes: [
+      { accessor: 'Email', name: 'buyer_list_member_email_idx_btree', algorithm: 'btree', columns: [
+        'email',
+      ] },
+      { accessor: 'Id', name: 'buyer_list_member_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'ListId', name: 'buyer_list_member_list_id_idx_btree', algorithm: 'btree', columns: [
+        'listId',
+      ] },
+      { accessor: 'OrgId', name: 'buyer_list_member_org_id_idx_btree', algorithm: 'btree', columns: [
+        'orgId',
+      ] },
+    ],
+    constraints: [
+      { name: 'buyer_list_member_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, BuyerListMemberRow),
   organization: __table({
     name: 'organization',
     indexes: [
@@ -159,25 +204,40 @@ const tablesSchema = __schema({
       { name: 'organization_whitelist_magic_token_key', constraint: 'unique', columns: ['magicToken'] },
     ],
   }, OrganizationWhitelistRow),
+  myAutoBids: __table({
+    name: 'my_auto_bids',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, MyAutoBidsRow),
 });
 
 /** The schema information for all reducers in this module. This is defined the same way as the reducers would have been defined in the server, except the body of the reducer is omitted in code generation. */
 const reducersSchema = __reducers(
   __reducerSchema("add_approved_buyer", AddApprovedBuyerReducer),
   __reducerSchema("add_auction_item", AddAuctionItemReducer),
+  __reducerSchema("add_buyer_list_member", AddBuyerListMemberReducer),
+  __reducerSchema("cancel_auto_bid", CancelAutoBidReducer),
+  __reducerSchema("create_buyer_list", CreateBuyerListReducer),
   __reducerSchema("create_organization", CreateOrganizationReducer),
   __reducerSchema("create_room", CreateRoomReducer),
   __reducerSchema("delete_approved_buyer", DeleteApprovedBuyerReducer),
   __reducerSchema("delete_auction_item", DeleteAuctionItemReducer),
+  __reducerSchema("delete_buyer_list", DeleteBuyerListReducer),
+  __reducerSchema("delete_buyer_list_member", DeleteBuyerListMemberReducer),
   __reducerSchema("delete_room", DeleteRoomReducer),
   __reducerSchema("force_next_item", ForceNextItemReducer),
   __reducerSchema("join_room", JoinRoomReducer),
   __reducerSchema("leave_room", LeaveRoomReducer),
   __reducerSchema("place_bid", PlaceBidReducer),
+  __reducerSchema("set_auto_bid", SetAutoBidReducer),
   __reducerSchema("set_buyer_banned", SetBuyerBannedReducer),
+  __reducerSchema("set_buyer_list_member_banned", SetBuyerListMemberBannedReducer),
   __reducerSchema("set_room_status", SetRoomStatusReducer),
   __reducerSchema("start_auction", StartAuctionReducer),
   __reducerSchema("update_auction_item", UpdateAuctionItemReducer),
+  __reducerSchema("update_buyer_list", UpdateBuyerListReducer),
   __reducerSchema("update_organization", UpdateOrganizationReducer),
   __reducerSchema("update_room", UpdateRoomReducer),
   __reducerSchema("void_last_bid", VoidLastBidReducer),
@@ -197,10 +257,16 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "AuctionItemBid": Omit<typeof tablesSchema.schemaType.tables["auctionItemBid"], "accessorName"> & { readonly accessorName: "AuctionItemBid" };
     /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
     readonly "AuctionPresence": Omit<typeof tablesSchema.schemaType.tables["auctionPresence"], "accessorName"> & { readonly accessorName: "AuctionPresence" };
+    /** @deprecated Use `buyerList` instead. This alias will be removed in the next major version. */
+    readonly "BuyerList": Omit<typeof tablesSchema.schemaType.tables["buyerList"], "accessorName"> & { readonly accessorName: "BuyerList" };
+    /** @deprecated Use `buyerListMember` instead. This alias will be removed in the next major version. */
+    readonly "BuyerListMember": Omit<typeof tablesSchema.schemaType.tables["buyerListMember"], "accessorName"> & { readonly accessorName: "BuyerListMember" };
     /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
     readonly "Organization": Omit<typeof tablesSchema.schemaType.tables["organization"], "accessorName"> & { readonly accessorName: "Organization" };
     /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
     readonly "OrganizationWhitelist": Omit<typeof tablesSchema.schemaType.tables["organizationWhitelist"], "accessorName"> & { readonly accessorName: "OrganizationWhitelist" };
+    /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
+    readonly "MyAutoBids": Omit<typeof tablesSchema.schemaType.tables["myAutoBids"], "accessorName"> & { readonly accessorName: "MyAutoBids" };
   };
 };
 
@@ -223,8 +289,11 @@ const tableAccessorAliases = {
   "AuctionItem": "auctionItem",
   "AuctionItemBid": "auctionItemBid",
   "AuctionPresence": "auctionPresence",
+  "BuyerList": "buyerList",
+  "BuyerListMember": "buyerListMember",
   "Organization": "organization",
   "OrganizationWhitelist": "organizationWhitelist",
+  "MyAutoBids": "myAutoBids",
 } as const;
 
 function __withTableAccessorAliases<T extends object>(target: T, freeze = false): T {
@@ -253,10 +322,16 @@ export type DbView = __DbViewBase & {
   readonly "AuctionItemBid": __DbViewBase["auctionItemBid"];
   /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
   readonly "AuctionPresence": __DbViewBase["auctionPresence"];
+  /** @deprecated Use `buyerList` instead. This alias will be removed in the next major version. */
+  readonly "BuyerList": __DbViewBase["buyerList"];
+  /** @deprecated Use `buyerListMember` instead. This alias will be removed in the next major version. */
+  readonly "BuyerListMember": __DbViewBase["buyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __DbViewBase["organization"];
   /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
   readonly "OrganizationWhitelist": __DbViewBase["organizationWhitelist"];
+  /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
+  readonly "MyAutoBids": __DbViewBase["myAutoBids"];
 };
 
 type __TablesBase = __QueryBuilder<typeof tablesSchema.schemaType>;
@@ -269,10 +344,16 @@ export type Tables = __TablesBase & {
   readonly "AuctionItemBid": __TablesBase["auctionItemBid"];
   /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
   readonly "AuctionPresence": __TablesBase["auctionPresence"];
+  /** @deprecated Use `buyerList` instead. This alias will be removed in the next major version. */
+  readonly "BuyerList": __TablesBase["buyerList"];
+  /** @deprecated Use `buyerListMember` instead. This alias will be removed in the next major version. */
+  readonly "BuyerListMember": __TablesBase["buyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __TablesBase["organization"];
   /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
   readonly "OrganizationWhitelist": __TablesBase["organizationWhitelist"];
+  /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
+  readonly "MyAutoBids": __TablesBase["myAutoBids"];
 };
 
 /** The tables available in this remote SpacetimeDB module. Each table reference doubles as a query builder. */
