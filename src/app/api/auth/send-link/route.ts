@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     }
 
     const resend = new Resend(apiKey);
-    const from = process.env.EMAIL_FROM || "ArcBids <onboarding@resend.dev>";
+    const from = process.env.EMAIL_FROM || "ArcBids <support@arcbids.com>";
 
     const { error } = await resend.emails.send({
       from,

@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     }
 
     const resend = new Resend(apiKey);
-    const from = process.env.EMAIL_FROM || "ArcBids <onboarding@resend.dev>";
+    const from = process.env.EMAIL_FROM || "ArcBids <support@arcbids.com>";
     const to = process.env.CONTACT_TO_EMAIL || "support@arcbids.com";
 
     const safeName = escapeHtml(name);
