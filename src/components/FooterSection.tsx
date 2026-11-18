@@ -34,9 +34,9 @@ export default function FooterSection({
   privacyLabel = "Privacy Policy",
   termsLabel = "Terms of Service",
   imprintLabel = "Imprint",
-  address = "Saarbrücken, Germany",
-  email = "hello@arcbids.com",
-  copyright = "© 2026 ArcBids. All rights reserved.",
+  address = "74321 Bietigheim-Bissingen, Germany",
+  email = "contact@pycie.com",
+  copyright = "© 2026 ArcBids · A product of PYCIE Studio. All rights reserved.",
   craftedWith = "High-availability real-time infrastructure",
 }: FooterSectionProps) {
   return (
@@ -68,9 +68,9 @@ export default function FooterSection({
                 </Link>
               </li>
               <li>
-                <a href="/#features" className="transition-colors hover:text-[#e4fffb]">
+                <Link href="/#features" className="transition-colors hover:text-[#e4fffb]">
                   {featuresLabel}
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="/how-it-works" className="transition-colors hover:text-[#e4fffb]">
@@ -141,7 +141,21 @@ export default function FooterSection({
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 text-xs text-zinc-500 sm:flex-row">
           <p>{copyright}</p>
-          <p>{craftedWith}</p>
+          <p className="flex flex-wrap items-center gap-2">
+            <span>{craftedWith}</span>
+            <span aria-hidden="true">·</span>
+            <span>
+              Designed by{" "}
+              <a
+                href="https://www.pycie.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#e4fffb] transition-colors hover:text-[#3ff2e0]"
+              >
+                PYCIE
+              </a>
+            </span>
+          </p>
         </div>
       </div>
     </footer>

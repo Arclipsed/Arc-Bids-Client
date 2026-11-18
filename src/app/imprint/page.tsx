@@ -13,26 +13,31 @@ export const metadata: Metadata = MetaTagService.CreateMetaTags({
   url: "/imprint",
   title: "Imprint / Impressum — ArcBids",
   description:
-    "Legal disclosure and imprint information according to § 5 TMG / DDG for ArcBids, operated by Hamit Kiziltas in Saarbrücken, Germany.",
+    "Legal disclosure and imprint information according to § 5 TMG / DDG for ArcBids, operated by PYCIE Studio (Refik Emre Ak) in Bietigheim-Bissingen, Germany.",
   imgUrl: "/opengraph-image",
-  tags: ["ArcBids imprint", "Impressum", "legal disclosure", "§ 5 TMG"],
+  tags: ["ArcBids imprint", "Impressum", "legal disclosure", "§ 5 TMG", "PYCIE"],
 });
 
 const CONTENT = {
   EN: {
     eyebrow: "Legal Disclosure",
     title: "Imprint",
-    updated: "Information according to § 5 TMG",
+    updated: "Information according to § 5 TMG / DDG · ArcBids is a product of PYCIE Studio",
     contactTitle: "Operator & Contact",
     operatorLines: [
-      "Hamit Kiziltas",
-      "Schutzbergstraße 17",
-      "66119 Saarbrücken",
+      "PYCIE Studio",
+      "Owner: Refik Emre Ak",
+      "Rötestraße 20",
+      "74321 Bietigheim-Bissingen",
       "Germany",
     ],
     emailLabel: "Email",
-    email: "hello@arcbids.com",
-    legalEmail: "legal@arcbids.com",
+    email: "contact@pycie.com",
+    phoneLabel: "Phone",
+    phone: "+49 152 24759168",
+    websiteLabel: "Website",
+    website: "https://www.pycie.com",
+    legalEmail: "contact@pycie.com",
     sections: [
       {
         heading: "1. Liability Disclaimer for Content",
@@ -55,17 +60,22 @@ const CONTENT = {
   DE: {
     eyebrow: "Rechtliche Angaben",
     title: "Impressum",
-    updated: "Angaben gemäß § 5 TMG / DDG",
+    updated: "Angaben gemäß § 5 TMG / DDG · ArcBids ist ein Produkt von PYCIE Studio",
     contactTitle: "Betreiber & Kontakt",
     operatorLines: [
-      "Hamit Kiziltas",
-      "Schutzbergstraße 17",
-      "66119 Saarbrücken",
+      "PYCIE Studio",
+      "Inhaber: Refik Emre Ak",
+      "Rötestraße 20",
+      "74321 Bietigheim-Bissingen",
       "Deutschland",
     ],
     emailLabel: "E-Mail",
-    email: "hello@arcbids.com",
-    legalEmail: "legal@arcbids.com",
+    email: "contact@pycie.com",
+    phoneLabel: "Telefon",
+    phone: "+49 152 24759168",
+    websiteLabel: "Webseite",
+    website: "https://www.pycie.com",
+    legalEmail: "contact@pycie.com",
     sections: [
       {
         heading: "1. Haftung für Inhalte",
@@ -144,13 +154,26 @@ async function ImprintContent() {
                   className="text-[#3ff2e0] transition hover:underline"
                 >
                   {copy.email}
-                </a>{" "}
-                /{" "}
+                </a>
+              </p>
+              <p>
+                {copy.phoneLabel}:{" "}
                 <a
-                  href={`mailto:${copy.legalEmail}`}
+                  href={`tel:${copy.phone.replace(/\s+/g, "")}`}
                   className="text-[#3ff2e0] transition hover:underline"
                 >
-                  {copy.legalEmail}
+                  {copy.phone}
+                </a>
+              </p>
+              <p>
+                {copy.websiteLabel}:{" "}
+                <a
+                  href={copy.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#3ff2e0] transition hover:underline"
+                >
+                  {copy.website}
                 </a>
               </p>
             </div>
