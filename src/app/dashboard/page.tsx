@@ -183,22 +183,9 @@ export default function DashboardPage() {
   const [buyerCompany, setBuyerCompany] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
-  const [billingInfo, setBillingInfo] = useState<{
-    configured: boolean;
-    plan: string;
-    status: string | null;
-    hasCustomer?: boolean;
-  } | null>(null);
-  const [billingSuccess, setBillingSuccess] = useState(false);
 
   useEffect(() => {
     setLocale(getClientLocale());
-    if (
-      typeof window !== "undefined" &&
-      new URLSearchParams(window.location.search).get("billing") === "success"
-    ) {
-      setBillingSuccess(true);
-    }
     let active = true;
     fetch("/api/auth/me")
       .then((res) => res.json())
@@ -213,12 +200,6 @@ export default function DashboardPage() {
         }
         setUserEmail(data.email);
         setAuthChecked(true);
-        void fetch("/api/stripe/status")
-          .then((r) => r.json())
-          .then((b) => {
-            if (active) setBillingInfo(b);
-          })
-          .catch(() => {});
       })
       .catch(() => {
         if (active) router.replace("/login");
@@ -511,21 +492,6 @@ export default function DashboardPage() {
       totalSoldCents,
     };
   }, [myRooms, items]);
-
-  const handleOpenBillingPortal = async () => {
-    setActionError(null);
-    try {
-      const res = await fetch("/api/stripe/portal", { method: "POST" });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) {
-        setActionError(data.error ?? "Unable to open billing portal.");
-        return;
-      }
-      window.location.href = data.url;
-    } catch {
-      setActionError("Network error opening billing portal.");
-    }
-  };
 
   const handleLogout = async () => {
     clearOidcSession();
@@ -927,24 +893,6 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            {billingInfo?.configured && (
-              billingInfo.hasCustomer ? (
-                <button
-                  type="button"
-                  onClick={() => void handleOpenBillingPortal()}
-                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-3 py-1 font-mono text-[11px] font-semibold text-[#3ff2e0] transition hover:bg-[#3ff2e0]/20"
-                >
-                  {billingInfo.plan} · Billing
-                </button>
-              ) : (
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300 transition hover:border-[#3ff2e0]/40 hover:text-white"
-                >
-                  Upgrade
-                </Link>
-              )
-            )}
             <span className="hidden text-xs text-zinc-400 sm:inline">
               {userEmail}
             </span>
@@ -961,11 +909,6 @@ export default function DashboardPage() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 space-y-5 px-4 py-10 sm:px-6">
-        {billingSuccess && (
-          <div className="rounded-2xl border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-4 py-3 text-xs text-[#e4fffb]">
-            Subscription active—thank you for upgrading your ArcBids plan!
-          </div>
-        )}
         {actionError && (
           <div className="rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
             {actionError}
