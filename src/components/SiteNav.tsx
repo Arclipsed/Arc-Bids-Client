@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { ITranslation } from "@/translations/ITranslation"
@@ -18,6 +19,14 @@ import {
 
 export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isSolutionsActive =
+    pathname === "/solutions" || pathname.startsWith("/solutions/")
+  const isHowItWorksActive = pathname === "/how-it-works"
+  const isPricingActive = pathname === "/pricing"
+  const isBlogActive = pathname === "/blog" || pathname.startsWith("/blog/")
+  const isToolsActive = pathname === "/tools"
 
   useEffect(() => {
     if (!open) return
@@ -47,29 +56,45 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white data-[state=open]:bg-white/[0.06] data-[state=open]:text-white">
+            <NavigationMenuTrigger
+              className={cn(
+                "bg-transparent hover:bg-white/[0.06] hover:text-white data-[state=open]:bg-white/[0.06] data-[state=open]:text-white",
+                isSolutionsActive ? "bg-[#3ff2e0]/10 text-[#3ff2e0]" : "text-zinc-300"
+              )}
+            >
               {nav.Solutions}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="w-[540px] rounded-2xl border border-white/[0.08] bg-[#090d14] p-3 shadow-2xl">
                 <ul className="grid grid-cols-2 gap-1.5">
-                  {nav.SolutionItems.map((item) => (
-                    <li key={item.href}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href={item.href}
-                          className="block rounded-xl p-3 transition hover:bg-white/[0.05]"
-                        >
-                          <div className="text-sm font-semibold text-white">
-                            {item.title}
-                          </div>
-                          <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-                            {item.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  ))}
+                  {nav.SolutionItems.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                      <li key={item.href}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              "block rounded-xl p-3 transition hover:bg-white/[0.05]",
+                              active && "bg-[#3ff2e0]/10 ring-1 ring-[#3ff2e0]/25"
+                            )}
+                          >
+                            <div
+                              className={cn(
+                                "text-sm font-semibold",
+                                active ? "text-[#3ff2e0]" : "text-white"
+                              )}
+                            >
+                              {item.title}
+                            </div>
+                            <p className="mt-1 text-xs leading-relaxed text-zinc-400">
+                              {item.description}
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    );
+                  })}
                 </ul>
                 <div className="mt-2 flex items-center justify-between border-t border-white/[0.06] px-3 pt-2.5 text-xs">
                   <NavigationMenuLink asChild>
@@ -97,9 +122,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
             <NavigationMenuLink asChild>
               <Link
                 href="/how-it-works"
+                aria-current={isHowItWorksActive ? "page" : undefined}
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
+                  "bg-transparent hover:bg-white/[0.06] hover:text-white",
+                  isHowItWorksActive
+                    ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                    : "text-zinc-300"
                 )}
               >
                 {nav.HowItWorks}
@@ -111,9 +140,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
             <NavigationMenuLink asChild>
               <Link
                 href="/pricing"
+                aria-current={isPricingActive ? "page" : undefined}
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
+                  "bg-transparent hover:bg-white/[0.06] hover:text-white",
+                  isPricingActive
+                    ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                    : "text-zinc-300"
                 )}
               >
                 {nav.Pricing}
@@ -125,9 +158,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
             <NavigationMenuLink asChild>
               <Link
                 href="/blog"
+                aria-current={isBlogActive ? "page" : undefined}
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
+                  "bg-transparent hover:bg-white/[0.06] hover:text-white",
+                  isBlogActive
+                    ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                    : "text-zinc-300"
                 )}
               >
                 Blog
@@ -173,7 +210,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                   <Link
                     href="/how-it-works"
                     onClick={() => setOpen(false)}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
+                    aria-current={isHowItWorksActive ? "page" : undefined}
+                    className={cn(
+                      "block rounded-xl px-3.5 py-2.5 text-sm font-medium transition hover:bg-white/[0.06] hover:text-white",
+                      isHowItWorksActive
+                        ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                        : "text-zinc-200"
+                    )}
                   >
                     {nav.HowItWorks}
                   </Link>
@@ -182,7 +225,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                   <Link
                     href="/pricing"
                     onClick={() => setOpen(false)}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
+                    aria-current={isPricingActive ? "page" : undefined}
+                    className={cn(
+                      "block rounded-xl px-3.5 py-2.5 text-sm font-medium transition hover:bg-white/[0.06] hover:text-white",
+                      isPricingActive
+                        ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                        : "text-zinc-200"
+                    )}
                   >
                     {nav.Pricing}
                   </Link>
@@ -191,7 +240,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                   <Link
                     href="/blog"
                     onClick={() => setOpen(false)}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
+                    aria-current={isBlogActive ? "page" : undefined}
+                    className={cn(
+                      "block rounded-xl px-3.5 py-2.5 text-sm font-medium transition hover:bg-white/[0.06] hover:text-white",
+                      isBlogActive
+                        ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                        : "text-zinc-200"
+                    )}
                   >
                     Blog
                   </Link>
@@ -200,7 +255,11 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                   <Link
                     href="/tools"
                     onClick={() => setOpen(false)}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#3ff2e0] transition hover:bg-white/[0.06] hover:text-[#e4fffb]"
+                    aria-current={isToolsActive ? "page" : undefined}
+                    className={cn(
+                      "block rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#3ff2e0] transition hover:bg-white/[0.06] hover:text-[#e4fffb]",
+                      isToolsActive && "bg-[#3ff2e0]/10"
+                    )}
                   >
                     {nav.Tools}
                   </Link>
