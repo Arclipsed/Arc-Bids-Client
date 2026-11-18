@@ -22,62 +22,94 @@ const CONTENT = {
   EN: {
     eyebrow: "Legal",
     title: "Terms of Service",
-    updated: "Last updated: November 17, 2026",
+    updated: "Last updated: November 18, 2026",
     sections: [
       {
-        heading: "1. Platform Scope",
-        body: "ArcBids provides real-time B2B wholesale auction software enabling organizations ('Sellers') to host public or invite-only auction rooms and enabling approved or guest participants ('Buyers') to place bids. ArcBids is a technology provider only and is not a party to transactions, contracts, invoicing, or fulfillment between Sellers and Buyers.",
+        heading: "1. Scope & Operator",
+        body: "ArcBids is a B2B wholesale auction platform operated by PYCIE Studio (Owner: Refik Emre Ak), Rötestraße 20, 74321 Bietigheim-Bissingen, Germany (https://www.pycie.com). ArcBids provides real-time software enabling organizations ('Sellers') to host public or private auction rooms and enabling approved or invited participants ('Buyers') to place bids. ArcBids acts strictly as a technical platform provider and is not a party to purchase contracts, invoicing, shipping, or warranty obligations between Sellers and Buyers.",
       },
       {
-        heading: "2. Accounts & Access",
-        body: "Sellers authenticate via email verification codes or magic links. You are responsible for maintaining access to your email account, managing your organization's buyer whitelist, and ensuring all lot descriptions, quantities, currencies, and images you publish are accurate and lawful.",
+        heading: "2. B2B Eligibility",
+        body: "ArcBids is designed for commercial and business users (entrepreneurs within the meaning of § 14 of the German Civil Code, BGB). By creating an organization, hosting an auction, or placing bids, you confirm that you are acting in a commercial or professional capacity and are authorized to represent your organization.",
       },
       {
-        heading: "3. Bidding & Anti-Snipe Rules",
-        body: "Bids placed in a live auction room are timestamped and recorded on the server. When a room has anti-snipe protection enabled, bids submitted within the configured extension window automatically extend the lot countdown. Each email address may hold at most one active session per auction room.",
+        heading: "3. Accounts, Authentication & Devices",
+        body: "Access to Seller features uses passwordless email verification codes and magic links. You are responsible for safeguarding your email inbox, maintaining accurate organization details, and reviewing or signing out unfamiliar devices in your Dashboard.",
       },
       {
-        heading: "4. Fulfillment & Payment",
-        body: "When a lot closes with a winning bid, ArcBids makes the winning Buyer's submitted name and email available to the Seller so the parties can arrange invoicing, payment, and delivery directly outside the platform.",
+        heading: "4. Seller Responsibilities & Prohibited Content",
+        body: "Sellers are solely responsible for the accuracy, completeness, and legality of all lot titles, descriptions, categories, vehicle or product specifications, quantities, starting prices, currencies, and uploaded images. Sellers warrant that they hold full title or authorization to sell the listed goods and may not list counterfeit, stolen, hazardous, or unlawful items.",
       },
       {
-        heading: "5. Acceptable Use & Availability",
-        body: "You may not probe, scrape, manipulate auctions, submit fraudulent bids, or upload unlawful content. We strive for high availability and real-time synchronization but provide the service on an 'as-is' basis without warranties of uninterrupted operation.",
+        heading: "5. Private Rooms, Email Lists & Session Rules",
+        body: "Sellers may restrict rooms to 'Private Auction Only' and select one or more whitelisted buyer email lists. Only one active session per email address is permitted in a given auction room at a time to ensure fair and accountable bidding.",
       },
       {
-        heading: "6. Contact",
-        body: "ArcBids is operated by PYCIE Studio (https://www.pycie.com). Questions regarding these Terms of Service can be sent to hello@arcbids.com.",
+        heading: "6. Bidding, Auto-Bid & Anti-Snipe",
+        body: "All bids are timestamped and recorded on the server. When Auto-Bid is enabled by the Seller, Buyers may submit a confidential maximum bid; the server automatically bids in the configured minimum increment steps up to that maximum, with earlier timestamps breaking ties. If anti-snipe protection is enabled, bids placed within the extension window automatically extend the lot countdown. Sellers may void an erroneous last bid during live operation where justified.",
+      },
+      {
+        heading: "7. Post-Auction Settlement",
+        body: "When a lot closes as Sold, ArcBids makes the winning Buyer's display/organization name and email address available to the Seller. Invoicing, VAT/tax compliance, payment, and freight/pickup must be arranged directly between Seller and Buyer outside the platform.",
+      },
+      {
+        heading: "8. Acceptable Use",
+        body: "You may not attempt to bypass access controls, scrape or probe private rooms, manipulate auctions (including shill bidding), or interfere with real-time WebSocket infrastructure. We reserve the right to suspend or remove organizations or rooms that violate these terms.",
+      },
+      {
+        heading: "9. Availability & Limitation of Liability",
+        body: "We strive for high availability and sub-second synchronization but provide the platform without guarantee of uninterrupted operation. PYCIE Studio is liable without limitation for intent, gross negligence, and injury to life, body, or health. For slight negligence, liability is limited to foreseeable, contract-typical damages arising from breach of essential contractual obligations (cardinal duties); any further liability for indirect damages or lost profits is excluded to the extent permitted by German law.",
+      },
+      {
+        heading: "10. Account Deletion, Governing Law & Contact",
+        body: "You may delete your account and all associated data at any time via the Dashboard Danger Zone. These Terms are governed by the laws of the Federal Republic of Germany, excluding the UN Convention on Contracts for the International Sale of Goods (CISG). For platform support contact hello@arcbids.com; for operator inquiries contact contact@pycie.com.",
       },
     ],
   },
   DE: {
     eyebrow: "Rechtliches",
     title: "Allgemeine Geschäftsbedingungen (AGB)",
-    updated: "Stand: 17. November 2026",
+    updated: "Stand: 18. November 2026",
     sections: [
       {
-        heading: "1. Leistungsgegenstand",
-        body: "ArcBids stellt eine B2B-Software für Großhandelsauktionen in Echtzeit bereit, mit der Unternehmen („Verkäufer“) öffentliche oder private Auktionsräume betreiben und Teilnehmer („Käufer“) Gebote abgeben können. ArcBids ist ausschließlich technischer Plattformbetreiber und wird nicht Vertragspartei der zwischen Verkäufern und Käufern geschlossenen Kaufverträge.",
+        heading: "1. Geltungsbereich & Betreiber",
+        body: "ArcBids ist eine B2B-Großhandels-Auktionsplattform, betrieben von PYCIE Studio (Inhaber: Refik Emre Ak), Rötestraße 20, 74321 Bietigheim-Bissingen, Deutschland (https://www.pycie.com). ArcBids stellt ausschließlich die technische Echtzeit-Software für öffentliche oder private Auktionsräume bereit und wird nicht Vertragspartei der zwischen Verkäufern und Käufern geschlossenen Kaufverträge.",
       },
       {
-        heading: "2. Konten & Zugang",
-        body: "Verkäufer melden sich per 6-stelligem E-Mail-Code oder Magic-Link an. Sie sind verantwortlich für den Schutz Ihres E-Mail-Zugangs, die Pflege Ihrer Käufer-Whitelist sowie für die Richtigkeit aller veröffentlichten Artikelbeschreibungen, Stückzahlen, Währungen und Fotos.",
+        heading: "2. B2B-Nutzung (Unternehmer)",
+        body: "Das Angebot richtet sich ausschließlich an Unternehmer im Sinne des § 14 BGB. Mit der Registrierung, Erstellung einer Organisation oder Abgabe eines Gebots bestätigen Sie, im Rahmen Ihrer gewerblichen oder selbstständigen beruflichen Tätigkeit zu handeln.",
       },
       {
-        heading: "3. Gebote & Anti-Snipe-Regeln",
-        body: "Alle Gebote in einem Live-Auktionsraum werden serverseitig mit Zeitstempel erfasst. Ist ein Anti-Snipe-Zeitfenster aktiviert, verlängern Gebote in den letzten Sekunden automatisch den Countdown. Pro E-Mail-Adresse ist jeweils nur eine aktive Sitzung pro Auktionsraum zulässig.",
+        heading: "3. Konten, Anmeldung & Gerätesicherheit",
+        body: "Die Anmeldung erfolgt passwortlos per E-Mail-Verifizierungscode oder Magic-Link. Sie sind verpflichtet, den Zugang zu Ihrem E-Mail-Postfach zu schützen, Organisationsdaten aktuell zu halten und Ihre angemeldeten Geräte im Dashboard zu kontrollieren.",
       },
       {
-        heading: "4. Abwicklung & Zahlung",
-        body: "Nach Zuschlag stellt ArcBids dem Verkäufer Namen und E-Mail-Adresse des Höchstbietenden zur Verfügung, damit Rechnungsstellung, Zahlung und Versand direkt zwischen den Parteien abgewickelt werden können.",
+        heading: "4. Pflichten der Verkäufer & unzulässige Inhalte",
+        body: "Verkäufer tragen die alleinige Verantwortung für die Richtigkeit, Vollständigkeit und Rechtmäßigkeit aller Artikelbezeichnungen, Kategorien, Fahrzeug-/Produktspezifikationen, Stückzahlen, Startpreise, Währungen und hochgeladenen Fotos. Das Anbieten gestohlener, gefälschter oder rechtswidriger Waren ist untersagt.",
       },
       {
-        heading: "5. Zulässige Nutzung & Verfügbarkeit",
-        body: "Missbrauch der Plattform, Manipulation von Geboten, unbefugtes Auslesen von Räumen sowie das Hochladen rechtswidriger Inhalte sind untersagt. Der Dienst wird nach aktuellem Stand der Technik ohne Gewähr für unterbrechungsfreie Verfügbarkeit bereitgestellt.",
+        heading: "5. Private Räume, E-Mail-Listen & Sitzungsregeln",
+        body: "Verkäufer können Auktionen als ‚Private Auction Only‘ auf ausgewählte Käufer-E-Mail-Listen beschränken. Pro E-Mail-Adresse ist in einem Auktionsraum jeweils nur eine aktive Sitzung gleichzeitig zulässig.",
       },
       {
-        heading: "6. Kontakt",
-        body: "ArcBids wird betrieben von PYCIE Studio (https://www.pycie.com). Bei Fragen zu diesen AGB erreichen Sie uns unter hello@arcbids.com.",
+        heading: "6. Gebote, Auto-Bid & Anti-Snipe-Schutz",
+        body: "Alle Gebote werden serverseitig mit Zeitstempel erfasst. Ist Auto-Bid aktiviert, können Käufer ein verdecktes Maximalgebot hinterlegen; der Server bietet automatisch in den festgelegten Mindestschritten bis zu diesem Maximum mit (bei Gleichstand entscheidet der frühere Zeitstempel). Bei aktiviertem Anti-Snipe-Fenster verlängern späte Gebote den Countdown automatisch. Verkäufer können im begründeten Ausnahmefall das letzte Gebot stornieren (Void).",
+      },
+      {
+        heading: "7. Abwicklung nach Zuschlag",
+        body: "Nach erfolgreichem Zuschlag erhält der Verkäufer den Anzeige-/Organisationsnamen sowie die E-Mail-Adresse des Höchstbietenden. Rechnungsstellung, Umsatzsteuerprüfung, Zahlung und Lieferung erfolgen direkt zwischen Verkäufer und Käufer außerhalb der Plattform.",
+      },
+      {
+        heading: "8. Zulässige Nutzung",
+        body: "Jede Manipulation von Auktionen (einschließlich Scheingeboten), das Umgehen von Zugangskontrollen, automatisiertes Auslesen (Scraping) sowie Störungen der Echtzeit-Infrastruktur sind untersagt.",
+      },
+      {
+        heading: "9. Verfügbarkeit & Haftungsbeschränkung",
+        body: "Der Dienst wird nach aktuellem Stand der Technik ohne Gewähr für ununterbrochene Verfügbarkeit bereitgestellt. PYCIE Studio haftet unbeschränkt bei Vorsatz, grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Bei leichter Fahrlässigkeit haften wir nur bei Verletzung wesentlicher Vertragspflichten (Kardinalpflichten), begrenzt auf den vertragstypischen, vorhersehbaren Schaden.",
+      },
+      {
+        heading: "10. Kontolöschung, anwendbares Recht & Kontakt",
+        body: "Sie können Ihr Konto samt aller Daten jederzeit über die Danger Zone im Dashboard löschen. Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG). Plattform-Support: hello@arcbids.com; Betreiberkontakt: contact@pycie.com.",
       },
     ],
   },
