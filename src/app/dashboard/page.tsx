@@ -162,6 +162,7 @@ export default function DashboardPage() {
   const [authChecked, setAuthChecked] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [locale, setLocale] = useState<Locale>(Locale.EN);
+  const isDe = locale === Locale.DE;
   const d = Translations[locale].DashboardPage.Copy;
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
   const [tablesSynced, setTablesSynced] = useState(false);
@@ -1047,13 +1048,17 @@ export default function DashboardPage() {
 
               <GlowCard accent="teal" className="lg:col-span-3">
                 <GlowCardHeader
-                  title="Auction Tickets"
+                  title={isDe ? "Auktions-Tickets" : "Auction Tickets"}
                   icon={<Ticket className="h-4 w-4 text-[#3ff2e0]" />}
                   right={
                     <div className="group relative">
                       <button
                         type="button"
-                        aria-label="What is an Auction Ticket?"
+                        aria-label={
+                          isDe
+                            ? "Was ist ein Auktions-Ticket?"
+                            : "What is an Auction Ticket?"
+                        }
                         className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/[0.06] hover:text-[#3ff2e0] focus:outline-none focus:text-[#3ff2e0]"
                       >
                         <Info className="h-3.5 w-3.5" />
@@ -1063,13 +1068,27 @@ export default function DashboardPage() {
                         className="pointer-events-none absolute right-0 bottom-full z-50 mb-2 w-64 rounded-2xl border border-white/10 bg-[#0b101b]/95 p-3 text-[11px] leading-relaxed text-zinc-300 opacity-0 shadow-xl backdrop-blur-md transition duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
                       >
                         <p className="font-semibold text-white">
-                          What is an Auction Ticket?
+                          {isDe
+                            ? "Was ist ein Auktions-Ticket?"
+                            : "What is an Auction Ticket?"}
                         </p>
                         <p className="mt-1 text-zinc-400">
-                          Drafting and testing auctions is free. You spend{" "}
-                          <span className="text-zinc-200">1 Ticket (€10)</span>{" "}
-                          when you schedule or launch a live auction. Cancelled
-                          or deleted drafts refund the ticket automatically.
+                          {isDe ? (
+                            <>
+                              Entwürfe und Tests sind kostenlos. Sie verbrauchen{" "}
+                              <span className="text-zinc-200">1 Ticket (10 €)</span>,
+                              wenn Sie eine Auktion planen oder live starten. Bei
+                              Stornierung oder Löschung vor Start wird das Ticket
+                              erstattet.
+                            </>
+                          ) : (
+                            <>
+                              Drafting and testing auctions is free. You spend{" "}
+                              <span className="text-zinc-200">1 Ticket (€10)</span>{" "}
+                              when you schedule or launch a live auction. Cancelled
+                              or deleted drafts refund the ticket automatically.
+                            </>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -1089,7 +1108,13 @@ export default function DashboardPage() {
                       onClick={() => void handleBuyTicket(1)}
                       className="cursor-pointer whitespace-nowrap rounded-full bg-[#e4fffb] px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-white disabled:opacity-50"
                     >
-                      {buyingTicket ? "Redirecting…" : "+ Buy · €10"}
+                      {buyingTicket
+                        ? isDe
+                          ? "Weiterleiten…"
+                          : "Redirecting…"
+                        : isDe
+                          ? "+ Kaufen · 10 €"
+                          : "+ Buy · €10"}
                     </button>
                   )}
                 </div>
@@ -1205,7 +1230,7 @@ export default function DashboardPage() {
                               {(r.status === "Draft" || r.status === "Lobby") && r.isPaid && (
                                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-medium text-emerald-300">
                                   <Ticket className="h-3 w-3" />
-                                  Ticket Ready
+                                  {isDe ? "Ticket bereit" : "Ticket Ready"}
                                 </span>
                               )}
                             </div>
@@ -1224,7 +1249,13 @@ export default function DashboardPage() {
                                 onClick={() => void handleBuyTicket(1)}
                                 className="h-8 px-3.5 text-[11px]"
                               >
-                                {buyingTicket ? "Redirecting…" : "Buy Ticket · €10"}
+                                {buyingTicket
+                                  ? isDe
+                                    ? "Weiterleiten…"
+                                    : "Redirecting…"
+                                  : isDe
+                                    ? "Ticket · 10 €"
+                                    : "Buy Ticket · €10"}
                               </InteractivePill>
                             ) : (
                               <InteractivePill
@@ -1328,6 +1359,7 @@ export default function DashboardPage() {
             {/* Danger Zone */}
             <DangerZoneWidget
               orgName={myOrg.name}
+              isDe={isDe}
               onDeleteAccount={handleDeleteAccount}
             />
 
@@ -1340,6 +1372,7 @@ export default function DashboardPage() {
               <CreateAuctionForm
                 buyerLists={buyerListOptions}
                 copy={d}
+                isDe={isDe}
                 auctionCredits={myOrg.auctionCredits}
                 stripeConfigured={stripeConfigured}
                 onBuyTicket={() => void handleBuyTicket(1)}
@@ -1360,6 +1393,7 @@ export default function DashboardPage() {
                   mode="edit"
                   buyerLists={buyerListOptions}
                   copy={d}
+                  isDe={isDe}
                   auctionCredits={myOrg.auctionCredits}
                   initialHasTicket={editingRoom.isPaid}
                   stripeConfigured={stripeConfigured}

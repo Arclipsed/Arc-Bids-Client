@@ -6,12 +6,14 @@ import { Dialog } from "@/components/ui/dialog";
 
 interface DangerZoneWidgetProps {
   orgName: string;
+  isDe?: boolean;
   onDeleteAccount: () => Promise<void>;
   className?: string;
 }
 
 export function DangerZoneWidget({
   orgName,
+  isDe = false,
   onDeleteAccount,
   className,
 }: DangerZoneWidgetProps) {
@@ -42,15 +44,27 @@ export function DangerZoneWidget({
             <div className="flex items-center gap-2 text-rose-400">
               <AlertTriangle className="h-4 w-4 shrink-0" />
               <h2 className="text-sm font-semibold tracking-tight">
-                Danger Zone
+                {isDe ? "Gefahrenbereich" : "Danger Zone"}
               </h2>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-              Permanently delete <strong className="text-zinc-200">{orgName}</strong>, all
-              auction rooms, lots, uploaded images, bids, buyer email lists, and any
-              unused or reserved <strong className="text-rose-300">Auction Tickets</strong>{" "}
-              (tickets are <strong className="text-rose-300">lost and non-refundable</strong>).
-              This cannot be undone.
+              {isDe ? (
+                <>
+                  Löscht <strong className="text-zinc-200">{orgName}</strong> sowie alle
+                  Auktionsräume, Lose, Bilder, Gebote, Käuferlisten und alle ungenutzten
+                  oder reservierten <strong className="text-rose-300">Auktions-Tickets</strong>{" "}
+                  dauerhaft (Tickets <strong className="text-rose-300">verfallen und sind nicht erstattungsfähig</strong>).
+                  Dies kann nicht rückgängig gemacht werden.
+                </>
+              ) : (
+                <>
+                  Permanently delete <strong className="text-zinc-200">{orgName}</strong>, all
+                  auction rooms, lots, uploaded images, bids, buyer email lists, and any
+                  unused or reserved <strong className="text-rose-300">Auction Tickets</strong>{" "}
+                  (tickets are <strong className="text-rose-300">lost and non-refundable</strong>).
+                  This cannot be undone.
+                </>
+              )}
             </p>
           </div>
 
@@ -63,7 +77,7 @@ export function DangerZoneWidget({
             className="inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-rose-500/35 bg-rose-500/15 px-5 text-xs font-semibold text-rose-300 transition hover:border-rose-400/60 hover:bg-rose-500/25 hover:text-white"
           >
             <Trash2 className="h-3.5 w-3.5" />
-            Delete Account &amp; Data
+            {isDe ? "Konto & Daten löschen" : "Delete Account & Data"}
           </button>
         </div>
       </section>
@@ -71,8 +85,12 @@ export function DangerZoneWidget({
       <Dialog
         open={confirmOpen}
         onClose={() => !deleting && setConfirmOpen(false)}
-        title="Delete Account & All Data"
-        description="This will permanently erase your organization, all auctions, lots, bids, uploaded images, and buyer email lists. Any unused or reserved Auction Tickets will be permanently lost and are non-refundable."
+        title={isDe ? "Konto & alle Daten löschen" : "Delete Account & All Data"}
+        description={
+          isDe
+            ? "Dadurch werden Ihre Organisation, alle Auktionen, Lose, Gebote, Bilder und Käuferlisten dauerhaft gelöscht. Alle ungenutzten oder reservierten Auktions-Tickets verfallen und sind nicht erstattungsfähig."
+            : "This will permanently erase your organization, all auctions, lots, bids, uploaded images, and buyer email lists. Any unused or reserved Auction Tickets will be permanently lost and are non-refundable."
+        }
       >
         <form onSubmit={handleConfirm} className="space-y-4">
           <div>

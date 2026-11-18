@@ -61,6 +61,7 @@ interface CreateAuctionFormProps {
   initialValues?: CreateAuctionFormInitialValues;
   buyerLists?: BuyerListOption[];
   copy?: ITranslation["DashboardPage"]["Copy"];
+  isDe?: boolean;
   auctionCredits?: number;
   initialHasTicket?: boolean;
   stripeConfigured?: boolean;
@@ -74,6 +75,7 @@ export function CreateAuctionForm({
   initialValues,
   buyerLists = [],
   copy = EN.DashboardPage.Copy,
+  isDe = false,
   auctionCredits = 0,
   initialHasTicket = false,
   stripeConfigured = false,
@@ -421,13 +423,15 @@ export function CreateAuctionForm({
                     </p>
                     {scheduleLocked && (
                       <span className="rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-300">
-                        Needs 1 Ticket
+                        {isDe ? "1 Ticket nötig" : "Needs 1 Ticket"}
                       </span>
                     )}
                   </div>
                   <p className="truncate text-[11px] text-zinc-400">
                     {scheduleLocked
-                      ? "Buy 1 Auction Ticket (€10) to unlock scheduled start times"
+                      ? isDe
+                        ? "1 Auktions-Ticket (10 €) kaufen, um Startzeiten zu planen"
+                        : "Buy 1 Auction Ticket (€10) to unlock scheduled start times"
                       : scheduledTime
                         ? `${format(scheduledDate, "EEE, MMM d")} ${copy.ScheduleAtWord} ${scheduledTime}`
                         : copy.ScheduleOptionalPrefix}
@@ -443,7 +447,7 @@ export function CreateAuctionForm({
                       onClick={onBuyTicket}
                       className="cursor-pointer whitespace-nowrap rounded-full bg-amber-300 px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200"
                     >
-                      Buy Ticket · €10
+                      {isDe ? "Ticket · 10 €" : "Buy Ticket · €10"}
                     </button>
                   ) : null
                 ) : (
@@ -591,14 +595,24 @@ export function CreateAuctionForm({
                   <span>
                     {showSchedule ? (
                       initialHasTicket ? (
-                        "1 Auction Ticket is already reserved for this scheduled auction."
+                        isDe
+                          ? "1 Auktions-Ticket ist bereits für diese geplante Auktion reserviert."
+                          : "1 Auction Ticket is already reserved for this scheduled auction."
                       ) : needsTicketForSchedule ? (
-                        "Scheduling requires 1 Auction Ticket (€10) so it auto-starts on time."
+                        isDe
+                          ? "Für die Planung ist 1 Auktions-Ticket (10 €) erforderlich, damit die Auktion pünktlich startet."
+                          : "Scheduling requires 1 Auction Ticket (€10) so it auto-starts on time."
+                      ) : isDe ? (
+                        `Die Planung reserviert 1 Auktions-Ticket (${auctionCredits} verfügbar). Bei Stornierung vor Start erstattet.`
                       ) : (
                         `Scheduling reserves 1 Auction Ticket (${auctionCredits} available). Refunded if cancelled before start.`
                       )
                     ) : initialHasTicket ? (
-                      "Unscheduling will refund your reserved Auction Ticket back to your balance."
+                      isDe
+                        ? "Beim Entfernen des Zeitplans wird Ihr reserviertes Ticket zurückerstattet."
+                        : "Unscheduling will refund your reserved Auction Ticket back to your balance."
+                    ) : isDe ? (
+                      "Wird als kostenloser Entwurf gespeichert — 1 Auktions-Ticket (10 €) wird erst beim Starten oder Planen verbraucht."
                     ) : (
                       "Saving as a free draft — 1 Auction Ticket (€10) is only used when you Go Live or Schedule."
                     )}
@@ -610,7 +624,7 @@ export function CreateAuctionForm({
                     onClick={onBuyTicket}
                     className="cursor-pointer rounded-full bg-amber-300 px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200"
                   >
-                    Buy Ticket · €10
+                    {isDe ? "Ticket · 10 €" : "Buy Ticket · €10"}
                   </button>
                 )}
               </div>
