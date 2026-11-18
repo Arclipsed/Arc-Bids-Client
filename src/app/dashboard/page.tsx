@@ -24,7 +24,7 @@ import {
   Users,
 } from "lucide-react";
 import type { DbConnection } from "@/module_bindings";
-import { createSpacetimeConnection, clearSavedToken } from "@/lib/spacetime";
+import { createReconnectingSpacetimeConnection, clearSavedToken } from "@/lib/spacetime";
 import { clearOidcSession, saveOidcIdToken } from "@/lib/auth";
 import { formatCurrency } from "@/lib/format";
 import { InteractivePill } from "@/components/ui/interactive-pill";
@@ -315,8 +315,10 @@ export default function DashboardPage() {
       );
     };
 
-    const conn = createSpacetimeConnection({
+    const client = createReconnectingSpacetimeConnection({
+      onReconnecting: () => setConnState("connecting"),
       onConnect: (connectedConn, _tok, identity: Identity) => {
+        connRef.current = connectedConn;
         setConnState("connected");
         setMyIdentityHex(identity.toHexString());
         try {
@@ -399,13 +401,18 @@ export default function DashboardPage() {
           }
         });
       },
-      onDisconnect: () => setConnState("error"),
-      onError: () => setConnState("error"),
+      onDisconnect: () => {
+        connRef.current = null;
+        setConnState("connecting");
+      },
+      onError: () => {
+        connRef.current = null;
+        setConnState("error");
+      },
     });
 
-    connRef.current = conn;
     return () => {
-      conn.disconnect();
+      client.disconnect();
       connRef.current = null;
     };
   }, [userEmail]);

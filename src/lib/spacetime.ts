@@ -51,3 +51,115 @@ export function createSpacetimeConnection(handlers: {
     })
     .build();
 }
+
+export function createReconnectingSpacetimeConnection(handlers: {
+  onConnect: (conn: DbConnection, token: string, identity: Identity) => void;
+  onReconnecting?: () => void;
+  onDisconnect?: () => void;
+  onError?: (err: unknown) => void;
+}): { disconnect: () => void } {
+  let disposed = false;
+  let isConnected = false;
+  let attempt = 0;
+  let currentConn: DbConnection | null = null;
+  let reconnectTimer: number | null = null;
+
+  const clearTimer = () => {
+    if (reconnectTimer !== null && typeof window !== "undefined") {
+      window.clearTimeout(reconnectTimer);
+      reconnectTimer = null;
+    }
+  };
+
+  const scheduleReconnect = () => {
+    if (disposed || typeof window === "undefined" || reconnectTimer !== null) return;
+    const delayMs = Math.min(10_000, 1000 * 2 ** Math.min(attempt, 4));
+    attempt += 1;
+    reconnectTimer = window.setTimeout(() => {
+      reconnectTimer = null;
+      connect();
+    }, delayMs);
+  };
+
+  const connect = () => {
+    if (disposed) return;
+    clearTimer();
+
+    if (currentConn) {
+      try {
+        currentConn.disconnect();
+      } catch {
+        // Ignore cleanup errors on stale socket
+      }
+      currentConn = null;
+    }
+
+    handlers.onReconnecting?.();
+
+    const conn = createSpacetimeConnection({
+      onConnect: (connectedConn, token, identity) => {
+        if (disposed) {
+          connectedConn.disconnect();
+          return;
+        }
+        isConnected = true;
+        attempt = 0;
+        handlers.onConnect(connectedConn, token, identity);
+      },
+      onDisconnect: () => {
+        if (disposed) return;
+        isConnected = false;
+        handlers.onDisconnect?.();
+        scheduleReconnect();
+      },
+      onError: (err) => {
+        if (disposed) return;
+        isConnected = false;
+        handlers.onError?.(err);
+        scheduleReconnect();
+      },
+    });
+
+    currentConn = conn;
+  };
+
+  const handleWake = () => {
+    if (disposed) return;
+    if (typeof document !== "undefined" && document.visibilityState !== "visible") {
+      return;
+    }
+    if (!isConnected || (currentConn && !currentConn.isActive)) {
+      attempt = 0;
+      connect();
+    }
+  };
+
+  if (typeof window !== "undefined") {
+    document.addEventListener("visibilitychange", handleWake);
+    window.addEventListener("online", handleWake);
+    window.addEventListener("pageshow", handleWake);
+  }
+
+  connect();
+
+  return {
+    disconnect: () => {
+      disposed = true;
+      isConnected = false;
+      clearTimer();
+      if (typeof window !== "undefined") {
+        document.removeEventListener("visibilitychange", handleWake);
+        window.removeEventListener("online", handleWake);
+        window.removeEventListener("pageshow", handleWake);
+      }
+      if (currentConn) {
+        try {
+          currentConn.disconnect();
+        } catch {
+          // Ignore disconnect errors
+        }
+        currentConn = null;
+      }
+    },
+  };
+}

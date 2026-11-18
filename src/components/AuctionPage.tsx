@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Calendar as CalendarIcon, CalendarPlus, CheckCircle2, Globe, Lock, Mail, User } from "lucide-react";
 import type { DbConnection } from "@/module_bindings";
 import type { UiBid, UiItem, UiRoom } from "@/lib/auction-types";
-import { createSpacetimeConnection } from "@/lib/spacetime";
+import { createReconnectingSpacetimeConnection } from "@/lib/spacetime";
 import { formatCountdown } from "@/lib/format";
 import { TopBar } from "./TopBar";
 import { ActiveLotCard } from "./ActiveLotCard";
@@ -189,9 +189,14 @@ export function AuctionPage() {
       setLiveViewers(viewers);
     };
 
-    const conn = createSpacetimeConnection({
+    const client = createReconnectingSpacetimeConnection({
+      onReconnecting: () => {
+        if (!isCancelled) setConnectionState("connecting");
+      },
       onConnect: (connectedConn, _token, identity) => {
         if (isCancelled) return;
+        connRef.current = connectedConn;
+        joinedKeyRef.current = null;
         setMyIdentityHex(identity.toHexString());
         setConnectionState("connected");
         connectedConn
@@ -235,20 +240,20 @@ export function AuctionPage() {
       },
       onDisconnect: () => {
         if (isCancelled) return;
-        setConnectionState("error");
-        setHasLoaded(true);
+        connRef.current = null;
+        setConnectionState("connecting");
       },
       onError: () => {
         if (isCancelled) return;
+        connRef.current = null;
         setConnectionState("error");
         setHasLoaded(true);
       },
     });
 
-    connRef.current = conn;
     return () => {
       isCancelled = true;
-      conn.disconnect();
+      client.disconnect();
       connRef.current = null;
     };
   }, []);
