@@ -32,12 +32,13 @@ const CONTENT = {
       "Germany",
     ],
     emailLabel: "Email",
-    email: "hello@arcbids.com",
+    email: "contact@pycie.com",
+    platformEmailLabel: "Platform Support",
+    platformEmail: "hello@arcbids.com",
     phoneLabel: "Phone",
     phone: "+49 152 24759168",
     websiteLabel: "Website",
     website: "https://www.pycie.com",
-    legalEmail: "legal@arcbids.com",
     sections: [
       {
         heading: "1. Liability Disclaimer for Content",
@@ -70,12 +71,13 @@ const CONTENT = {
       "Deutschland",
     ],
     emailLabel: "E-Mail",
-    email: "hello@arcbids.com",
+    email: "contact@pycie.com",
+    platformEmailLabel: "Plattform-Support",
+    platformEmail: "hello@arcbids.com",
     phoneLabel: "Telefon",
     phone: "+49 152 24759168",
     websiteLabel: "Webseite",
     website: "https://www.pycie.com",
-    legalEmail: "legal@arcbids.com",
     sections: [
       {
         heading: "1. Haftung für Inhalte",
@@ -154,13 +156,6 @@ async function ImprintContent() {
                   className="text-[#3ff2e0] transition hover:underline"
                 >
                   {copy.email}
-                </a>{" "}
-                /{" "}
-                <a
-                  href={`mailto:${copy.legalEmail}`}
-                  className="text-[#3ff2e0] transition hover:underline"
-                >
-                  {copy.legalEmail}
                 </a>
               </p>
               <p>
@@ -181,6 +176,15 @@ async function ImprintContent() {
                   className="text-[#3ff2e0] transition hover:underline"
                 >
                   {copy.website}
+                </a>
+              </p>
+              <p className="pt-1">
+                {copy.platformEmailLabel}:{" "}
+                <a
+                  href={`mailto:${copy.platformEmail}`}
+                  className="text-[#3ff2e0] transition hover:underline"
+                >
+                  {copy.platformEmail}
                 </a>
               </p>
             </div>
