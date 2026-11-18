@@ -14,6 +14,7 @@ import {
   DollarSign,
   Eye,
   Gavel,
+  Info,
   LogOut,
   Mail,
   Pencil,
@@ -1048,6 +1049,31 @@ export default function DashboardPage() {
                 <GlowCardHeader
                   title="Auction Tickets"
                   icon={<Ticket className="h-4 w-4 text-[#3ff2e0]" />}
+                  right={
+                    <div className="group relative">
+                      <button
+                        type="button"
+                        aria-label="What is an Auction Ticket?"
+                        className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-zinc-400 transition hover:bg-white/[0.06] hover:text-[#3ff2e0] focus:outline-none focus:text-[#3ff2e0]"
+                      >
+                        <Info className="h-3.5 w-3.5" />
+                      </button>
+                      <div
+                        role="tooltip"
+                        className="pointer-events-none absolute right-0 bottom-full z-50 mb-2 w-64 rounded-2xl border border-white/10 bg-[#0b101b]/95 p-3 text-[11px] leading-relaxed text-zinc-300 opacity-0 shadow-xl backdrop-blur-md transition duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                      >
+                        <p className="font-semibold text-white">
+                          What is an Auction Ticket?
+                        </p>
+                        <p className="mt-1 text-zinc-400">
+                          Drafting and testing auctions is free. You spend{" "}
+                          <span className="text-zinc-200">1 Ticket (€10)</span>{" "}
+                          when you schedule or launch a live auction. Cancelled
+                          or deleted drafts refund the ticket automatically.
+                        </p>
+                      </div>
+                    </div>
+                  }
                 />
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-mono text-3xl font-bold tracking-tight text-white tabular-nums">
