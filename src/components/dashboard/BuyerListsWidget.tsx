@@ -413,7 +413,7 @@ export function BuyerListsWidget({
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Company / Buyer name"
-                className="h-9 min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+                className="h-9 w-full min-w-0 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0] sm:w-auto sm:flex-1"
               />
               <input
                 type="email"
@@ -421,7 +421,7 @@ export function BuyerListsWidget({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="buyer@company.com"
-                className="h-9 min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+                className="h-9 w-full min-w-0 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0] sm:w-auto sm:flex-1"
               />
               <div className="flex shrink-0 items-center gap-1.5">
                 <button
