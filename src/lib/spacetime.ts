@@ -60,6 +60,7 @@ export function createReconnectingSpacetimeConnection(handlers: {
 }): { disconnect: () => void } {
   let disposed = false;
   let isConnected = false;
+  let isConnecting = false;
   let attempt = 0;
   let currentConn: DbConnection | null = null;
   let reconnectTimer: number | null = null;
@@ -85,46 +86,59 @@ export function createReconnectingSpacetimeConnection(handlers: {
     if (disposed) return;
     clearTimer();
 
-    if (currentConn) {
+    const prevConn = currentConn;
+    currentConn = null;
+    isConnected = false;
+    isConnecting = true;
+
+    if (prevConn) {
       try {
-        currentConn.disconnect();
+        prevConn.disconnect();
       } catch {
         // Ignore cleanup errors on stale socket
       }
-      currentConn = null;
     }
 
     handlers.onReconnecting?.();
 
+    let thisConn: DbConnection | null = null;
     const conn = createSpacetimeConnection({
       onConnect: (connectedConn, token, identity) => {
-        if (disposed) {
-          connectedConn.disconnect();
+        if (disposed || thisConn !== currentConn) {
+          try {
+            connectedConn.disconnect();
+          } catch {
+            // Ignore
+          }
           return;
         }
         isConnected = true;
+        isConnecting = false;
         attempt = 0;
         handlers.onConnect(connectedConn, token, identity);
       },
       onDisconnect: () => {
-        if (disposed) return;
+        if (disposed || thisConn !== currentConn) return;
         isConnected = false;
+        isConnecting = false;
         handlers.onDisconnect?.();
         scheduleReconnect();
       },
       onError: (err) => {
-        if (disposed) return;
+        if (disposed || thisConn !== currentConn) return;
         isConnected = false;
+        isConnecting = false;
         handlers.onError?.(err);
         scheduleReconnect();
       },
     });
 
+    thisConn = conn;
     currentConn = conn;
   };
 
   const handleWake = () => {
-    if (disposed) return;
+    if (disposed || isConnecting) return;
     if (typeof document !== "undefined" && document.visibilityState !== "visible") {
       return;
     }
