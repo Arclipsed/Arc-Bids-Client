@@ -80,12 +80,15 @@ export function DevicesWidget({
                         </span>
                       )}
                       {d.isOnline ? (
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-300">
-                          <span className="relative flex h-1.5 w-1.5">
+                        <span
+                          title="Online"
+                          aria-label="Online"
+                          className="inline-flex items-center justify-center rounded-full border border-emerald-400/25 bg-emerald-500/10 p-1.5"
+                        >
+                          <span className="relative flex h-2 w-2">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                           </span>
-                          Online
                         </span>
                       ) : (
                         <span className="font-mono text-[10px] text-zinc-500">
