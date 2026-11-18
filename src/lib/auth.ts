@@ -44,6 +44,11 @@ export function getOidcIdToken(): string | undefined {
   return window.localStorage.getItem(OIDC_ID_TOKEN_KEY) ?? undefined;
 }
 
+export function saveOidcIdToken(token: string): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(OIDC_ID_TOKEN_KEY, token);
+}
+
 export function getStoredAuthProfile(): AuthProfile | null {
   if (typeof window === "undefined") return null;
   const raw = window.localStorage.getItem(OIDC_PROFILE_KEY);

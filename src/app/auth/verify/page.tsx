@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { saveOidcIdToken } from "@/lib/auth";
 
 function VerifyContent() {
   const router = useRouter();
@@ -23,9 +24,15 @@ function VerifyContent() {
       body: JSON.stringify({ token }),
     })
       .then(async (res) => {
-        const data = (await res.json()) as { error?: string };
+        const data = (await res.json()) as {
+          error?: string;
+          spacetimeToken?: string;
+        };
         if (!res.ok) {
           throw new Error(data.error ?? "Invalid or expired link.");
+        }
+        if (data.spacetimeToken) {
+          saveOidcIdToken(data.spacetimeToken);
         }
         if (active) router.replace("/dashboard");
       })

@@ -5,6 +5,7 @@ import {
   verifyCodeChallengeToken,
   verifyMagicLinkToken,
 } from "@/lib/email-auth";
+import { signSpacetimeIdToken } from "@/lib/oidc-issuer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,7 +32,16 @@ export async function POST(req: NextRequest) {
     }
 
     const sessionToken = await signSessionToken(verified.email);
-    const res = NextResponse.json({ ok: true, email: verified.email });
+    const issuer =
+      process.env.NEXT_PUBLIC_APP_URL?.trim().replace(/\/$/, "") ||
+      req.nextUrl.origin;
+    const spacetimeToken = await signSpacetimeIdToken(verified.email, issuer);
+
+    const res = NextResponse.json({
+      ok: true,
+      email: verified.email,
+      ...(spacetimeToken ? { spacetimeToken } : {}),
+    });
 
     res.cookies.set(SESSION_COOKIE_NAME, sessionToken, {
       httpOnly: true,

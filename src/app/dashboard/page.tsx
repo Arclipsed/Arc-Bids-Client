@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import type { DbConnection } from "@/module_bindings";
 import { createSpacetimeConnection } from "@/lib/spacetime";
+import { clearOidcSession, saveOidcIdToken } from "@/lib/auth";
 import { formatCurrency } from "@/lib/format";
 import { InteractivePill } from "@/components/ui/interactive-pill";
 import { IconButton } from "@/components/ui/icon-button";
@@ -178,11 +179,14 @@ export default function DashboardPage() {
     let active = true;
     fetch("/api/auth/me")
       .then((res) => res.json())
-      .then((data: { email?: string | null }) => {
+      .then((data: { email?: string | null; spacetimeToken?: string }) => {
         if (!active) return;
         if (!data.email) {
           router.replace("/login");
           return;
+        }
+        if (data.spacetimeToken) {
+          saveOidcIdToken(data.spacetimeToken);
         }
         setUserEmail(data.email);
         setAuthChecked(true);
@@ -441,6 +445,7 @@ export default function DashboardPage() {
   }, [myRooms, items]);
 
   const handleLogout = async () => {
+    clearOidcSession();
     await fetch("/api/auth/logout", { method: "POST" });
     router.replace("/login");
   };

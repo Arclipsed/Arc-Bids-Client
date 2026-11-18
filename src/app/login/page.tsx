@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { Pattern as OtpPattern } from "@/components/ui/c-input-otp-1";
+import { saveOidcIdToken } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -92,10 +93,17 @@ export default function LoginPage() {
           code: codeInput.trim(),
         }),
       });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
+      const data = (await res.json()) as {
+        ok?: boolean;
+        error?: string;
+        spacetimeToken?: string;
+      };
       if (!res.ok) {
         setError(data.error ?? "Invalid or expired code.");
         return;
+      }
+      if (data.spacetimeToken) {
+        saveOidcIdToken(data.spacetimeToken);
       }
       router.replace("/dashboard");
       router.refresh();
