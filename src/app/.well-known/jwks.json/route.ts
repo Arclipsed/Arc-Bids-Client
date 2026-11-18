@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
+import { connection, NextResponse } from "next/server";
 import { getPublicJwks } from "@/lib/oidc-issuer";
 
-export const dynamic = "force-dynamic";
-
 export async function GET() {
+  await connection();
   const jwks = await getPublicJwks();
   return NextResponse.json(jwks, {
     headers: {
