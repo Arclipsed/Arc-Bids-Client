@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { MetaTagService } from "@/services/MetaTagService";
 import { EN } from "@/translations/en/en";
 import "./globals.css";
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-[#07090e] text-zinc-100">
         {children}
+        <Analytics />
       </body>
     </html>
   );
