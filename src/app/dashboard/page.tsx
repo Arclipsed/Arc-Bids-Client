@@ -389,7 +389,15 @@ export default function DashboardPage() {
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
         connectedConn.db.myDevices.onInsert(() => sync(connectedConn));
         connectedConn.db.myDevices.onUpdate(() => sync(connectedConn));
-        connectedConn.db.myDevices.onDelete(() => sync(connectedConn));
+        connectedConn.db.myDevices.onDelete((_ctx, deletedDevice) => {
+          sync(connectedConn);
+          if (deletedDevice.deviceId === getDeviceDetails().deviceId) {
+            clearOidcSession();
+            void fetch("/api/auth/logout", { method: "POST" }).finally(() => {
+              router.replace("/login");
+            });
+          }
+        });
       },
       onDisconnect: () => setConnState("error"),
       onError: () => setConnState("error"),

@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import { Laptop, Monitor, Smartphone, Tablet, Trash2 } from "lucide-react";
+import { Laptop, LogOut, Monitor, Smartphone, Tablet } from "lucide-react";
 import { GlowCard, GlowCardHeader } from "@/components/ui/glow-bento-card";
 import { IconButton } from "@/components/ui/icon-button";
 
@@ -102,18 +102,16 @@ export function DevicesWidget({
                   </div>
                 </div>
 
-                {!isCurrent && (
-                  <IconButton
-                    variant="subtle"
-                    size="sm"
-                    onClick={() => onRemoveDevice(d.id)}
-                    aria-label={`Remove ${d.deviceName}`}
-                    title="Remove device"
-                    className="h-8 w-8 shrink-0 enabled:hover:border-rose-400/40 enabled:hover:text-rose-400"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </IconButton>
-                )}
+                <IconButton
+                  variant="subtle"
+                  size="sm"
+                  onClick={() => onRemoveDevice(d.id)}
+                  aria-label={`Log out ${d.deviceName}`}
+                  title="Log out device"
+                  className="h-8 w-8 shrink-0 enabled:hover:border-rose-400/40 enabled:hover:text-rose-400"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                </IconButton>
               </div>
             );
           })
