@@ -20,6 +20,11 @@ export function saveToken(token: string): void {
   window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
 }
 
+export function clearSavedToken(): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+}
+
 export function createSpacetimeConnection(handlers: {
   onConnect: (conn: DbConnection, token: string, identity: Identity) => void;
   onDisconnect?: () => void;

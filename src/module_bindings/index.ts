@@ -41,6 +41,7 @@ import CancelAutoBidReducer from "./cancel_auto_bid_reducer";
 import CreateBuyerListReducer from "./create_buyer_list_reducer";
 import CreateOrganizationReducer from "./create_organization_reducer";
 import CreateRoomReducer from "./create_room_reducer";
+import DeleteAccountReducer from "./delete_account_reducer";
 import DeleteApprovedBuyerReducer from "./delete_approved_buyer_reducer";
 import DeleteAuctionItemReducer from "./delete_auction_item_reducer";
 import DeleteBuyerListReducer from "./delete_buyer_list_reducer";
@@ -222,6 +223,7 @@ const reducersSchema = __reducers(
   __reducerSchema("create_buyer_list", CreateBuyerListReducer),
   __reducerSchema("create_organization", CreateOrganizationReducer),
   __reducerSchema("create_room", CreateRoomReducer),
+  __reducerSchema("delete_account", DeleteAccountReducer),
   __reducerSchema("delete_approved_buyer", DeleteApprovedBuyerReducer),
   __reducerSchema("delete_auction_item", DeleteAuctionItemReducer),
   __reducerSchema("delete_buyer_list", DeleteBuyerListReducer),

@@ -24,7 +24,7 @@ import {
   Users,
 } from "lucide-react";
 import type { DbConnection } from "@/module_bindings";
-import { createSpacetimeConnection } from "@/lib/spacetime";
+import { createSpacetimeConnection, clearSavedToken } from "@/lib/spacetime";
 import { clearOidcSession, saveOidcIdToken } from "@/lib/auth";
 import { formatCurrency } from "@/lib/format";
 import { InteractivePill } from "@/components/ui/interactive-pill";
@@ -46,6 +46,7 @@ import {
   type BuyerListMemberRow,
   type BuyerListRow,
 } from "@/components/dashboard/BuyerListsWidget";
+import { DangerZoneWidget } from "@/components/dashboard/DangerZoneWidget";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { Locale, Translations, getClientLocale } from "@/translations/Translations";
 import {
@@ -448,6 +449,37 @@ export default function DashboardPage() {
     clearOidcSession();
     await fetch("/api/auth/logout", { method: "POST" });
     router.replace("/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    setActionError(null);
+    const conn = connRef.current;
+    const myRoomIds = new Set(myRooms.map((r) => r.id));
+    const allMyImageUrls = items
+      .filter((i) => myRoomIds.has(i.roomId))
+      .flatMap((i) => i.images)
+      .filter((u) => Boolean(u.trim()));
+
+    try {
+      if (allMyImageUrls.length > 0) {
+        await fetch("/api/upload", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ urls: allMyImageUrls }),
+        }).catch(() => {});
+      }
+
+      if (conn) {
+        conn.reducers.deleteAccount({});
+      }
+
+      clearOidcSession();
+      clearSavedToken();
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.replace("/");
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete account.");
+    }
   };
 
   const myBuyerLists = useMemo(() => {
@@ -1071,6 +1103,12 @@ export default function DashboardPage() {
                 className="lg:col-span-12"
               />
             </BentoGrid>
+
+            {/* Danger Zone */}
+            <DangerZoneWidget
+              orgName={myOrg.name}
+              onDeleteAccount={handleDeleteAccount}
+            />
 
             <Dialog
               open={createAuctionOpen}
