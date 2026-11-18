@@ -1113,22 +1113,15 @@ export default function DashboardPage() {
                   title={d.AuctionsTitle}
                   icon={<Gavel className="h-4 w-4 text-indigo-300" />}
                   right={
-                    <div className="flex items-center gap-2">
-                      {stripeConfigured && (
-                        <span className="hidden font-mono text-[10px] text-zinc-400 sm:inline">
-                          Drafts free · 1 Ticket (€10) to Go Live
-                        </span>
-                      )}
-                      <IconButton
-                        variant="accent"
-                        size="sm"
-                        onClick={() => setCreateAuctionOpen(true)}
-                        aria-label={d.CreateAuctionTitle}
-                        title={d.CreateAuctionTitle}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </IconButton>
-                    </div>
+                    <IconButton
+                      variant="accent"
+                      size="sm"
+                      onClick={() => setCreateAuctionOpen(true)}
+                      aria-label={d.CreateAuctionTitle}
+                      title={d.CreateAuctionTitle}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </IconButton>
                   }
                 />
 
