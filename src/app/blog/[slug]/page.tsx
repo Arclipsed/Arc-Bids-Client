@@ -9,7 +9,27 @@ import { SiteNav } from "@/components/SiteNav";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
+import { Locale } from "@/translations/Translations";
 import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/blog-posts";
+
+const POST_COPY = {
+  EN: {
+    backToAll: "Back to all articles",
+    relatedResources: "Related Resources",
+    ctaTitle: "Ready to run your next B2B auction?",
+    ctaBody:
+      "Draft rooms for free and launch live for €10 per ticket with 0% commission.",
+    ctaButton: "Open Dashboard",
+  },
+  DE: {
+    backToAll: "Zurück zu allen Artikeln",
+    relatedResources: "Weiterführende Ressourcen",
+    ctaTitle: "Bereit für Ihre nächste B2B-Auktion?",
+    ctaBody:
+      "Erstellen Sie Auktionsräume kostenlos als Entwurf und starten Sie live für 10 € pro Ticket bei 0 % Provision.",
+    ctaButton: "Zum Dashboard",
+  },
+} as const;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://arcbids.com";
 
@@ -45,11 +65,12 @@ export async function generateMetadata({
 }
 
 async function BlogPostContent({ slug }: { slug: string }) {
-  const post = getBlogPostBySlug(slug);
+  const locale = await TranslationService.GetUserLocale();
+  const post = getBlogPostBySlug(slug, locale);
   if (!post) notFound();
 
-  const locale = await TranslationService.GetUserLocale();
   const t = TranslationService.GetTranslations(locale);
+  const copy = locale === Locale.DE ? POST_COPY.DE : POST_COPY.EN;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -108,7 +129,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
           className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 transition hover:text-[#3ff2e0]"
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
-          Back to all articles
+          {copy.backToAll}
         </Link>
 
         <article className="mt-8">
@@ -165,7 +186,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
         {post.relatedLinks.length > 0 && (
           <div className="mt-12 rounded-3xl border border-white/[0.08] bg-[#090d14]/90 p-6">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
-              Related Resources
+              {copy.relatedResources}
             </p>
             <div className="mt-4 flex flex-wrap gap-2.5">
               {post.relatedLinks.map((link) => (
@@ -185,17 +206,17 @@ async function BlogPostContent({ slug }: { slug: string }) {
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#3ff2e0]/25 bg-[#091217]/90 p-6">
           <div>
             <h3 className="text-base font-semibold text-white">
-              Ready to run your next B2B auction?
+              {copy.ctaTitle}
             </h3>
             <p className="mt-1 text-xs text-zinc-400">
-              Draft rooms for free and launch live for €10 per ticket with 0% commission.
+              {copy.ctaBody}
             </p>
           </div>
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-1.5 rounded-full bg-[#e4fffb] px-5 py-2.5 text-xs font-semibold text-[#04070b] transition hover:bg-white"
           >
-            Open Dashboard
+            {copy.ctaButton}
             <ArrowRightIcon className="h-3.5 w-3.5" />
           </Link>
         </div>

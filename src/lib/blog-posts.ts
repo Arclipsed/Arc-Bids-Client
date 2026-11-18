@@ -1,3 +1,5 @@
+import { Locale } from "@/translations/Translations";
+
 export interface BlogSection {
   heading: string;
   paragraphs: string[];
@@ -240,6 +242,232 @@ export const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
-export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return BLOG_POSTS.find((post) => post.slug === slug);
+export const BLOG_POSTS_DE: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "Wie Sie eine private B2B-Großhandelsauktion ohne WhatsApp-Chaos durchführen",
+    description:
+      "Erfahren Sie, wie Großhändler, Liquidatoren und Distributoren unübersichtliche WhatsApp-Broadcasts und Excel-Listen durch strukturierte 15-Minuten-Live-Auktionen ersetzen.",
+    category: "Leitfaden",
+    publishedAt: "2026-11-18",
+    readTime: "5 Min. Lesezeit",
+    keywords: [
+      "private B2B Auktion",
+      "Großhandel Auktionsplattform",
+      "WhatsApp B2B Auktion Alternative",
+      "Live Großhandelsauktion",
+      "0% Provision Auktion",
+    ],
+    sections: [
+      {
+        heading: "Warum WhatsApp und Excel-Listen bei Wachstum scheitern",
+        paragraphs: [
+          "Ein Großteil des B2B-Großhandels läuft noch immer über Broadcast-Listen, PDF-Preislisten und 1-zu-1-Verhandlungen per WhatsApp. Wenn zehn Käufer gleichzeitig nach demselben Posten fragen, verbringen Sie Stunden mit manuellen Antworten und müssen rechtfertigen, wer zuerst geboten hat.",
+          "Noch schlimmer: Statische Preislisten verleiten Käufer zum Feilschen. Ohne sichtbaren Wettbewerb verkaufen Sie Ihre besten Posten oft zum Mindestpreis statt zum echten Marktwert.",
+        ],
+        bullets: [
+          "Keine Echtzeit-Preisfindung über alle geprüften Käufer hinweg",
+          "Manuelle Rückfragen verzögern Rechnungsstellung und Versand",
+          "Käufer zögern, wenn die aktuelle Verfügbarkeit unklar ist",
+        ],
+      },
+      {
+        heading: "Das 15-Minuten-Format für private Auktionsräume",
+        paragraphs: [
+          "Statt wochenlanger Inserate setzen schnelle Großhändler auf fokussierte 15- bis 30-minütige Live-Räume. Sie laden Ihre Lose einmal hoch, legen Startpreis und Gebotsschritt fest und teilen einen einzigen Einladungslink mit Ihrer freigegebenen Käuferliste.",
+          "Jeder Käufer tritt demselben Live-Raum direkt im Browser bei – ohne App-Download oder Passwort-Reset – und bietet in Echtzeit mit.",
+        ],
+        bullets: [
+          "Auktionsräume vorab kostenlos als Entwurf erstellen und testen",
+          "Zugriff über private Käuferlisten auf geprüfte B2B-Händler beschränken",
+          "Nur beim Planen oder Live-Schalten 1 Auktions-Ticket (10 €) einsetzen",
+        ],
+      },
+      {
+        heading: "0 % Provision bedeutet höhere Netto-Erlöse",
+        paragraphs: [
+          "Klassische B2B-Auktionsmarktplätze verlangen 10 % bis 15 % Provision pro Palette. Bei einem Abverkauf von 20.000 € gehen so schnell 2.000 € bis 3.000 € an Gebühren verloren.",
+          "Mit pauschal 10 € pro Live-Auktion und 0 % Verkaufsprovision bleibt der gesamte Erlös in Ihrem Unternehmen.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "WhatsApp B2B-Auktions-Alternative", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Kostenloser Margen- & Gebührenrechner", href: "/tools" },
+      { label: "Auktions-Ticket-Preise ansehen", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Anti-Sniping in Live-B2B-Auktionen: Warum Soft-Close-Timer höhere Preise erzielen",
+    description:
+      "Erfahren Sie, wie Anti-Sniping-Timer Gebote in letzter Sekunde verhindern, Großhandelskäufer aktiv halten und den Zuschlagspreis steigern.",
+    category: "Auktionsmechanik",
+    publishedAt: "2026-11-16",
+    readTime: "4 Min. Lesezeit",
+    keywords: [
+      "Anti-Sniping Auktion",
+      "Soft-Close Timer",
+      "B2B Live-Gebote",
+      "Großhandel Auktionsmechanik",
+      "Auktionserlös steigern",
+    ],
+    sections: [
+      {
+        heading: "Was ist Bid-Sniping bei Großhandelsauktionen?",
+        paragraphs: [
+          "Bei einer Auktion mit hartem Ende warten erfahrene Käufer bis zu den letzten zwei Sekunden, damit Konkurrenten nicht mehr reagieren können. Andere Bieter springen frustriert ab und Sie verschenken Marge.",
+        ],
+      },
+      {
+        heading: "So funktioniert der Soft-Close-Anti-Snipe-Timer",
+        paragraphs: [
+          "Ein Anti-Snipe-Timer verlängert den Countdown automatisch, sobald in den letzten Sekunden ein neues Gebot eingeht. Bei einem 15-Sekunden-Fenster springt der Timer beispielsweise bei einem späten Gebot wieder auf 15 Sekunden zurück.",
+          "So erhält jeder seriöse Käufer eine faire Chance zum Nachlegen – und die Schlussphase wird zur echten Preisfindung.",
+        ],
+        bullets: [
+          "Konfigurierbares Anti-Snipe-Fenster pro Raum (z. B. 10s, 15s, 30s)",
+          "Echtzeit-Synchronisation über WebSockets für alle Bieter",
+          "Optionales Auto-Bid-Maximum für Käufer, die nicht jede Sekunde zusehen können",
+        ],
+      },
+      {
+        heading: "Die richtige Los-Laufzeit und Schrittweite wählen",
+        paragraphs: [
+          "Für schnelle Großhandels-Drops mit 10 bis 30 Losen sorgt eine Los-Dauer von 60 bis 120 Sekunden kombiniert mit 15 Sekunden Anti-Snipe für hohes Tempo ohne unnötige Wartezeiten.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "So funktioniert ArcBids", href: "/how-it-works" },
+      { label: "Optimale Gebotsschritte berechnen", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD & Refurbished-Smartphones: Statische Preislisten vs. Live-Los-Auktionen",
+    description:
+      "Vergleichen Sie statische CSV-Bestandslisten mit Live-B2B-Auktionen für ITAD-Hardware, Grade-A/B/C-Smartphones, Laptops und Server.",
+    category: "ITAD & Elektronik",
+    publishedAt: "2026-11-14",
+    readTime: "5 Min. Lesezeit",
+    keywords: [
+      "ITAD Hardware Auktionen",
+      "B2B Smartphone Restposten Auktion",
+      "Refurbished Elektronik Großhandel",
+      "IT Asset Disposition Verwertung",
+    ],
+    sections: [
+      {
+        heading: "Das Problem statischer Bestandslisten im Elektronik-Großhandel",
+        paragraphs: [
+          "Elektronik und Smartphone-Bestände verlieren wöchentlich an Wert. Wenn Sie eine CSV-Liste an 40 Händler senden, werden die A-Ware-iPhones sofort herausgepickt, während B/C-Grade-Posten im Lager liegen bleiben.",
+        ],
+      },
+      {
+        heading: "Lose optimal für maximale ITAD-Verwertung strukturieren",
+        paragraphs: [
+          "In einem Live-Auktionsraum bündeln Sie gemischte Zustandsstufen zu ausgewogenen Losen oder versteigern Modellreihen sequenziell mit klarem Startpreis und Zustandsbeschreibung.",
+        ],
+        bullets: [
+          "Klare Angaben zu Grading, Stückzahl, IMEI-/Serienchargen und Akkuzustand",
+          "Geprüfte Käuferlisten, damit nur verifizierte ITAD- & Refurbishing-Partner bieten",
+          "Sofortige Auswertung nach Auktionsende inkl. Käufername, E-Mail und Endpreis",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "ITAD-Hardware-Auktionen", href: "/solutions/itad-hardware-auctions" },
+      { label: "B2B-Smartphone-Restposten", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Liquidationspaletten und Überbestände richtig bepreisen für maximale Erlöse",
+    description:
+      "Ein praxiserprobter Leitfaden für Startgebote, Mindestpreise und Gebotsschritte bei Retourenpaletten, Sonderposten und Mode-Überhängen.",
+    category: "Preisstrategie",
+    publishedAt: "2026-11-12",
+    readTime: "4 Min. Lesezeit",
+    keywords: [
+      "Liquidationspaletten Preisgestaltung",
+      "Überbestände versteigern",
+      "Großhandel Startgebot festlegen",
+      "B2B Retouren Verwertung",
+    ],
+    sections: [
+      {
+        heading: "Niedrig genug starten, um frühen Wettbewerb auszulösen",
+        paragraphs: [
+          "Der häufigste Fehler bei Palettenauktionen ist ein Startpreis auf Höhe des Wunsch-Endpreises. Hohe Startgebote bremsen den Raum aus – niemand möchte das erste Gebot abgeben.",
+          "Ein Startpreis leicht unter dem Zielwert motiviert 3 bis 5 Käufer zum Einstieg; der Wettbewerb treibt den Preis anschließend oft über das Ziel hinaus.",
+        ],
+      },
+      {
+        heading: "Den passenden Gebotsschritt zur Losgröße wählen",
+        paragraphs: [
+          "Bei einer Palette im Wert von 2.000 € bremst ein 5-€-Schritt die Auktion, während 250 € zu hoch sind. Ideal sind etwa 2 % bis 5 % des erwarteten Loswerts.",
+        ],
+        bullets: [
+          "500 € – 1.500 € Lose: 20 € – 50 € Mindestschritt",
+          "2.000 € – 10.000 € Lose: 50 € – 200 € Mindestschritt",
+          "10.000 €+ Maschinen oder Großposten: 250 € – 500 € Mindestschritt",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Mode-Überhang-Auktionen", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Kostenloser Margenrechner", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Exklusive Käuferlisten: Warum geprüfte B2B-Räume offenen Marktplätzen überlegen sind",
+    description:
+      "Warum professionelle Großhändler private Invite-Only-Auktionen offenen Plattformen vorziehen: Preisschutz, zahlungssichere Bieter und schnelle Abwicklung.",
+    category: "Käufermanagement",
+    publishedAt: "2026-11-10",
+    readTime: "4 Min. Lesezeit",
+    keywords: [
+      "Invite-Only B2B Auktion",
+      "geprüfte Käuferliste",
+      "privater Großhandelsmarktplatz",
+      "B2B Auktionsraum",
+    ],
+    sections: [
+      {
+        heading: "Schützen Sie Ihre Marke und Vertriebskanäle",
+        paragraphs: [
+          "Offene Liquidationsportale machen Ihre Großhandelspreise und Überbestände öffentlich sichtbar. In einem privaten Auktionsraum sehen nur freigegebene Handelspartner Ihre Lose und Gebote.",
+        ],
+      },
+      {
+        heading: "Keine Spaßbieter und schnelle Abwicklung",
+        paragraphs: [
+          "Wenn ausschließlich geprüfte B2B-Käufer aus Ihren Käuferlisten teilnehmen, verläuft die Abwicklung nach Auktionsende reibungslos. Verstößt ein Käufer gegen Regeln, lässt er sich mit einem Klick sperren.",
+        ],
+        bullets: [
+          "Käufer nach Branchen segmentieren (z. B. EU-Elektronik, Palettenhändler, Export)",
+          "Einen einzigen Einladungslink teilen – kein kompliziertes Onboarding",
+          "Zuschläge direkt nach Auktionsende auswerten und exportieren",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Industriemaschinen & Überbestände", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Ersten Raum starten", href: "/dashboard" },
+    ],
+  },
+];
+
+export function getBlogPosts(locale: Locale = Locale.EN): BlogPost[] {
+  return locale === Locale.DE ? BLOG_POSTS_DE : BLOG_POSTS;
+}
+
+export function getBlogPostBySlug(
+  slug: string,
+  locale: Locale = Locale.EN
+): BlogPost | undefined {
+  return getBlogPosts(locale).find((post) => post.slug === slug);
 }

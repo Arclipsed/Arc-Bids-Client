@@ -8,7 +8,25 @@ import { SiteNav } from "@/components/SiteNav";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
-import { BLOG_POSTS } from "@/lib/blog-posts";
+import { Locale } from "@/translations/Translations";
+import { getBlogPosts } from "@/lib/blog-posts";
+
+const BLOG_COPY = {
+  EN: {
+    eyebrow: "ArcBids Journal",
+    title: "B2B Wholesale & Live Auction Playbooks",
+    subtitle:
+      "Practical guides on running private wholesale auctions, setting anti-sniping timers, pricing liquidation pallets, and replacing messy WhatsApp broadcasts.",
+    readArticle: "Read article",
+  },
+  DE: {
+    eyebrow: "ArcBids Journal",
+    title: "B2B-Großhandel & Live-Auktions-Leitfäden",
+    subtitle:
+      "Praxisnahe Guides für private Großhandelsauktionen, Anti-Sniping-Timer, Paletten-Preisgestaltung und Alternativen zum WhatsApp-Chaos.",
+    readArticle: "Artikel lesen",
+  },
+} as const;
 
 export const metadata: Metadata = MetaTagService.CreateMetaTags({
   url: "/blog",
@@ -28,6 +46,8 @@ export const metadata: Metadata = MetaTagService.CreateMetaTags({
 async function BlogIndexContent() {
   const locale = await TranslationService.GetUserLocale();
   const t = TranslationService.GetTranslations(locale);
+  const copy = locale === Locale.DE ? BLOG_COPY.DE : BLOG_COPY.EN;
+  const posts = getBlogPosts(locale);
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-clip bg-[#05070c] text-zinc-100">
@@ -58,18 +78,18 @@ async function BlogIndexContent() {
         <div className="mb-12 max-w-2xl">
           <p className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#3ff2e0]">
             <BookOpen className="h-3.5 w-3.5" />
-            ArcBids Journal
+            {copy.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            B2B Wholesale &amp; Live Auction Playbooks
+            {copy.title}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-zinc-400 sm:text-base">
-            Practical guides on running private wholesale auctions, setting anti-sniping timers, pricing liquidation pallets, and replacing messy WhatsApp broadcasts.
+            {copy.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {BLOG_POSTS.map((post) => (
+          {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -98,7 +118,7 @@ async function BlogIndexContent() {
               </div>
 
               <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#3ff2e0]">
-                Read article
+                {copy.readArticle}
                 <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </div>
             </Link>
