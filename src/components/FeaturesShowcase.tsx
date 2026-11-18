@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Timer, UserPlus, Zap } from "lucide-react";
+import { Check, Lock, Timer, Users, Zap } from "lucide-react";
 import { InteractivePill } from "@/components/ui/interactive-pill";
 import type { ITranslation } from "@/translations/ITranslation";
 import { EN } from "@/translations/en/en";
 
 const MAX_BID_OPTIONS = [20_000, 22_000, 25_000];
+const DEMO_LISTS = [
+  { id: "fleet", name: "Fleet Buyers", count: 14 },
+  { id: "vip", name: "VIP EU Dealers", count: 8 },
+  { id: "tech", name: "ITAD Resellers", count: 23 },
+];
 
 export function FeaturesShowcase({
   copy = EN.HomePage.Features,
@@ -15,8 +20,7 @@ export function FeaturesShowcase({
 }) {
   const [maxBid, setMaxBid] = useState<number>(22_000);
   const [autoBidOn, setAutoBidOn] = useState<boolean>(true);
-  const [copiedInvite, setCopiedInvite] = useState<boolean>(false);
-  const [buyerAllowed, setBuyerAllowed] = useState<boolean>(true);
+  const [selectedLists, setSelectedLists] = useState<string[]>(["fleet", "vip"]);
 
   return (
     <section id="features" className="scroll-mt-24">
@@ -142,11 +146,11 @@ export function FeaturesShowcase({
           </div>
         </div>
 
-        {/* Card 3: Private Buyer Invites */}
+        {/* Card 3: Buyer Email Lists */}
         <div className="flex flex-col justify-between rounded-3xl border border-white/[0.08] bg-[#090d14] p-6 transition hover:border-white/15">
           <div>
             <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 text-emerald-300">
-              <UserPlus className="h-4 w-4" />
+              <Users className="h-4 w-4" />
             </div>
             <h3 className="mt-4 text-base font-semibold text-white">
               {copy.InvitesTitle}
@@ -156,51 +160,54 @@ export function FeaturesShowcase({
             </p>
           </div>
 
-          {/* Interactive Buyer Invite Control */}
+          {/* Interactive Buyer Email List Selector */}
           <div className="mt-5 rounded-2xl border border-white/[0.07] bg-[#0e1420]/80 p-3.5">
             <div className="flex items-center justify-between gap-2">
-              <div className="flex min-w-0 items-center gap-2">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#3ff2e0]/15 text-[10px] font-bold text-[#3ff2e0]">
-                  N
-                </span>
-                <span className="truncate text-xs font-semibold text-white">
-                  Nordic Tech Supply
-                </span>
-              </div>
-              <InteractivePill
-                tone="accent"
-                active={buyerAllowed}
-                onClick={() => setBuyerAllowed((v) => !v)}
-                className="px-2.5 py-0.5 text-[10px]"
-              >
-                {buyerAllowed ? copy.InvitedLabel : copy.PausedLabel}
-              </InteractivePill>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white">
+                <Lock className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                Private Auction Only
+              </span>
+              <span className="font-mono text-[10px] text-[#3ff2e0]">
+                {selectedLists.length} selected
+              </span>
             </div>
 
-            <div className="mt-3 flex items-center justify-between gap-2 rounded-xl border border-white/[0.05] bg-[#070a10] px-3 py-2">
-              <span className="truncate font-mono text-[11px] text-zinc-400">
-                arcbids.com/auction?invite=nordic
-              </span>
-              <InteractivePill
-                tone="subtle"
-                onClick={() => {
-                  setCopiedInvite(true);
-                  setTimeout(() => setCopiedInvite(false), 1800);
-                }}
-                className="shrink-0 gap-1 px-2.5 py-1 text-[10px]"
-              >
-                {copiedInvite ? (
-                  <>
-                    <Check className="h-3 w-3 text-[#3ff2e0]" />
-                    Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3 w-3" />
-                    Copy Link
-                  </>
-                )}
-              </InteractivePill>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {DEMO_LISTS.map((list) => {
+                const active = selectedLists.includes(list.id);
+                return (
+                  <button
+                    key={list.id}
+                    type="button"
+                    onClick={() =>
+                      setSelectedLists((prev) =>
+                        active
+                          ? prev.filter((id) => id !== list.id)
+                          : [...prev, list.id]
+                      )
+                    }
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition ${
+                      active
+                        ? "border-[#3ff2e0]/50 bg-[#3ff2e0]/15 text-[#3ff2e0]"
+                        : "border-white/10 bg-[#070a10] text-zinc-400 hover:border-white/25"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-3 w-3 items-center justify-center rounded-full border ${
+                        active
+                          ? "border-[#3ff2e0] bg-[#3ff2e0] text-[#04070b]"
+                          : "border-white/25"
+                      }`}
+                    >
+                      {active && <Check className="h-2 w-2 stroke-[3]" />}
+                    </span>
+                    <span>{list.name}</span>
+                    <span className="font-mono text-[10px] opacity-75">
+                      ({list.count})
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

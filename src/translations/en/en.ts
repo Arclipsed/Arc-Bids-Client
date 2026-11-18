@@ -107,9 +107,9 @@ export const EN: ITranslation = {
       AntiSnipeDesc:
         "Last-second bids automatically extend your lot timer so competing buyers always have time to counter—maximizing final sale value.",
       AntiSnipeExtended: "+15s extended",
-      InvitesTitle: "Private Buyer Invites",
+      InvitesTitle: "Buyer Email Lists",
       InvitesDesc:
-        "Invite only the wholesale buyers you trust with private room links, and control who can bid anytime from your desk.",
+        "Organize approved buyers into named email lists, import from CSV, and choose which lists can enter each private auction.",
       InvitedLabel: "Invited",
       PausedLabel: "Paused",
     },
