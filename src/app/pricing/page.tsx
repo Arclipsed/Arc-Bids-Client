@@ -46,7 +46,7 @@ async function PricingContent() {
 
       {/* Subtle ambient background */}
       <main className="relative z-10 mx-auto w-full max-w-5xl flex-1 px-4 py-16 sm:px-6 sm:py-24">
-        <PricingSection copy={t.PricingPage.Section} />
+        <PricingSection copy={t.PricingPage.Section} locale={locale} />
       </main>
 
       <FooterSection

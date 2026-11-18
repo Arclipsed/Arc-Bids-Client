@@ -7,8 +7,54 @@ import * as PricingCard from "@/components/ui/pricing-card"
 import { cn } from "@/lib/utils"
 import type { ITranslation } from "@/translations/ITranslation"
 import { EN } from "@/translations/en/en"
+import { Locale } from "@/translations/Translations"
 
 const SHOW_TIER_PLANS = false;
+
+const TICKET_PRICING_COPY = {
+  EN: {
+    title: "Simple Pay-Per-Auction Tickets",
+    subtitleLead:
+      "We currently use a simple pay-per-auction ticket model with no monthly commitment.",
+    subtitleNote:
+      "Pricing and volume plans will be adjusted in the future as we roll out new tiers.",
+    planName: "Auction Ticket",
+    badge: "Current Model",
+    price: "€10",
+    period: "/ per live auction",
+    cta: "Buy Tickets in Dashboard",
+    description:
+      "Drafting and testing auctions is always free. You only spend 1 Auction Ticket when you schedule or launch a live auction room.",
+    features: [
+      "Free to create, edit & test draft auctions",
+      "1 Ticket (€10) = 1 scheduled or live auction room",
+      "Automatic ticket refund if cancelled or deleted before start",
+      "Unlimited lots, real-time bidding & private buyer lists",
+      "0% commission on your auction sales",
+    ],
+  },
+  DE: {
+    title: "Einfache Auktions-Tickets pro Auktion",
+    subtitleLead:
+      "Aktuell nutzen wir ein einfaches Pay-per-Auction-Modell ohne monatliche Bindung.",
+    subtitleNote:
+      "Preise und Volumenpakete werden in Zukunft mit neuen Tarifen angepasst.",
+    planName: "Auktions-Ticket",
+    badge: "Aktuelles Modell",
+    price: "10 €",
+    period: "/ pro Live-Auktion",
+    cta: "Tickets im Dashboard kaufen",
+    description:
+      "Das Erstellen und Testen von Entwürfen ist immer kostenlos. Sie verbrauchen erst 1 Auktions-Ticket, wenn Sie eine Auktion planen oder live starten.",
+    features: [
+      "Entwürfe kostenlos erstellen, bearbeiten & testen",
+      "1 Ticket (10 €) = 1 geplanter oder Live-Auktionsraum",
+      "Automatische Ticket-Rückerstattung bei Stornierung oder Löschung vor Start",
+      "Unbegrenzte Lose, Echtzeit-Gebote & private Käuferlisten",
+      "0 % Provision auf Ihre Auktionserlöse",
+    ],
+  },
+} as const;
 
 const PLAN_META = [
   { icon: <Users />, variant: "outline" as const, href: "/auction" },
@@ -18,9 +64,14 @@ const PLAN_META = [
 
 export function PricingSection({
   copy = EN.PricingPage.Section,
+  locale = Locale.EN,
 }: {
   copy?: ITranslation["PricingPage"]["Section"];
+  locale?: Locale;
 }) {
+  const ticketCopy =
+    locale === Locale.DE ? TICKET_PRICING_COPY.DE : TICKET_PRICING_COPY.EN;
+
   return (
     <section id="pricing" className="scroll-mt-24">
       <div className="mb-8 max-w-2xl">
@@ -28,14 +79,12 @@ export function PricingSection({
           {copy.Eyebrow}
         </p>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-          {SHOW_TIER_PLANS ? copy.Title : "Simple Pay-Per-Auction Tickets"}
+          {SHOW_TIER_PLANS ? copy.Title : ticketCopy.title}
         </h2>
         {!SHOW_TIER_PLANS && (
           <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-            We currently use a simple pay-per-auction ticket model with no monthly commitment.{" "}
-            <span className="text-zinc-300">
-              Pricing and volume plans will be adjusted in the future as we roll out new tiers.
-            </span>
+            {ticketCopy.subtitleLead}{" "}
+            <span className="text-zinc-300">{ticketCopy.subtitleNote}</span>
           </p>
         )}
       </div>
@@ -47,19 +96,19 @@ export function PricingSection({
               <PricingCard.Plan>
                 <PricingCard.PlanName className="text-zinc-200">
                   <Ticket className="text-[#3ff2e0]" />
-                  <span>Auction Ticket</span>
+                  <span>{ticketCopy.planName}</span>
                 </PricingCard.PlanName>
                 <PricingCard.Badge className="border-[#3ff2e0]/35 bg-[#3ff2e0]/10 font-semibold text-[#3ff2e0]">
-                  Current Model
+                  {ticketCopy.badge}
                 </PricingCard.Badge>
               </PricingCard.Plan>
 
               <PricingCard.Price>
                 <PricingCard.MainPrice className="text-white">
-                  €10
+                  {ticketCopy.price}
                 </PricingCard.MainPrice>
                 <PricingCard.Period className="text-zinc-400">
-                  / per live auction
+                  {ticketCopy.period}
                 </PricingCard.Period>
               </PricingCard.Price>
 
@@ -68,22 +117,16 @@ export function PricingSection({
                 variant="default"
                 className="w-full rounded-full bg-[#e4fffb] font-semibold text-[#04070b] hover:bg-white"
               >
-                <Link href="/dashboard">Buy Tickets in Dashboard</Link>
+                <Link href="/dashboard">{ticketCopy.cta}</Link>
               </Button>
             </PricingCard.Header>
 
             <PricingCard.Body>
               <PricingCard.Description className="text-zinc-400">
-                Drafting and testing auctions is always free. You only spend 1 Auction Ticket when you schedule or launch a live auction room.
+                {ticketCopy.description}
               </PricingCard.Description>
               <PricingCard.List>
-                {[
-                  "Free to create, edit & test draft auctions",
-                  "1 Ticket (€10) = 1 scheduled or live auction room",
-                  "Automatic ticket refund if cancelled or deleted before start",
-                  "Unlimited lots, real-time bidding & private buyer lists",
-                  "0% commission on your auction sales",
-                ].map((item) => (
+                {ticketCopy.features.map((item) => (
                   <PricingCard.ListItem key={item} className="text-zinc-300">
                     <CheckCircle2
                       className="mt-0.5 h-4 w-4 shrink-0 text-[#3ff2e0]"
