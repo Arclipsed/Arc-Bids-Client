@@ -86,11 +86,18 @@ export function DevicesWidget({
                           </span>
                         </span>
                       ) : (
-                        <span className="font-mono text-[10px] text-zinc-500">
-                          Last seen{" "}
-                          {formatDistanceToNow(new Date(d.lastSeenMs), {
-                            addSuffix: true,
-                          })}
+                        <span
+                          title={`Offline · Last seen ${formatDistanceToNow(
+                            new Date(d.lastSeenMs),
+                            { addSuffix: true }
+                          )}`}
+                          aria-label={`Offline, last seen ${formatDistanceToNow(
+                            new Date(d.lastSeenMs),
+                            { addSuffix: true }
+                          )}`}
+                          className="inline-flex items-center justify-center rounded-full border border-rose-400/25 bg-rose-500/10 p-1.5"
+                        >
+                          <span className="h-2 w-2 rounded-full bg-rose-400" />
                         </span>
                       )}
                       {isCurrent && (
