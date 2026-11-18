@@ -120,6 +120,20 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link
+                href="/blog"
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  "bg-transparent text-zinc-300 hover:bg-white/[0.06] hover:text-white"
+                )}
+              >
+                Blog
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
 
@@ -171,6 +185,15 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                     className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
                   >
                     {nav.Pricing}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blog"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-200 transition hover:bg-white/[0.06] hover:text-white"
+                  >
+                    Blog
                   </Link>
                 </li>
                 <li>

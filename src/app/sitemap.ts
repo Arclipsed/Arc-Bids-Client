@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { BLOG_POSTS } from "@/lib/blog-posts";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://arcbids.com";
 
@@ -59,6 +60,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/blog`,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    ...BLOG_POSTS.map((post) => ({
+      url: `${SITE_URL}/blog/${post.slug}`,
+      lastModified: post.publishedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     {
       url: `${SITE_URL}/imprint`,
       changeFrequency: "yearly",
