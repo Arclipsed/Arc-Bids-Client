@@ -32,12 +32,12 @@ const CONTENT = {
       "Germany",
     ],
     emailLabel: "Email",
-    email: "contact@pycie.com",
+    email: "hello@arcbids.com",
     phoneLabel: "Phone",
     phone: "+49 152 24759168",
     websiteLabel: "Website",
     website: "https://www.pycie.com",
-    legalEmail: "contact@pycie.com",
+    legalEmail: "legal@arcbids.com",
     sections: [
       {
         heading: "1. Liability Disclaimer for Content",
@@ -70,12 +70,12 @@ const CONTENT = {
       "Deutschland",
     ],
     emailLabel: "E-Mail",
-    email: "contact@pycie.com",
+    email: "hello@arcbids.com",
     phoneLabel: "Telefon",
     phone: "+49 152 24759168",
     websiteLabel: "Webseite",
     website: "https://www.pycie.com",
-    legalEmail: "contact@pycie.com",
+    legalEmail: "legal@arcbids.com",
     sections: [
       {
         heading: "1. Haftung für Inhalte",
@@ -154,6 +154,13 @@ async function ImprintContent() {
                   className="text-[#3ff2e0] transition hover:underline"
                 >
                   {copy.email}
+                </a>{" "}
+                /{" "}
+                <a
+                  href={`mailto:${copy.legalEmail}`}
+                  className="text-[#3ff2e0] transition hover:underline"
+                >
+                  {copy.legalEmail}
                 </a>
               </p>
               <p>

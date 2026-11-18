@@ -46,7 +46,7 @@ const CONTENT = {
       },
       {
         heading: "6. Contact",
-        body: "ArcBids is operated by PYCIE Studio (https://www.pycie.com). Questions regarding these Terms of Service can be sent to contact@pycie.com.",
+        body: "ArcBids is operated by PYCIE Studio (https://www.pycie.com). Questions regarding these Terms of Service can be sent to hello@arcbids.com.",
       },
     ],
   },
@@ -77,7 +77,7 @@ const CONTENT = {
       },
       {
         heading: "6. Kontakt",
-        body: "ArcBids wird betrieben von PYCIE Studio (https://www.pycie.com). Bei Fragen zu diesen AGB erreichen Sie uns unter contact@pycie.com.",
+        body: "ArcBids wird betrieben von PYCIE Studio (https://www.pycie.com). Bei Fragen zu diesen AGB erreichen Sie uns unter hello@arcbids.com.",
       },
     ],
   },

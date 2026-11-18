@@ -35,7 +35,7 @@ export default function FooterSection({
   termsLabel = "Terms of Service",
   imprintLabel = "Imprint",
   address = "74321 Bietigheim-Bissingen, Germany",
-  email = "contact@pycie.com",
+  email = "hello@arcbids.com",
   copyright = "© 2026 ArcBids · A product of PYCIE Studio. All rights reserved.",
   craftedWith = "High-availability real-time infrastructure",
 }: FooterSectionProps) {

@@ -42,7 +42,7 @@ const CONTENT = {
       },
       {
         heading: "5. Retention & Deletion",
-        body: "Sellers can delete their auction rooms, buyer lists, and full account data directly from the Seller Dashboard. For data inquiries or deletion requests, contact PYCIE Studio (pycie.com) at contact@pycie.com.",
+        body: "Sellers can delete their auction rooms, buyer lists, and full account data directly from the Seller Dashboard. For data inquiries or deletion requests, contact PYCIE Studio (pycie.com) at hello@arcbids.com.",
       },
     ],
   },
@@ -69,7 +69,7 @@ const CONTENT = {
       },
       {
         heading: "5. Speicherdauer & Löschung",
-        body: "Verkäufer können Auktionsräume, Käuferlisten und ihr vollständiges Konto direkt im Dashboard löschen. Für Auskunfts- oder Löschanfragen wenden Sie sich bitte an PYCIE Studio (pycie.com) unter contact@pycie.com.",
+        body: "Verkäufer können Auktionsräume, Käuferlisten und ihr vollständiges Konto direkt im Dashboard löschen. Für Auskunfts- oder Löschanfragen wenden Sie sich bitte an PYCIE Studio (pycie.com) unter hello@arcbids.com.",
       },
     ],
   },
