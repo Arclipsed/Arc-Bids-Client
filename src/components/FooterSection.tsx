@@ -110,6 +110,14 @@ export default function FooterSection({
                   {email}
                 </a>
               </p>
+              <p className="pt-1">
+                <Link
+                  href="/contact"
+                  className="font-medium text-[#3ff2e0] transition-colors hover:text-[#e4fffb]"
+                >
+                  Contact Form →
+                </Link>
+              </p>
             </div>
           </div>
 
