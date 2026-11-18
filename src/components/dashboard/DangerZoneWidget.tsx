@@ -47,8 +47,10 @@ export function DangerZoneWidget({
             </div>
             <p className="mt-1 text-xs leading-relaxed text-zinc-400">
               Permanently delete <strong className="text-zinc-200">{orgName}</strong>, all
-              auction rooms, lots, uploaded images, bids, and buyer email lists. This cannot
-              be undone.
+              auction rooms, lots, uploaded images, bids, buyer email lists, and any
+              unused or reserved <strong className="text-rose-300">Auction Tickets</strong>{" "}
+              (tickets are <strong className="text-rose-300">lost and non-refundable</strong>).
+              This cannot be undone.
             </p>
           </div>
 
@@ -70,7 +72,7 @@ export function DangerZoneWidget({
         open={confirmOpen}
         onClose={() => !deleting && setConfirmOpen(false)}
         title="Delete Account & All Data"
-        description="This will permanently erase your organization, all auctions, lots, bids, uploaded images, and buyer email lists."
+        description="This will permanently erase your organization, all auctions, lots, bids, uploaded images, and buyer email lists. Any unused or reserved Auction Tickets will be permanently lost and are non-refundable."
       >
         <form onSubmit={handleConfirm} className="space-y-4">
           <div>
