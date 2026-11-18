@@ -74,11 +74,6 @@ export function DevicesWidget({
                       <p className="truncate text-sm font-semibold text-white">
                         {d.deviceName}
                       </p>
-                      {isCurrent && (
-                        <span className="rounded-full border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#3ff2e0]">
-                          This device
-                        </span>
-                      )}
                       {d.isOnline ? (
                         <span
                           title="Online"
@@ -96,6 +91,11 @@ export function DevicesWidget({
                           {formatDistanceToNow(new Date(d.lastSeenMs), {
                             addSuffix: true,
                           })}
+                        </span>
+                      )}
+                      {isCurrent && (
+                        <span className="rounded-full border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#3ff2e0]">
+                          This device
                         </span>
                       )}
                     </div>
