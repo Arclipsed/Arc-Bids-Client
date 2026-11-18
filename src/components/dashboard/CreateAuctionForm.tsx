@@ -121,9 +121,12 @@ export function CreateAuctionForm({
   const [addLotOpen, setAddLotOpen] = useState(false);
   const [editingLotIndex, setEditingLotIndex] = useState<number | null>(null);
 
+  const scheduleLocked = !initialHasTicket && auctionCredits === 0;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomTitle.trim() || lots.length === 0) return;
+    if (scheduleLocked && scheduledTime) return;
 
     onSubmit({
       roomTitle: roomTitle.trim(),
@@ -391,56 +394,92 @@ export function CreateAuctionForm({
 
           {/* Schedule Start Date & Time */}
           <div className="space-y-2.5">
-            <div className="flex w-full items-center justify-between gap-2 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5 transition hover:border-white/15">
+            <div
+              className={`flex w-full items-center justify-between gap-2 rounded-2xl border px-3.5 py-2.5 transition ${
+                scheduleLocked
+                  ? "border-amber-400/20 bg-amber-500/[0.04]"
+                  : "border-white/[0.06] bg-[#0e1420]/70 hover:border-white/15"
+              }`}
+            >
               <button
                 type="button"
+                disabled={scheduleLocked}
                 onClick={() => setShowSchedule((v) => !v)}
-                className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 text-left"
+                className={`flex min-w-0 flex-1 items-center gap-2 text-left ${
+                  scheduleLocked ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+                }`}
               >
-                <CalendarIcon className="h-4 w-4 shrink-0 text-[#3ff2e0]" />
+                {scheduleLocked ? (
+                  <Lock className="h-4 w-4 shrink-0 text-amber-300" />
+                ) : (
+                  <CalendarIcon className="h-4 w-4 shrink-0 text-[#3ff2e0]" />
+                )}
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-white">
-                    {copy.ScheduleTitle}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-medium text-white">
+                      {copy.ScheduleTitle}
+                    </p>
+                    {scheduleLocked && (
+                      <span className="rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-300">
+                        Needs 1 Ticket
+                      </span>
+                    )}
+                  </div>
                   <p className="truncate text-[11px] text-zinc-400">
-                    {scheduledTime
-                      ? `${format(scheduledDate, "EEE, MMM d")} ${copy.ScheduleAtWord} ${scheduledTime}`
-                      : copy.ScheduleOptionalPrefix}
+                    {scheduleLocked
+                      ? "Buy 1 Auction Ticket (€10) to unlock scheduled start times"
+                      : scheduledTime
+                        ? `${format(scheduledDate, "EEE, MMM d")} ${copy.ScheduleAtWord} ${scheduledTime}`
+                        : copy.ScheduleOptionalPrefix}
                   </p>
                 </div>
               </button>
 
               <div className="flex shrink-0 items-center gap-1.5">
-                {scheduledTime && (
-                  <IconButton
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setScheduledTime(null);
-                      setShowSchedule(false);
-                    }}
-                    aria-label="Clear scheduled start time"
-                    className="enabled:hover:text-rose-400"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </IconButton>
+                {scheduleLocked ? (
+                  stripeConfigured && onBuyTicket ? (
+                    <button
+                      type="button"
+                      onClick={onBuyTicket}
+                      className="cursor-pointer whitespace-nowrap rounded-full bg-amber-300 px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200"
+                    >
+                      Buy Ticket · €10
+                    </button>
+                  ) : null
+                ) : (
+                  <>
+                    {scheduledTime && (
+                      <IconButton
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setScheduledTime(null);
+                          setShowSchedule(false);
+                        }}
+                        aria-label="Clear scheduled start time"
+                        className="enabled:hover:text-rose-400"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </IconButton>
+                    )}
+                    <IconButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowSchedule((v) => !v)}
+                      aria-label={showSchedule ? "Collapse schedule" : "Expand schedule"}
+                    >
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          showSchedule ? "rotate-180" : ""
+                        }`}
+                      />
+                    </IconButton>
+                  </>
                 )}
-                <IconButton
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowSchedule((v) => !v)}
-                  aria-label={showSchedule ? "Collapse schedule" : "Expand schedule"}
-                >
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      showSchedule ? "rotate-180" : ""
-                    }`}
-                  />
-                </IconButton>
               </div>
             </div>
 
-            {showSchedule && (
+            {!scheduleLocked && showSchedule && (
               <div className="w-full">
                 <Calendar14
                   selectedDate={scheduledDate}
@@ -533,7 +572,7 @@ export function CreateAuctionForm({
         {/* Ticket Notice */}
         {(() => {
           const needsTicketForSchedule =
-            showSchedule && !initialHasTicket && stripeConfigured && auctionCredits === 0;
+            (showSchedule || Boolean(scheduledTime)) && scheduleLocked;
           return (
             <>
               <div
