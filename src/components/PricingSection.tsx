@@ -1,6 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Building, Briefcase, CheckCircle2, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import * as PricingCard from "@/components/ui/pricing-card"
@@ -9,9 +11,9 @@ import type { ITranslation } from "@/translations/ITranslation"
 import { EN } from "@/translations/en/en"
 
 const PLAN_META = [
-  { icon: <Users />, variant: "outline" as const, href: "/auction" },
-  { icon: <Briefcase />, variant: "default" as const, href: "/dashboard" },
-  { icon: <Building />, variant: "outline" as const, href: "/dashboard" },
+  { icon: <Users />, variant: "outline" as const, href: "/auction", stripePlan: null },
+  { icon: <Briefcase />, variant: "default" as const, href: "/dashboard", stripePlan: "wholesale_desk" as const },
+  { icon: <Building />, variant: "outline" as const, href: "/dashboard", stripePlan: "enterprise" as const },
 ]
 
 export function PricingSection({
@@ -19,6 +21,36 @@ export function PricingSection({
 }: {
   copy?: ITranslation["PricingPage"]["Section"];
 }) {
+  const router = useRouter();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const handleCheckout = async (plan: "wholesale_desk" | "enterprise") => {
+    setCheckoutError(null);
+    setLoadingPlan(plan);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+      if (res.status === 401) {
+        router.push("/login");
+        return;
+      }
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) {
+        setCheckoutError(data.error ?? "Unable to start checkout.");
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setCheckoutError("Network error. Please try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   return (
     <section id="pricing" className="scroll-mt-24">
       <div className="mb-8 max-w-xl">
@@ -28,6 +60,11 @@ export function PricingSection({
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
           {copy.Title}
         </h2>
+        {checkoutError && (
+          <p className="mt-2 text-xs font-medium text-rose-400">
+            {checkoutError}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -70,18 +107,30 @@ export function PricingSection({
                 )}
               </PricingCard.Price>
 
-              <Button
-                asChild
-                variant={meta.variant}
-                className={cn(
-                  "w-full rounded-full font-semibold",
-                  meta.variant === "default"
-                    ? "bg-[#e4fffb] text-[#04070b] hover:bg-white"
-                    : "border-white/15 bg-white/[0.04] text-zinc-100 hover:bg-white/[0.08] hover:text-white"
-                )}
-              >
-                <Link href={meta.href}>{plan.cta}</Link>
-              </Button>
+              {meta.stripePlan ? (
+                <Button
+                  type="button"
+                  disabled={loadingPlan !== null}
+                  onClick={() => void handleCheckout(meta.stripePlan)}
+                  variant={meta.variant}
+                  className={cn(
+                    "w-full cursor-pointer rounded-full font-semibold",
+                    meta.variant === "default"
+                      ? "bg-[#e4fffb] text-[#04070b] hover:bg-white"
+                      : "border-white/15 bg-white/[0.04] text-zinc-100 hover:bg-white/[0.08] hover:text-white"
+                  )}
+                >
+                  {loadingPlan === meta.stripePlan ? "Redirecting…" : plan.cta}
+                </Button>
+              ) : (
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full rounded-full border-white/15 bg-white/[0.04] font-semibold text-zinc-100 hover:bg-white/[0.08] hover:text-white"
+                >
+                  <Link href={meta.href}>{plan.cta}</Link>
+                </Button>
+              )}
             </PricingCard.Header>
 
             <PricingCard.Body>
