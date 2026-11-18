@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = (await req.json()) as { sessionId?: string; roomId?: string };
+    const body = (await req.json()) as { sessionId?: string; orgId?: string };
     const sessionId = body.sessionId?.trim();
-    const roomId = body.roomId?.trim();
+    const orgId = body.orgId?.trim();
 
-    if (!sessionId || !roomId) {
+    if (!sessionId || !orgId) {
       return NextResponse.json({ paid: false }, { status: 400 });
     }
 
@@ -35,10 +35,12 @@ export async function POST(req: NextRequest) {
 
     const isPaid =
       checkout.payment_status === "paid" &&
-      checkout.metadata?.roomId === roomId &&
+      checkout.metadata?.orgId === orgId &&
       checkout.metadata?.email === session.email;
 
-    return NextResponse.json({ paid: isPaid });
+    const quantity = Math.max(1, Number(checkout.metadata?.quantity ?? 1) || 1);
+
+    return NextResponse.json({ paid: isPaid, orgId, quantity });
   } catch {
     return NextResponse.json({ paid: false }, { status: 500 });
   }

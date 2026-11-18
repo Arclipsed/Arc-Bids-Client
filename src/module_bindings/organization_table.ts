@@ -26,4 +26,5 @@ export default __t.row({
   country: __t.string(),
   vatNumber: __t.string().name("vat_number"),
   description: __t.string(),
+  auctionCredits: __t.u32().name("auction_credits"),
 });

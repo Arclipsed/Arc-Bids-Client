@@ -52,6 +52,7 @@ import JoinRoomReducer from "./join_room_reducer";
 import LeaveRoomReducer from "./leave_room_reducer";
 import MarkRoomPaidReducer from "./mark_room_paid_reducer";
 import PlaceBidReducer from "./place_bid_reducer";
+import RedeemAuctionTicketsReducer from "./redeem_auction_tickets_reducer";
 import RegisterDeviceReducer from "./register_device_reducer";
 import RemoveDeviceReducer from "./remove_device_reducer";
 import SetAutoBidReducer from "./set_auto_bid_reducer";
@@ -245,6 +246,7 @@ const reducersSchema = __reducers(
   __reducerSchema("leave_room", LeaveRoomReducer),
   __reducerSchema("mark_room_paid", MarkRoomPaidReducer),
   __reducerSchema("place_bid", PlaceBidReducer),
+  __reducerSchema("redeem_auction_tickets", RedeemAuctionTicketsReducer),
   __reducerSchema("register_device", RegisterDeviceReducer),
   __reducerSchema("remove_device", RemoveDeviceReducer),
   __reducerSchema("set_auto_bid", SetAutoBidReducer),

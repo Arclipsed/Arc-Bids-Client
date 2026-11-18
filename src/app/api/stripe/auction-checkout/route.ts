@@ -21,12 +21,17 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = (await req.json()) as { roomId?: string; roomTitle?: string };
-    const roomId = body.roomId?.trim();
-    const roomTitle = body.roomTitle?.trim() || "Auction Room";
+    const body = (await req.json()) as {
+      orgId?: string;
+      orgName?: string;
+      quantity?: number;
+    };
+    const orgId = body.orgId?.trim();
+    const orgName = body.orgName?.trim();
+    const quantity = Math.min(20, Math.max(1, Math.floor(Number(body.quantity ?? 1) || 1)));
 
-    if (!roomId || !/^\d+$/.test(roomId)) {
-      return NextResponse.json({ error: "Invalid roomId." }, { status: 400 });
+    if (!orgId || !/^\d+$/.test(orgId)) {
+      return NextResponse.json({ error: "Invalid orgId." }, { status: 400 });
     }
 
     const stripe = new Stripe(secretKey);
@@ -42,18 +47,24 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: `ArcBids Auction Launch — ${roomTitle}`,
-              description: "One-time fee to unlock and start this auction room",
+              name:
+                quantity > 1
+                  ? `ArcBids Auction Tickets (×${quantity})`
+                  : "ArcBids Auction Ticket",
+              description: orgName
+                ? `1 ticket = 1 scheduled or live auction for ${orgName}. Drafts are always free.`
+                : "1 ticket = 1 scheduled or live auction. Drafts are always free.",
             },
             unit_amount: AUCTION_FEE_CENTS,
           },
-          quantity: 1,
+          quantity,
         },
       ],
-      success_url: `${origin}/dashboard?paid_room=${encodeURIComponent(roomId)}&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/dashboard?ticket_org=${encodeURIComponent(orgId)}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/dashboard`,
       metadata: {
-        roomId,
+        orgId,
+        quantity: String(quantity),
         email: session.email,
       },
     });

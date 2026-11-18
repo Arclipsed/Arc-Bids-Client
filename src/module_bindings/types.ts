@@ -143,6 +143,7 @@ export const Organization = __t.object("Organization", {
   country: __t.string(),
   vatNumber: __t.string(),
   description: __t.string(),
+  auctionCredits: __t.u32(),
 });
 export type Organization = __Infer<typeof Organization>;
 
@@ -163,6 +164,15 @@ export const RoomStatus = __t.enum("RoomStatus", {
   Ended: __t.unit(),
 });
 export type RoomStatus = __Infer<typeof RoomStatus>;
+
+export const TicketPurchase = __t.object("TicketPurchase", {
+  id: __t.u64(),
+  sessionId: __t.string(),
+  orgId: __t.u64(),
+  quantity: __t.u32(),
+  createdAt: __t.timestamp(),
+});
+export type TicketPurchase = __Infer<typeof TicketPurchase>;
 
 export const UserDevice = __t.object("UserDevice", {
   id: __t.u64(),

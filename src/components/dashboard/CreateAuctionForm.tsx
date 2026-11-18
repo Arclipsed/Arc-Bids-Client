@@ -8,6 +8,7 @@ import {
   Lock,
   Pencil,
   Plus,
+  Ticket,
   Trash2,
   X,
 } from "lucide-react";
@@ -60,6 +61,10 @@ interface CreateAuctionFormProps {
   initialValues?: CreateAuctionFormInitialValues;
   buyerLists?: BuyerListOption[];
   copy?: ITranslation["DashboardPage"]["Copy"];
+  auctionCredits?: number;
+  initialHasTicket?: boolean;
+  stripeConfigured?: boolean;
+  onBuyTicket?: () => void;
   onSubmit: (payload: CreateAuctionPayload) => void;
   onCancel: () => void;
 }
@@ -69,6 +74,10 @@ export function CreateAuctionForm({
   initialValues,
   buyerLists = [],
   copy = EN.DashboardPage.Copy,
+  auctionCredits = 0,
+  initialHasTicket = false,
+  stripeConfigured = false,
+  onBuyTicket,
   onSubmit,
   onCancel,
 }: CreateAuctionFormProps) {
@@ -521,23 +530,72 @@ export function CreateAuctionForm({
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-2.5 border-t border-white/[0.06] pt-4">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="h-10 cursor-pointer rounded-full border border-white/10 bg-white/[0.04] px-5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08]"
-          >
-            {copy.Cancel}
-          </button>
-          <button
-            type="submit"
-            disabled={lots.length === 0}
-            className="h-10 cursor-pointer rounded-full bg-[#e4fffb] px-6 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.2)] transition enabled:hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {isEdit ? copy.SaveChanges : copy.CreateAuctionAction}
-          </button>
-        </div>
+        {/* Ticket Notice */}
+        {(() => {
+          const needsTicketForSchedule =
+            showSchedule && !initialHasTicket && stripeConfigured && auctionCredits === 0;
+          return (
+            <>
+              <div
+                className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-3.5 py-2.5 text-xs ${
+                  needsTicketForSchedule
+                    ? "border-amber-400/30 bg-amber-500/10 text-amber-200"
+                    : "border-white/[0.06] bg-[#0e1420]/60 text-zinc-400"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Ticket
+                    className={`h-4 w-4 shrink-0 ${
+                      needsTicketForSchedule ? "text-amber-300" : "text-[#3ff2e0]"
+                    }`}
+                  />
+                  <span>
+                    {showSchedule ? (
+                      initialHasTicket ? (
+                        "1 Auction Ticket is already reserved for this scheduled auction."
+                      ) : needsTicketForSchedule ? (
+                        "Scheduling requires 1 Auction Ticket (€10) so it auto-starts on time."
+                      ) : (
+                        `Scheduling reserves 1 Auction Ticket (${auctionCredits} available). Refunded if cancelled before start.`
+                      )
+                    ) : initialHasTicket ? (
+                      "Unscheduling will refund your reserved Auction Ticket back to your balance."
+                    ) : (
+                      "Saving as a free draft — 1 Auction Ticket (€10) is only used when you Go Live or Schedule."
+                    )}
+                  </span>
+                </div>
+                {needsTicketForSchedule && onBuyTicket && (
+                  <button
+                    type="button"
+                    onClick={onBuyTicket}
+                    className="cursor-pointer rounded-full bg-amber-300 px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200"
+                  >
+                    Buy Ticket · €10
+                  </button>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-2.5 border-t border-white/[0.06] pt-4">
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="h-10 cursor-pointer rounded-full border border-white/10 bg-white/[0.04] px-5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08]"
+                >
+                  {copy.Cancel}
+                </button>
+                <button
+                  type="submit"
+                  disabled={lots.length === 0 || needsTicketForSchedule}
+                  className="h-10 cursor-pointer rounded-full bg-[#e4fffb] px-6 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.2)] transition enabled:hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {isEdit ? copy.SaveChanges : copy.CreateAuctionAction}
+                </button>
+              </div>
+            </>
+          );
+        })()}
       </form>
 
       <Dialog

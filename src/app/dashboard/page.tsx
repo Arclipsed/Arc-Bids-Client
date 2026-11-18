@@ -18,6 +18,7 @@ import {
   Mail,
   Pencil,
   Plus,
+  Ticket,
   Trash2,
   Trophy,
   UserPlus,
@@ -62,6 +63,7 @@ import {
 interface OrgRow extends OrganizationProfile {
   id: bigint;
   ownerHex: string;
+  auctionCredits: number;
 }
 
 interface RoomRow {
@@ -185,8 +187,12 @@ export default function DashboardPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [stripeConfigured, setStripeConfigured] = useState(false);
-  const [payingRoomId, setPayingRoomId] = useState<string | null>(null);
-  const [verifiedPaidRoomId, setVerifiedPaidRoomId] = useState<string | null>(null);
+  const [buyingTicket, setBuyingTicket] = useState(false);
+  const [pendingTicketRedeem, setPendingTicketRedeem] = useState<{
+    orgId: string;
+    sessionId: string;
+    quantity: number;
+  } | null>(null);
 
   useEffect(() => {
     setLocale(getClientLocale());
@@ -212,18 +218,22 @@ export default function DashboardPage() {
           .catch(() => {});
 
         const params = new URLSearchParams(window.location.search);
-        const paidRoom = params.get("paid_room")?.trim();
+        const ticketOrg = params.get("ticket_org")?.trim();
         const sessionId = params.get("session_id")?.trim();
-        if (paidRoom && sessionId) {
+        if (ticketOrg && sessionId) {
           void fetch("/api/stripe/verify-auction", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ roomId: paidRoom, sessionId }),
+            body: JSON.stringify({ orgId: ticketOrg, sessionId }),
           })
             .then((r) => r.json())
-            .then((v: { paid?: boolean }) => {
+            .then((v: { paid?: boolean; quantity?: number }) => {
               if (active && v.paid) {
-                setVerifiedPaidRoomId(paidRoom);
+                setPendingTicketRedeem({
+                  orgId: ticketOrg,
+                  sessionId,
+                  quantity: v.quantity ?? 1,
+                });
                 window.history.replaceState({}, "", "/dashboard");
               }
             })
@@ -259,6 +269,7 @@ export default function DashboardPage() {
           country: o.country ?? "",
           vatNumber: o.vatNumber ?? "",
           description: o.description ?? "",
+          auctionCredits: o.auctionCredits ?? 0,
         }))
       );
       setRooms(
@@ -797,27 +808,33 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    if (!tablesSynced || !verifiedPaidRoomId) return;
+    if (!tablesSynced || !pendingTicketRedeem) return;
     const conn = connRef.current;
     if (!conn) return;
     try {
-      conn.reducers.markRoomPaid({ roomId: BigInt(verifiedPaidRoomId) });
-      setVerifiedPaidRoomId(null);
+      conn.reducers.redeemAuctionTickets({
+        orgId: BigInt(pendingTicketRedeem.orgId),
+        sessionId: pendingTicketRedeem.sessionId,
+        quantity: pendingTicketRedeem.quantity,
+      });
+      setPendingTicketRedeem(null);
     } catch {
       // Retry on next sync if needed
     }
-  }, [tablesSynced, verifiedPaidRoomId]);
+  }, [tablesSynced, pendingTicketRedeem]);
 
-  const handleUnlockRoom = async (room: RoomRow) => {
+  const handleBuyTicket = async (quantity = 1) => {
+    if (!myOrg) return;
     setActionError(null);
-    setPayingRoomId(room.id.toString());
+    setBuyingTicket(true);
     try {
       const res = await fetch("/api/stripe/auction-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          roomId: room.id.toString(),
-          roomTitle: room.title,
+          orgId: myOrg.id.toString(),
+          orgName: myOrg.name,
+          quantity,
         }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
@@ -829,7 +846,7 @@ export default function DashboardPage() {
     } catch {
       setActionError("Network error starting checkout.");
     } finally {
-      setPayingRoomId(null);
+      setBuyingTicket(false);
     }
   };
 
@@ -990,7 +1007,7 @@ export default function DashboardPage() {
           <>
             {/* Top Statistics Row */}
             <BentoGrid>
-              <GlowCard accent="teal" className="lg:col-span-4">
+              <GlowCard accent="teal" className="lg:col-span-3">
                 <GlowCardHeader
                   title={d.ActiveAuctions}
                   icon={<Activity className="h-4 w-4 text-[#3ff2e0]" />}
@@ -1004,7 +1021,7 @@ export default function DashboardPage() {
                 </p>
               </GlowCard>
 
-              <GlowCard accent="indigo" className="lg:col-span-4">
+              <GlowCard accent="indigo" className="lg:col-span-3">
                 <GlowCardHeader
                   title={d.FinishedAuctions}
                   icon={<CheckCircle2 className="h-4 w-4 text-indigo-300" />}
@@ -1017,7 +1034,7 @@ export default function DashboardPage() {
                 </p>
               </GlowCard>
 
-              <GlowCard accent="amber" className="lg:col-span-4">
+              <GlowCard accent="amber" className="lg:col-span-3">
                 <GlowCardHeader
                   title={d.TotalSold}
                   icon={<DollarSign className="h-4 w-4 text-amber-300" />}
@@ -1025,6 +1042,31 @@ export default function DashboardPage() {
                 <p className="font-mono text-3xl font-bold tracking-tight text-[#e4fffb] tabular-nums">
                   {formatCurrency(stats.totalSoldCents)}
                 </p>
+              </GlowCard>
+
+              <GlowCard accent="teal" className="lg:col-span-3">
+                <GlowCardHeader
+                  title="Auction Tickets"
+                  icon={<Ticket className="h-4 w-4 text-[#3ff2e0]" />}
+                />
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-mono text-3xl font-bold tracking-tight text-white tabular-nums">
+                    <NumberTicker
+                      value={myOrg.auctionCredits}
+                      className="tracking-tight text-white dark:text-white"
+                    />
+                  </p>
+                  {stripeConfigured && (
+                    <button
+                      type="button"
+                      disabled={buyingTicket}
+                      onClick={() => void handleBuyTicket(1)}
+                      className="cursor-pointer whitespace-nowrap rounded-full bg-[#e4fffb] px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-white disabled:opacity-50"
+                    >
+                      {buyingTicket ? "Redirecting…" : "+ Buy · €10"}
+                    </button>
+                  )}
+                </div>
               </GlowCard>
             </BentoGrid>
 
@@ -1045,15 +1087,22 @@ export default function DashboardPage() {
                   title={d.AuctionsTitle}
                   icon={<Gavel className="h-4 w-4 text-indigo-300" />}
                   right={
-                    <IconButton
-                      variant="accent"
-                      size="sm"
-                      onClick={() => setCreateAuctionOpen(true)}
-                      aria-label={d.CreateAuctionTitle}
-                      title={d.CreateAuctionTitle}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </IconButton>
+                    <div className="flex items-center gap-2">
+                      {stripeConfigured && (
+                        <span className="hidden font-mono text-[10px] text-zinc-400 sm:inline">
+                          Drafts free · 1 Ticket (€10) to Go Live
+                        </span>
+                      )}
+                      <IconButton
+                        variant="accent"
+                        size="sm"
+                        onClick={() => setCreateAuctionOpen(true)}
+                        aria-label={d.CreateAuctionTitle}
+                        title={d.CreateAuctionTitle}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </IconButton>
+                    </div>
                   }
                 />
 
@@ -1134,6 +1183,12 @@ export default function DashboardPage() {
                                   {format(new Date(r.scheduledAtMs), "EEE, MMM d · HH:mm")}
                                 </span>
                               )}
+                              {(r.status === "Draft" || r.status === "Lobby") && r.isPaid && (
+                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-medium text-emerald-300">
+                                  <Ticket className="h-3 w-3" />
+                                  Ticket Ready
+                                </span>
+                              )}
                             </div>
                             <p className="mt-0.5 font-mono text-[11px] text-zinc-400">
                               {r.lotDurationSec}{d.LotTimerSuffix} ·{" "}
@@ -1143,16 +1198,14 @@ export default function DashboardPage() {
 
                           <div className="relative z-10 flex items-center gap-2">
                           {(r.status === "Draft" || r.status === "Lobby") && (
-                            stripeConfigured && !r.isPaid ? (
+                            stripeConfigured && !r.isPaid && (myOrg?.auctionCredits ?? 0) === 0 ? (
                               <InteractivePill
                                 tone="accent"
                                 active
-                                onClick={() => void handleUnlockRoom(r)}
+                                onClick={() => void handleBuyTicket(1)}
                                 className="h-8 px-3.5 text-[11px]"
                               >
-                                {payingRoomId === r.id.toString()
-                                  ? "Redirecting…"
-                                  : "Unlock · €10"}
+                                {buyingTicket ? "Redirecting…" : "Buy Ticket · €10"}
                               </InteractivePill>
                             ) : (
                               <InteractivePill
@@ -1268,6 +1321,9 @@ export default function DashboardPage() {
               <CreateAuctionForm
                 buyerLists={buyerListOptions}
                 copy={d}
+                auctionCredits={myOrg.auctionCredits}
+                stripeConfigured={stripeConfigured}
+                onBuyTicket={() => void handleBuyTicket(1)}
                 onSubmit={handleCreateAuction}
                 onCancel={() => setCreateAuctionOpen(false)}
               />
@@ -1285,6 +1341,10 @@ export default function DashboardPage() {
                   mode="edit"
                   buyerLists={buyerListOptions}
                   copy={d}
+                  auctionCredits={myOrg.auctionCredits}
+                  initialHasTicket={editingRoom.isPaid}
+                  stripeConfigured={stripeConfigured}
+                  onBuyTicket={() => void handleBuyTicket(1)}
                   initialValues={{
                     roomTitle: editingRoom.title,
                     currency: editingRoom.currency,
