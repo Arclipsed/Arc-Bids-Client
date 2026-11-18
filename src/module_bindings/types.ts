@@ -27,6 +27,7 @@ export const Auction = __t.object("Auction", {
   roomCode: __t.string(),
   allowedListIds: __t.array(__t.u64()),
   allowAutoBid: __t.bool(),
+  isPaid: __t.bool(),
 });
 export type Auction = __Infer<typeof Auction>;
 

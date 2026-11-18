@@ -31,4 +31,5 @@ export default __t.row({
   roomCode: __t.string().name("room_code"),
   allowedListIds: __t.array(__t.u64()).name("allowed_list_ids"),
   allowAutoBid: __t.bool().name("allow_auto_bid"),
+  isPaid: __t.bool().name("is_paid"),
 });

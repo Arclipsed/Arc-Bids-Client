@@ -79,6 +79,7 @@ interface RoomRow {
   roomCode: string;
   allowedListIds: bigint[];
   allowAutoBid: boolean;
+  isPaid: boolean;
 }
 
 interface ItemRow {
@@ -183,6 +184,9 @@ export default function DashboardPage() {
   const [buyerCompany, setBuyerCompany] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [stripeConfigured, setStripeConfigured] = useState(false);
+  const [payingRoomId, setPayingRoomId] = useState<string | null>(null);
+  const [verifiedPaidRoomId, setVerifiedPaidRoomId] = useState<string | null>(null);
 
   useEffect(() => {
     setLocale(getClientLocale());
@@ -200,6 +204,31 @@ export default function DashboardPage() {
         }
         setUserEmail(data.email);
         setAuthChecked(true);
+        void fetch("/api/stripe/verify-auction")
+          .then((r) => r.json())
+          .then((s: { configured?: boolean }) => {
+            if (active) setStripeConfigured(Boolean(s.configured));
+          })
+          .catch(() => {});
+
+        const params = new URLSearchParams(window.location.search);
+        const paidRoom = params.get("paid_room")?.trim();
+        const sessionId = params.get("session_id")?.trim();
+        if (paidRoom && sessionId) {
+          void fetch("/api/stripe/verify-auction", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ roomId: paidRoom, sessionId }),
+          })
+            .then((r) => r.json())
+            .then((v: { paid?: boolean }) => {
+              if (active && v.paid) {
+                setVerifiedPaidRoomId(paidRoom);
+                window.history.replaceState({}, "", "/dashboard");
+              }
+            })
+            .catch(() => {});
+        }
       })
       .catch(() => {
         if (active) router.replace("/login");
@@ -248,6 +277,7 @@ export default function DashboardPage() {
           roomCode: r.roomCode || r.id.toString(),
           allowedListIds: r.allowedListIds ?? [],
           allowAutoBid: r.allowAutoBid ?? true,
+          isPaid: r.isPaid ?? false,
         }))
       );
       setItems(
@@ -766,6 +796,43 @@ export default function DashboardPage() {
     }
   };
 
+  useEffect(() => {
+    if (!tablesSynced || !verifiedPaidRoomId) return;
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.markRoomPaid({ roomId: BigInt(verifiedPaidRoomId) });
+      setVerifiedPaidRoomId(null);
+    } catch {
+      // Retry on next sync if needed
+    }
+  }, [tablesSynced, verifiedPaidRoomId]);
+
+  const handleUnlockRoom = async (room: RoomRow) => {
+    setActionError(null);
+    setPayingRoomId(room.id.toString());
+    try {
+      const res = await fetch("/api/stripe/auction-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          roomId: room.id.toString(),
+          roomTitle: room.title,
+        }),
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) {
+        setActionError(data.error ?? "Unable to start checkout.");
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setActionError("Network error starting checkout.");
+    } finally {
+      setPayingRoomId(null);
+    }
+  };
+
   const handleStartAuction = (roomId: bigint) => {
     setActionError(null);
     const conn = connRef.current;
@@ -1076,14 +1143,27 @@ export default function DashboardPage() {
 
                           <div className="relative z-10 flex items-center gap-2">
                           {(r.status === "Draft" || r.status === "Lobby") && (
-                            <InteractivePill
-                              tone="accent"
-                              active
-                              onClick={() => handleStartAuction(r.id)}
-                              className="h-8 px-3.5 text-[11px]"
-                            >
-                              {d.StartAction}
-                            </InteractivePill>
+                            stripeConfigured && !r.isPaid ? (
+                              <InteractivePill
+                                tone="accent"
+                                active
+                                onClick={() => void handleUnlockRoom(r)}
+                                className="h-8 px-3.5 text-[11px]"
+                              >
+                                {payingRoomId === r.id.toString()
+                                  ? "Redirecting…"
+                                  : "Unlock · €10"}
+                              </InteractivePill>
+                            ) : (
+                              <InteractivePill
+                                tone="accent"
+                                active
+                                onClick={() => handleStartAuction(r.id)}
+                                className="h-8 px-3.5 text-[11px]"
+                              >
+                                {d.StartAction}
+                              </InteractivePill>
+                            )
                           )}
                           <Link
                             href={`/auction?room=${encodeURIComponent(r.roomCode)}`}
