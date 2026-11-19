@@ -15,12 +15,14 @@ import {
   Eye,
   Gavel,
   Info,
+  LayoutGrid,
   Lock,
   LogOut,
   Mail,
   Package,
   Pencil,
   Plus,
+  Shield,
   Ticket,
   Trash2,
   Trophy,
@@ -34,6 +36,7 @@ import { formatCountdown, formatCurrency } from "@/lib/format";
 import { InteractivePill } from "@/components/ui/interactive-pill";
 import { IconButton } from "@/components/ui/icon-button";
 import { Dialog } from "@/components/ui/dialog";
+import { Dock } from "@/components/ui/dock-two";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import {
   BentoGrid,
@@ -169,6 +172,7 @@ export default function DashboardPage() {
   const isDe = locale === Locale.DE;
   const d = Translations[locale].DashboardPage.Copy;
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
+  const [dashboardTab, setDashboardTab] = useState<"overview" | "buyers" | "account">("overview");
   const [tablesSynced, setTablesSynced] = useState(false);
   const [connState, setConnState] = useState<"connecting" | "connected" | "error">(
     "connecting"
@@ -1007,16 +1011,16 @@ export default function DashboardPage() {
     <div className="flex min-h-screen flex-col bg-[#05070c] text-zinc-100">
       {/* Minimal Workspace Header */}
       <header className="border-b border-white/[0.06] bg-[#05070c]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="group flex items-center gap-2.5">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <Link href="/" className="group flex min-w-0 items-center gap-2.5">
               <ArcBidsLogo size="sm" />
-              <span className="text-sm font-semibold text-white transition group-hover:text-[#e4fffb]">
+              <span className="truncate text-sm font-semibold text-white transition group-hover:text-[#e4fffb]">
                 {myOrg ? myOrg.name : "ArcBids"}
               </span>
             </Link>
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ${
                 connState === "connected"
                   ? "bg-[#3ff2e0]/10 text-[#3ff2e0]"
                   : "bg-white/[0.05] text-zinc-400"
@@ -1031,23 +1035,20 @@ export default function DashboardPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-zinc-400 sm:inline">
-              {userEmail}
-            </span>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08] hover:text-white"
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              {d.SignOut}
-            </button>
-          </div>
+          <IconButton
+            variant="subtle"
+            size="sm"
+            onClick={handleLogout}
+            aria-label={d.SignOut}
+            title={d.SignOut}
+            className="shrink-0"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+          </IconButton>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl flex-1 space-y-5 px-4 py-10 sm:px-6">
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 px-4 pt-6 pb-24 sm:space-y-5 sm:px-6 sm:pt-10 sm:pb-24">
         {actionError && (
           <div className="rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
             {actionError}
@@ -1081,6 +1082,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            {dashboardTab === "overview" && (
+              <>
             {/* Top Statistics Row */}
             <BentoGrid>
               <GlowCard accent="teal" className="lg:col-span-3">
@@ -1599,37 +1602,125 @@ export default function DashboardPage() {
                 </div>
               </GlowCard>
             </BentoGrid>
+              </>
+            )}
 
-            {/* Full-Width Buyer Email Lists Widget */}
-            <BentoGrid>
-              <BuyerListsWidget
-                lists={myBuyerLists}
-                members={myBuyerListMembers}
-                onCreateList={handleCreateBuyerList}
-                onUpdateList={handleUpdateBuyerList}
-                onDeleteList={handleDeleteBuyerList}
-                onAddMember={handleAddBuyerListMember}
-                onToggleBan={handleToggleBuyerListMemberBan}
-                onDeleteMember={handleDeleteBuyerListMember}
-                className="lg:col-span-12"
-              />
-            </BentoGrid>
+            {dashboardTab === "buyers" && (
+              /* Full-Width Buyer Email Lists Widget */
+              <BentoGrid>
+                <BuyerListsWidget
+                  lists={myBuyerLists}
+                  members={myBuyerListMembers}
+                  onCreateList={handleCreateBuyerList}
+                  onUpdateList={handleUpdateBuyerList}
+                  onDeleteList={handleDeleteBuyerList}
+                  onAddMember={handleAddBuyerListMember}
+                  onToggleBan={handleToggleBuyerListMemberBan}
+                  onDeleteMember={handleDeleteBuyerListMember}
+                  className="lg:col-span-12"
+                />
+              </BentoGrid>
+            )}
 
-            {/* Logged-In Devices */}
-            <BentoGrid>
-              <DevicesWidget
-                devices={devices}
-                currentDeviceId={currentDeviceId}
-                onRemoveDevice={handleRemoveDevice}
-                className="lg:col-span-12"
-              />
-            </BentoGrid>
+            {dashboardTab === "account" && (
+              <>
+                <BentoGrid>
+                  <GlowCard accent="teal" className="lg:col-span-12">
+                    <GlowCardHeader
+                      title={isDe ? "Konto" : "Account"}
+                      icon={<Shield className="h-4 w-4 text-[#3ff2e0]" />}
+                    />
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div className="rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                        <p className="text-[11px] font-medium text-zinc-400">
+                          {isDe ? "Angemeldete E-Mail" : "Login Email"}
+                        </p>
+                        <p className="mt-1 truncate text-sm font-semibold text-white">
+                          {userEmail}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                        <p className="text-[11px] font-medium text-zinc-400">
+                          {isDe ? "Konto-Identität" : "Account Identity"}
+                        </p>
+                        <p className="mt-1 truncate font-mono text-xs text-zinc-300">
+                          {myIdentityHex ?? "—"}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                        <div>
+                          <p className="text-[11px] font-medium text-zinc-400">
+                            {isDe ? "Auktions-Tickets" : "Auction Tickets"}
+                          </p>
+                          <p className="mt-0.5 font-mono text-xl font-bold text-white tabular-nums">
+                            {myAccountCredits}
+                          </p>
+                        </div>
+                        {stripeConfigured && (
+                          <button
+                            type="button"
+                            disabled={buyingTicket}
+                            onClick={() => void handleBuyTicket(1)}
+                            className="cursor-pointer whitespace-nowrap rounded-full bg-[#e4fffb] px-3 py-1.5 text-[11px] font-semibold text-[#04070b] transition hover:bg-white disabled:opacity-50"
+                          >
+                            {buyingTicket
+                              ? isDe
+                                ? "Weiterleiten…"
+                                : "Redirecting…"
+                              : isDe
+                                ? "+ Kaufen · 25 €"
+                                : "+ Buy · €25"}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </GlowCard>
+                </BentoGrid>
 
-            {/* Danger Zone */}
-            <DangerZoneWidget
-              orgName={myOrg.name}
-              isDe={isDe}
-              onDeleteAccount={handleDeleteAccount}
+                {/* Logged-In Devices */}
+                <BentoGrid>
+                  <DevicesWidget
+                    devices={devices}
+                    currentDeviceId={currentDeviceId}
+                    onRemoveDevice={handleRemoveDevice}
+                    className="lg:col-span-12"
+                  />
+                </BentoGrid>
+
+                {/* Danger Zone */}
+                <DangerZoneWidget
+                  orgName={myOrg.name}
+                  isDe={isDe}
+                  onDeleteAccount={handleDeleteAccount}
+                />
+              </>
+            )}
+
+            {/* Bottom Navigation Dock */}
+            <Dock
+              className="fixed inset-x-0 bottom-5 z-40"
+              items={[
+                {
+                  icon: LayoutGrid,
+                  label: isDe ? "Übersicht" : "Overview",
+                  active: dashboardTab === "overview",
+                  onClick: () => setDashboardTab("overview"),
+                },
+                {
+                  icon: Users,
+                  label: isDe ? "Käuferlisten" : "Buyer Lists",
+                  active: dashboardTab === "buyers",
+                  badge: myBuyerLists.length,
+                  onClick: () => setDashboardTab("buyers"),
+                },
+                {
+                  icon: Shield,
+                  label: isDe ? "Konto & Geräte" : "Account & Devices",
+                  active: dashboardTab === "account",
+                  badge: devices.length,
+                  onClick: () => setDashboardTab("account"),
+                },
+              ]}
             />
 
             <Dialog
