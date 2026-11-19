@@ -88,7 +88,7 @@ async function BlogIndexContent() {
   const copy = BLOG_COPY[locale] ?? BLOG_COPY.EN;
   const localPosts = getBlogPosts(locale);
   const localSlugs = new Set(localPosts.map((p) => p.slug));
-  const pycieEntries = (await fetchPycieBlogEntries()).filter(
+  const pycieEntries = (await fetchPycieBlogEntries(locale)).filter(
     (entry) => !localSlugs.has(entry.slug)
   );
   const allPosts = [...localPosts, ...pycieEntries].sort((a, b) =>

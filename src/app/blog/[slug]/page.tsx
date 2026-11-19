@@ -134,7 +134,7 @@ async function BlogPostContent({
   const { slug } = await params;
   const locale = await TranslationService.GetUserLocale();
   const post = getBlogPostBySlug(slug, locale);
-  const pyciePost = post ? null : await fetchPycieBlogPost(slug);
+  const pyciePost = post ? null : await fetchPycieBlogPost(slug, "", locale);
   if (!post && !pyciePost) notFound();
 
   const t = TranslationService.GetTranslations(locale);

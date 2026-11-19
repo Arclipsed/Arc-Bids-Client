@@ -19,6 +19,12 @@ export interface PycieBlogPost extends PycieBlogEntry {
 }
 
 const PYCIE_BASE = "https://pycie.com/client-blog/arcbids-com";
+const PYCIE_LANGS = new Set(["de", "en", "tr", "ru"]);
+
+function toPycieLang(locale?: string): string {
+  const code = (locale ?? "EN").toLowerCase();
+  return PYCIE_LANGS.has(code) ? code : "en";
+}
 
 function slugToTitle(slug: string): string {
   return slug
@@ -82,13 +88,18 @@ function parseArticleSections(articleHtml: string): PycieBlogSection[] {
 
 export async function fetchPycieBlogPost(
   slug: string,
-  publishedAt = ""
+  publishedAt = "",
+  locale = "EN"
 ): Promise<PycieBlogPost | null> {
   try {
-    const res = await fetch(`${PYCIE_BASE}/${encodeURIComponent(slug)}`, {
-      next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(4000),
-    });
+    const lang = toPycieLang(locale);
+    const res = await fetch(
+      `${PYCIE_BASE}/${encodeURIComponent(slug)}?lang=${lang}`,
+      {
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(4000),
+      }
+    );
     if (!res.ok) return null;
     const html = await res.text();
 
@@ -133,7 +144,9 @@ export async function fetchPycieBlogPost(
   }
 }
 
-export async function fetchPycieBlogEntries(): Promise<PycieBlogEntry[]> {
+export async function fetchPycieBlogEntries(
+  locale = "EN"
+): Promise<PycieBlogEntry[]> {
   try {
     const res = await fetch(`${PYCIE_BASE}/sitemap.xml`, {
       next: { revalidate: 3600 },
@@ -163,7 +176,7 @@ export async function fetchPycieBlogEntries(): Promise<PycieBlogEntry[]> {
 
     const hydrated = await Promise.all(
       rawEntries.map(async ({ slug, publishedAt }) => {
-        const post = await fetchPycieBlogPost(slug, publishedAt);
+        const post = await fetchPycieBlogPost(slug, publishedAt, locale);
         if (post) {
           return {
             slug: post.slug,
