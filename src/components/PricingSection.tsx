@@ -54,6 +54,111 @@ const TICKET_PRICING_COPY = {
       "0 % Provision für ganz 2026 (regulär 5 %)",
     ],
   },
+  ES: {
+    title: "Tickets Simples por Subasta",
+    subtitleLead:
+      "Actualmente usamos un modelo de pago por subasta sin cuotas mensuales — y como oferta de 2026 cobramos 0% de comisión todo 2026 (normalmente 5%).",
+    subtitleNote:
+      "Los precios y planes por volumen se ajustarán en el futuro.",
+    planName: "Ticket de Subasta",
+    badge: "Oferta 2026 · 0%",
+    price: "€25",
+    period: "/ por subasta en vivo",
+    cta: "Comprar Tickets en el Panel",
+    description:
+      "Crear y probar borradores es siempre gratis. Solo gastas 1 Ticket al programar o iniciar una subasta en vivo.",
+    features: [
+      "Crea, edita y prueba borradores gratis",
+      "1 Ticket (€25) = 1 sala programada o en vivo",
+      "Reembolso automático del ticket si cancelas o eliminas antes de empezar",
+      "Lotes ilimitados, pujas en vivo y listas privadas de compradores",
+      "0% de comisión durante todo 2026 (normalmente 5%)",
+    ],
+  },
+  FR: {
+    title: "Tickets Simples par Enchère",
+    subtitleLead:
+      "Nous utilisons un modèle simple à l'enchère sans abonnement — et pour notre offre 2026, nous prenons 0 % de commission toute l'année 2026 (5 % ensuite).",
+    subtitleNote:
+      "Les tarifs et forfaits volume évolueront avec de nouvelles formules.",
+    planName: "Ticket d'Enchère",
+    badge: "Offre 2026 · 0 %",
+    price: "25 €",
+    period: "/ par enchère en direct",
+    cta: "Acheter des Tickets",
+    description:
+      "Créer et tester des brouillons est toujours gratuit. Vous utilisez 1 Ticket uniquement au lancement ou à la planification.",
+    features: [
+      "Création et test de brouillons gratuits",
+      "1 Ticket (25 €) = 1 salle planifiée ou en direct",
+      "Remboursement automatique du ticket si annulé avant le début",
+      "Lots illimités, enchères en direct & listes d'acheteurs",
+      "0 % de commission pour tout 2026 (normalement 5 %)",
+    ],
+  },
+  NL: {
+    title: "Eenvoudige Veilingtickets per Veiling",
+    subtitleLead:
+      "Momenteel gebruiken we een pay-per-auction model zonder maandelijkse kosten — en als 2026-actie rekenen we heel 2026 0% commissie (normaal 5%).",
+    subtitleNote:
+      "Prijzen en volumepakketten worden in de toekomst uitgebreid.",
+    planName: "Veilingticket",
+    badge: "2026 Actie · 0%",
+    price: "€25",
+    period: "/ per live veiling",
+    cta: "Tickets Kopen in Dashboard",
+    description:
+      "Concepten maken en testen is altijd gratis. Je gebruikt pas 1 Ticket wanneer je een veiling plant of live start.",
+    features: [
+      "Gratis concepten maken, bewerken & testen",
+      "1 Ticket (€25) = 1 geplande of live veilingruimte",
+      "Automatische ticketteruggave bij annulering vóór aanvang",
+      "Onbeperkte kavels, live bieden & koperslijsten",
+      "0% commissie voor heel 2026 (normaal 5%)",
+    ],
+  },
+  TR: {
+    title: "Açık Artırma Başına Basit Biletler",
+    subtitleLead:
+      "Şu anda aylık abonelik olmadan açık artırma başına ödeme modeli sunuyoruz — ve 2026 fırsatımızla tüm 2026 boyunca %0 komisyon alıyoruz (normalde %5).",
+    subtitleNote:
+      "Fiyatlar ve hacim paketleri gelecekte yeni planlarla güncellenecektir.",
+    planName: "Açık Artırma Bileti",
+    badge: "2026 Fırsatı · %0",
+    price: "€25",
+    period: "/ canlı açık artırma başına",
+    cta: "Panelden Bilet Al",
+    description:
+      "Taslak oluşturmak ve test etmek her zaman ücretsizdir. Yalnızca planlarken veya canlı başlatırken 1 Bilet harcarsınız.",
+    features: [
+      "Ücretsiz taslak oluşturma, düzenleme ve test",
+      "1 Bilet (€25) = 1 planlı veya canlı açık artırma odası",
+      "Başlamadan önce iptal edilirse otomatik bilet iadesi",
+      "Sınırsız lot, canlı teklif ve özel alıcı listeleri",
+      "2026 boyunca %0 komisyon (normalde %5)",
+    ],
+  },
+  RU: {
+    title: "Простые билеты на каждый аукцион",
+    subtitleLead:
+      "Сейчас действует оплата за каждый аукцион без абонплаты — а по акции 2026 года комиссия 0% весь 2026 год (обычно 5%).",
+    subtitleNote:
+      "В будущем появятся пакеты и тарифы для больших объемов.",
+    planName: "Билет на аукцион",
+    badge: "Акция 2026 · 0%",
+    price: "€25",
+    period: "/ за живой аукцион",
+    cta: "Купить билеты в панели",
+    description:
+      "Создание и тест черновиков всегда бесплатны. 1 Билет списывается только при планировании или запуске аукциона.",
+    features: [
+      "Бесплатное создание и тест черновиков",
+      "1 Билет (€25) = 1 запланированный или живой зал",
+      "Автовозврат билета при отмене до старта",
+      "Безлимитные лоты, live-ставки и списки покупателей",
+      "0% комиссии весь 2026 год (обычно 5%)",
+    ],
+  },
 } as const;
 
 const PLAN_META = [
@@ -70,7 +175,8 @@ export function PricingSection({
   locale?: Locale;
 }) {
   const ticketCopy =
-    locale === Locale.DE ? TICKET_PRICING_COPY.DE : TICKET_PRICING_COPY.EN;
+    TICKET_PRICING_COPY[locale as keyof typeof TICKET_PRICING_COPY] ??
+    TICKET_PRICING_COPY.EN;
 
   return (
     <section id="pricing" className="scroll-mt-24">

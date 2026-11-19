@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 import type { ITranslation } from "@/translations/ITranslation";
-import { Locale, Translations } from "@/translations/Translations";
+import { Locale, Translations, normalizeLocaleCode } from "@/translations/Translations";
 
 export class TranslationService {
   static GetUserLocale = async (): Promise<Locale> => {
@@ -16,9 +16,7 @@ export class TranslationService {
   };
 
   static NormalizeLocale = (code: string): Locale => {
-    const lower = code.trim().toLowerCase();
-    if (lower.startsWith("de")) return Locale.DE;
-    return Locale.EN;
+    return normalizeLocaleCode(code);
   };
 
   static GetTranslations = (locale: Locale): ITranslation => {
