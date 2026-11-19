@@ -30,7 +30,7 @@ export function ArcBidsLogo({
           </linearGradient>
           <linearGradient
             id="arcbids-logo-accent"
-            x1="16"
+            x1="14"
             y1="38"
             x2="49"
             y2="17"
@@ -53,7 +53,7 @@ export function ArcBidsLogo({
           strokeWidth="2"
         />
         <path
-          d="M39.5 38L21 38C14 38 14 27 22 22C30 17 40 16 49 17"
+          d="M14 33C13 24 25 16 49 17"
           stroke="url(#arcbids-logo-accent)"
           strokeWidth="3.5"
           strokeLinecap="round"
@@ -64,6 +64,12 @@ export function ArcBidsLogo({
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"
+        />
+        <path
+          d="M39 38L22 38C16.5 38 14.3 35.8 14 33"
+          stroke="url(#arcbids-logo-accent)"
+          strokeWidth="3.5"
+          strokeLinecap="round"
         />
         <circle cx="49" cy="17" r="3.5" fill="#3ff2e0" />
       </svg>
