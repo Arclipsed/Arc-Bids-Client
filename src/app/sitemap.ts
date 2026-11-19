@@ -1,9 +1,15 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
+import { fetchPycieBlogEntries } from "@/lib/pycie-blog";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://arcbids.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const localSlugs = new Set(BLOG_POSTS.map((p) => p.slug));
+  const pycieEntries = (await fetchPycieBlogEntries()).filter(
+    (e) => !localSlugs.has(e.slug)
+  );
+
   return [
     {
       url: `${SITE_URL}/`,
@@ -68,6 +74,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...BLOG_POSTS.map((post) => ({
       url: `${SITE_URL}/blog/${post.slug}`,
       lastModified: post.publishedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...pycieEntries.map((entry) => ({
+      url: `${SITE_URL}/blog/${entry.slug}`,
+      ...(entry.publishedAt ? { lastModified: entry.publishedAt } : {}),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
