@@ -1489,14 +1489,13 @@ export default function DashboardPage() {
                                         {isDe ? "Unverkauft" : "Unsold"}
                                       </span>
                                     )}
-                                    <span className="font-mono text-[10px] text-zinc-400">
-                                      {lot.quantity > 1 ? `${lot.quantity}× · ` : ""}
-                                      {isActiveLot || isSoldLot
-                                        ? `Start ${formatCurrency(lot.startingPrice, r.currency)}`
-                                        : formatCurrency(lot.startingPrice, r.currency)}
-                                      {lot.images.length > 0 && !firstImg
-                                        ? ` · ${lot.images.length} img`
-                                        : ""}
+                                    {lot.quantity > 1 && (
+                                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[9px] font-medium text-zinc-300">
+                                        {lot.quantity}×
+                                      </span>
+                                    )}
+                                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[9px] font-medium text-zinc-300 tabular-nums">
+                                      Start {formatCurrency(lot.startingPrice, r.currency)}
                                     </span>
                                   </div>
                                   <div className="relative z-10 flex shrink-0 items-center gap-1.5">
