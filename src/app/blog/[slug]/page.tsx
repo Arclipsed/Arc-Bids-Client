@@ -12,7 +12,16 @@ import { TranslationService } from "@/services/TranslationService";
 import { Locale } from "@/translations/Translations";
 import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/blog-posts";
 
-const POST_COPY = {
+const POST_COPY: Record<
+  Locale,
+  {
+    backToAll: string;
+    relatedResources: string;
+    ctaTitle: string;
+    ctaBody: string;
+    ctaButton: string;
+  }
+> = {
   EN: {
     backToAll: "Back to all articles",
     relatedResources: "Related Resources",
@@ -29,7 +38,47 @@ const POST_COPY = {
       "Erstellen Sie Auktionsräume kostenlos als Entwurf und starten Sie live für 25 € pro Ticket bei 0 % Provision in 2026 (regulär 5 %).",
     ctaButton: "Zum Dashboard",
   },
-} as const;
+  ES: {
+    backToAll: "Volver a todos los artículos",
+    relatedResources: "Recursos relacionados",
+    ctaTitle: "¿Listo para tu próxima subasta B2B?",
+    ctaBody:
+      "Crea borradores gratis y sal en vivo por €25 por ticket con 0% de comisión durante todo 2026 (normalmente 5%).",
+    ctaButton: "Abrir Panel",
+  },
+  FR: {
+    backToAll: "Retour aux articles",
+    relatedResources: "Ressources associées",
+    ctaTitle: "Prêt pour votre prochaine enchère B2B ?",
+    ctaBody:
+      "Préparez vos salles gratuitement et lancez en direct pour 25 € par ticket avec 0 % de commission en 2026 (normalement 5 %).",
+    ctaButton: "Ouvrir le Tableau de Bord",
+  },
+  NL: {
+    backToAll: "Terug naar alle artikelen",
+    relatedResources: "Gerelateerde bronnen",
+    ctaTitle: "Klaar voor je volgende B2B-veiling?",
+    ctaBody:
+      "Maak gratis concepten en start live voor €25 per ticket met 0% commissie in heel 2026 (normaal 5%).",
+    ctaButton: "Dashboard Openen",
+  },
+  TR: {
+    backToAll: "Tüm makalelere dön",
+    relatedResources: "İlgili Kaynaklar",
+    ctaTitle: "Bir sonraki B2B açık artırmanıza hazır mısınız?",
+    ctaBody:
+      "Ücretsiz taslak hazırlayın ve 2026 boyunca %0 komisyonla (normalde %5) bilet başına €25'a canlı başlatın.",
+    ctaButton: "Paneli Aç",
+  },
+  RU: {
+    backToAll: "Ко всем статьям",
+    relatedResources: "Полезные материалы",
+    ctaTitle: "Готовы запустить следующий B2B-аукцион?",
+    ctaBody:
+      "Создавайте черновики бесплатно и запускайте live-комнаты за €25 за билет с комиссией 0% весь 2026 год (обычно 5%).",
+    ctaButton: "Открыть Панель",
+  },
+};
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://arcbids.com";
 
@@ -70,7 +119,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
   if (!post) notFound();
 
   const t = TranslationService.GetTranslations(locale);
-  const copy = locale === Locale.DE ? POST_COPY.DE : POST_COPY.EN;
+  const copy = POST_COPY[locale] ?? POST_COPY.EN;
 
   const jsonLd = {
     "@context": "https://schema.org",

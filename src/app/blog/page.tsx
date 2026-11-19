@@ -11,7 +11,10 @@ import { TranslationService } from "@/services/TranslationService";
 import { Locale } from "@/translations/Translations";
 import { getBlogPosts } from "@/lib/blog-posts";
 
-const BLOG_COPY = {
+const BLOG_COPY: Record<
+  Locale,
+  { eyebrow: string; title: string; subtitle: string; readArticle: string }
+> = {
   EN: {
     eyebrow: "ArcBids Journal",
     title: "B2B Wholesale & Live Auction Playbooks",
@@ -26,7 +29,42 @@ const BLOG_COPY = {
       "Praxisnahe Guides für private Großhandelsauktionen, Anti-Sniping-Timer, Paletten-Preisgestaltung und Alternativen zum WhatsApp-Chaos.",
     readArticle: "Artikel lesen",
   },
-} as const;
+  ES: {
+    eyebrow: "Diario ArcBids",
+    title: "Guías de Subastas B2B y Comercio Mayorista",
+    subtitle:
+      "Guías prácticas para organizar subastas privadas, configurar temporizadores anti-snipe, fijar precios de palés y reemplazar los chats de WhatsApp.",
+    readArticle: "Leer artículo",
+  },
+  FR: {
+    eyebrow: "Journal ArcBids",
+    title: "Guides d'Enchères B2B & Vente en Gros",
+    subtitle:
+      "Guides pratiques pour lancer des enchères privées, régler les timers anti-snipe, fixer les prix des palettes et remplacer WhatsApp.",
+    readArticle: "Lire l'article",
+  },
+  NL: {
+    eyebrow: "ArcBids Journaal",
+    title: "B2B-Groothandel & Live Veiling Gidsen",
+    subtitle:
+      "Praktische gidsen voor besloten veilingen, anti-snipe timers, palletprijzen en alternatieven voor WhatsApp-groepen.",
+    readArticle: "Artikel lezen",
+  },
+  TR: {
+    eyebrow: "ArcBids Günlüğü",
+    title: "B2B Toptan Satış ve Canlı Açık Artırma Rehberleri",
+    subtitle:
+      "Özel toptan açık artırmalar düzenleme, anti-snipe zamanlayıcıları, palet fiyatlandırması ve WhatsApp karmaşasını bitirme rehberleri.",
+    readArticle: "Makaleyi oku",
+  },
+  RU: {
+    eyebrow: "Журнал ArcBids",
+    title: "Руководства по B2B-Опту и Live-Аукционам",
+    subtitle:
+      "Практические советы по запуску закрытых оптовых аукционов, настройке анти-снайпинга, оценке паллет и отказу от хаоса в WhatsApp.",
+    readArticle: "Читать статью",
+  },
+};
 
 export const metadata: Metadata = MetaTagService.CreateMetaTags({
   url: "/blog",
@@ -46,7 +84,7 @@ export const metadata: Metadata = MetaTagService.CreateMetaTags({
 async function BlogIndexContent() {
   const locale = await TranslationService.GetUserLocale();
   const t = TranslationService.GetTranslations(locale);
-  const copy = locale === Locale.DE ? BLOG_COPY.DE : BLOG_COPY.EN;
+  const copy = BLOG_COPY[locale] ?? BLOG_COPY.EN;
   const posts = getBlogPosts(locale);
 
   return (

@@ -461,8 +461,632 @@ export const BLOG_POSTS_DE: BlogPost[] = [
   },
 ];
 
+export const BLOG_POSTS_ES: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "Cómo organizar una subasta B2B privada sin el caos de WhatsApp",
+    description:
+      "Descubre cómo los mayoristas y liquidadores reemplazan las listas de difusión de WhatsApp y hojas de Excel por subastas en vivo de 15 minutos.",
+    category: "Guía",
+    publishedAt: "2026-11-18",
+    readTime: "5 min de lectura",
+    keywords: ["subasta B2B privada", "subasta mayorista", "alternativa WhatsApp B2B"],
+    sections: [
+      {
+        heading: "Por qué WhatsApp y Excel fallan al escalar",
+        paragraphs: [
+          "Gran parte del stock mayorista aún se vende por listas de WhatsApp y hojas PDF. Cuando diez compradores preguntan por el mismo lote a la vez, pierdes horas respondiendo manualmente.",
+          "Sin competencia visible, tus mejores lotes se venden al precio mínimo en lugar del valor real de mercado.",
+        ],
+        bullets: [
+          "Sin descubrimiento de precios en tiempo real entre compradores verificados",
+          "Seguimientos manuales que retrasan la facturación y el envío",
+          "Dudas de los compradores al no ver si el lote sigue disponible",
+        ],
+      },
+      {
+        heading: "El formato de sala privada de 15 minutos",
+        paragraphs: [
+          "Sube tus lotes una sola vez, fija precio inicial e incremento mínimo y comparte un único enlace con tu lista de compradores aprobados.",
+          "Todos compiten en el navegador en tiempo real con protección anti-snipe.",
+        ],
+        bullets: [
+          "Crea y prueba borradores gratis antes de salir en vivo",
+          "Restringe el acceso por correo electrónico o número de teléfono",
+          "Usa 1 Ticket (€25) solo al programar o iniciar en vivo",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Alternativa B2B a WhatsApp", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Calculadora de Margen Gratuita", href: "/tools" },
+      { label: "Ver Precios", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Anti-Sniping en Subastas B2B: Por qué el cierre flexible sube el precio final",
+    description:
+      "Cómo los temporizadores anti-snipe evitan las pujas de último segundo y aumentan el valor de cierre de tus lotes.",
+    category: "Mecánica",
+    publishedAt: "2026-11-16",
+    readTime: "4 min de lectura",
+    keywords: ["anti-sniping", "subastas B2B", "temporizador flexible"],
+    sections: [
+      {
+        heading: "¿Qué es el Bid Sniping?",
+        paragraphs: [
+          "En subastas de cierre fijo, los compradores esperan a los últimos 2 segundos para pujar sin dar tiempo de reacción a sus competidores.",
+        ],
+      },
+      {
+        heading: "Cómo funciona el temporizador Anti-Snipe",
+        paragraphs: [
+          "Cada puja en los últimos segundos reinicia la ventana anti-snipe (por ejemplo, 15 segundos), dando a todos una oportunidad justa de responder.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Cómo funciona ArcBids", href: "/how-it-works" },
+      { label: "Calcular Incrementos", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD y Smartphones Reacondicionados: Listas fijas vs. Subastas en vivo",
+    description:
+      "Compara las listas CSV estáticas con las subastas B2B en vivo para hardware ITAD, smartphones Grade A/B/C, portátiles y servidores.",
+    category: "ITAD y Electrónica",
+    publishedAt: "2026-11-14",
+    readTime: "5 min de lectura",
+    keywords: ["subastas ITAD", "smartphones B2B", "electrónica reacondicionada"],
+    sections: [
+      {
+        heading: "El problema de las listas estáticas",
+        paragraphs: [
+          "La electrónica pierde valor cada semana. Con listas CSV, los compradores eligen solo el Grado A y el resto se queda en el almacén.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Hardware ITAD", href: "/solutions/itad-hardware-auctions" },
+      { label: "Subastas de Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Cómo fijar el precio de palés de liquidación para maximizar el retorno",
+    description:
+      "Guía práctica para definir pujas iniciales e incrementos mínimos en palés de devoluciones y sobrestock.",
+    category: "Estrategia de Precios",
+    publishedAt: "2026-11-12",
+    readTime: "4 min de lectura",
+    keywords: ["precios palés liquidación", "sobrestock B2B"],
+    sections: [
+      {
+        heading: "Empieza lo bastante bajo para activar la competencia",
+        paragraphs: [
+          "Un precio de salida ligeramente por debajo del objetivo anima a 3–5 compradores a pujar pronto y eleva el precio final.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculadora de Margen", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Listas Privadas de Compradores: Por qué ganan frente a mercados abiertos",
+    description:
+      "Por qué los mayoristas prefieren salas privadas con compradores verificados para proteger precios y agilizar cobros.",
+    category: "Gestión de Compradores",
+    publishedAt: "2026-11-10",
+    readTime: "4 min de lectura",
+    keywords: ["subasta privada B2B", "lista de compradores"],
+    sections: [
+      {
+        heading: "Protege tu marca y evita impagos",
+        paragraphs: [
+          "Solo los socios comerciales aprobados en tus Listas de Compradores (por correo o teléfono) pueden ver y pujar en tus salas privadas.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Maquinaria y Excedentes", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Abrir Panel", href: "/dashboard" },
+    ],
+  },
+];
+
+export const BLOG_POSTS_FR: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "Comment organiser une enchère B2B privée sans le chaos WhatsApp",
+    description:
+      "Découvrez comment les grossistes remplacent les messages WhatsApp et fichiers Excel par des enchères en direct de 15 minutes.",
+    category: "Guide",
+    publishedAt: "2026-11-18",
+    readTime: "5 min de lecture",
+    keywords: ["enchère B2B privée", "vente en gros", "alternative WhatsApp"],
+    sections: [
+      {
+        heading: "Pourquoi WhatsApp et Excel atteignent leurs limites",
+        paragraphs: [
+          "Gérer dix acheteurs en parallèle par message fait perdre des heures et empêche la découverte réelle des prix.",
+        ],
+        bullets: [
+          "Enchères synchronisées en temps réel entre acheteurs vérifiés",
+          "Brouillons gratuits et 1 Ticket (25 €) uniquement au lancement",
+          "0 % de commission pendant tout 2026",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Alternative B2B à WhatsApp", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Calculateur de Marge", href: "/tools" },
+      { label: "Voir les Tarifs", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Anti-Sniping en Enchères B2B : Pourquoi le Soft-Close augmente les prix",
+    description:
+      "Comment le chronomètre anti-snipe empêche les offres de dernière seconde et maximise le prix final.",
+    category: "Mécanique",
+    publishedAt: "2026-11-16",
+    readTime: "4 min de lecture",
+    keywords: ["anti-sniping", "enchères B2B"],
+    sections: [
+      {
+        heading: "Comment fonctionne l'Anti-Snipe",
+        paragraphs: [
+          "Toute offre dans les dernières secondes prolonge automatiquement le chrono (ex. 15s) pour laisser une chance équitable de surenchérir.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Fonctionnement d'ArcBids", href: "/how-it-works" },
+      { label: "Calculer les Paliers", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD & Smartphones Reconditionnés : Listes fixes vs Enchères Live",
+    description:
+      "Comparez les listes CSV statiques aux enchères B2B en direct pour le matériel ITAD et les lots de smartphones.",
+    category: "ITAD & Électronique",
+    publishedAt: "2026-11-14",
+    readTime: "5 min de lecture",
+    keywords: ["ITAD", "smartphones B2B"],
+    sections: [
+      {
+        heading: "Évitez l'écrémage de vos stocks",
+        paragraphs: [
+          "Les enchères par lots permettent d'écouler tous vos grades A, B et C rapidement à leur juste valeur.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères ITAD", href: "/solutions/itad-hardware-auctions" },
+      { label: "Lots Smartphones", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Comment fixer le prix des palettes de liquidation et surstocks",
+    description:
+      "Méthode pratique pour définir le prix de départ et le palier minimum sur vos palettes.",
+    category: "Stratégie Prix",
+    publishedAt: "2026-11-12",
+    readTime: "4 min de lecture",
+    keywords: ["palettes liquidation", "surstock B2B"],
+    sections: [
+      {
+        heading: "Déclenchez la concurrence dès le départ",
+        paragraphs: [
+          "Un prix de départ légèrement sous l'objectif attire plusieurs enchérisseurs dès les premières secondes.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculateur gratuit", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Listes d'Acheteurs Privées : Pourquoi les salles vérifiées gagnent",
+    description:
+      "Protégez vos prix de gros et évitez les acheteurs non sérieux grâce aux listes privées par e-mail ou téléphone.",
+    category: "Gestion Acheteurs",
+    publishedAt: "2026-11-10",
+    readTime: "4 min de lecture",
+    keywords: ["liste acheteurs B2B", "enchère privée"],
+    sections: [
+      {
+        heading: "Des partenaires commerciaux vérifiés uniquement",
+        paragraphs: [
+          "Seuls les acheteurs approuvés dans vos Listes d'Acheteurs peuvent entrer et enchérir dans vos salles privées.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Surplus Industriel", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
+    ],
+  },
+];
+
+export const BLOG_POSTS_NL: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "Hoe je een besloten B2B-groothandelsveiling start zonder WhatsApp-chaos",
+    description:
+      "Ontdek hoe groothandels WhatsApp-lijsten en Excel vervangen door gestructureerde live veilingen van 15 minuten.",
+    category: "Handleiding",
+    publishedAt: "2026-11-18",
+    readTime: "5 min leestijd",
+    keywords: ["besloten B2B veiling", "groothandel", "WhatsApp alternatief"],
+    sections: [
+      {
+        heading: "Waarom WhatsApp en Excel niet schalen",
+        paragraphs: [
+          "Handmatig reageren op tien kopers tegelijk kost uren en leidt vaak tot verkopen onder de marktwaarde.",
+        ],
+        bullets: [
+          "Real-time prijsvorming met goedgekeurde kopers",
+          "Concepten zijn gratis — €25 per ticket bij start of planning",
+          "0% commissie gedurende heel 2026",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "WhatsApp B2B Alternatief", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Gratis Margecalculator", href: "/tools" },
+      { label: "Prijzen Bekijken", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Anti-Sniping bij Live B2B-Veilingen: Waarom soft-close timers meer opleveren",
+    description:
+      "Hoe een anti-snipe timer biedingen in de laatste seconde opvangt en de eindprijs verhoogt.",
+    category: "Veilingmechaniek",
+    publishedAt: "2026-11-16",
+    readTime: "4 min leestijd",
+    keywords: ["anti-sniping", "B2B veiling"],
+    sections: [
+      {
+        heading: "Zo werkt Anti-Snipe",
+        paragraphs: [
+          "Een bod in de laatste seconden verlengt de klok automatisch (bijv. 15s) zodat elke koper eerlijk kan reageren.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Hoe ArcBids werkt", href: "/how-it-works" },
+      { label: "Biedstappen Berekenen", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD & Refurbished Smartphones: Vaste lijsten vs. Live Veilingen",
+    description:
+      "Vergelijk statische CSV-lijsten met live B2B-veilingen voor ITAD-hardware en smartphone-partijen.",
+    category: "ITAD & Elektronica",
+    publishedAt: "2026-11-14",
+    readTime: "5 min leestijd",
+    keywords: ["ITAD veilingen", "smartphones groothandel"],
+    sections: [
+      {
+        heading: "Voorkom dat alleen A-grade wordt weggekaapt",
+        paragraphs: [
+          "Met live kavelveilingen verkoop je zowel Grade A als B/C-partijen sneller tegen eerlijke marktprijzen.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "ITAD Hardware Veilingen", href: "/solutions/itad-hardware-auctions" },
+      { label: "Smartphone Voorraad", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Liquidatiepallets en overstock slim prijzen voor maximaal rendement",
+    description:
+      "Praktische richtlijnen voor startprijzen en biedstappen op retour- en overstockpallets.",
+    category: "Prijsstrategie",
+    publishedAt: "2026-11-12",
+    readTime: "4 min leestijd",
+    keywords: ["liquidatiepallets", "overstock veiling"],
+    sections: [
+      {
+        heading: "Start laag genoeg om concurrentie te wekken",
+        paragraphs: [
+          "Een toegankelijk startbod trekt direct meerdere bieders aan en duwt de uiteindelijke verkoopprijs omhoog.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Gratis Calculator", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Besloten Koperslijsten: Waarom geverifieerde B2B-ruimtes beter presteren",
+    description:
+      "Bescherm je groothandelsprijzen en voorkom wanbetalers met besloten koperslijsten (e-mail of telefoon).",
+    category: "Kopersbeheer",
+    publishedAt: "2026-11-10",
+    readTime: "4 min leestijd",
+    keywords: ["besloten koperslijst", "B2B veiling"],
+    sections: [
+      {
+        heading: "Alleen geverifieerde handelspartners",
+        paragraphs: [
+          "Kopers krijgen alleen toegang als hun e-mailadres of telefoonnummer op een geselecteerde koperslijst staat.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Industrieel Surplus", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Naar Dashboard", href: "/dashboard" },
+    ],
+  },
+];
+
+export const BLOG_POSTS_TR: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "WhatsApp Karmaşası Olmadan Özel B2B Toptan Açık Artırma Nasıl Yapılır",
+    description:
+      "Toptancıların WhatsApp gruplarını ve Excel tablolarını 15 dakikalık canlı açık artırma odalarıyla nasıl değiştirdiğini öğrenin.",
+    category: "Rehber",
+    publishedAt: "2026-11-18",
+    readTime: "5 dk okuma",
+    keywords: ["özel B2B açık artırma", "toptan satış", "WhatsApp alternatifi"],
+    sections: [
+      {
+        heading: "WhatsApp ve Excel Neden Yetersiz Kalır?",
+        paragraphs: [
+          "On alıcıya aynı anda mesajla yanıt vermek saatler sürer ve gerçek piyasa rekabetini engeller.",
+        ],
+        bullets: [
+          "Onaylı alıcılar arasında anlık gerçek zamanlı fiyat oluşumu",
+          "Taslaklar ücretsiz — yalnızca başlatırken veya planlarken 1 Bilet (€25)",
+          "2026 boyunca %0 komisyon",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "WhatsApp B2B Alternatifi", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Ücretsiz Marj Hesaplayıcı", href: "/tools" },
+      { label: "Fiyatları Gör", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Canlı B2B Açık Artırmalarda Anti-Sniping: Son Saniye Koruması Neden Kazandırır?",
+    description:
+      "Anti-snipe zamanlayıcının son saniye tekliflerini nasıl engellediğini ve lot fiyatlarını nasıl artırdığını keşfedin.",
+    category: "Mekanik",
+    publishedAt: "2026-11-16",
+    readTime: "4 dk okuma",
+    keywords: ["anti-sniping", "B2B açık artırma"],
+    sections: [
+      {
+        heading: "Anti-Snipe Nasıl Çalışır?",
+        paragraphs: [
+          "Son saniyelerde gelen her teklif sayacı otomatik uzatır (ör. 15 sn), böylece tüm alıcılar adil şekilde karşılık verebilir.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "ArcBids Nasıl Çalışır", href: "/how-it-works" },
+      { label: "Artış Miktarını Hesapla", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD ve Yenilenmiş Akıllı Telefonlar: Sabit Liste vs. Canlı Açık Artırma",
+    description:
+      "ITAD donanımları ve Grade A/B/C telefon partileri için statik CSV listelerini canlı B2B açık artırmalarla karşılaştırın.",
+    category: "ITAD ve Elektronik",
+    publishedAt: "2026-11-14",
+    readTime: "5 dk okuma",
+    keywords: ["ITAD açık artırma", "toptan telefon"],
+    sections: [
+      {
+        heading: "Stokların Seçilip Kalmasını Önleyin",
+        paragraphs: [
+          "Canlı lot açık artırmaları tüm kalite sınıflarını hızlı ve şeffaf biçimde elden çıkarmanızı sağlar.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "ITAD Donanım Açık Artırmaları", href: "/solutions/itad-hardware-auctions" },
+      { label: "B2B Akıllı Telefon Stokları", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Maksimum Gelir İçin Tasfiye Paletleri Nasıl Fiyatlandırılır",
+    description:
+      "İade ve stok fazlası paletlerde başlangıç teklifi ve minimum artış belirleme rehberi.",
+    category: "Fiyatlandırma",
+    publishedAt: "2026-11-12",
+    readTime: "4 dk okuma",
+    keywords: ["tasfiye paleti", "toptan fiyatlandırma"],
+    sections: [
+      {
+        heading: "Erken Rekabeti Başlatacak Seviyeden Açın",
+        paragraphs: [
+          "Hedefin biraz altından açılan lotlar daha fazla alıcıyı çeker ve rekabet fiyatı yukarı taşır.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Ücretsiz Hesaplayıcı", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Özel Alıcı Listeleri: Onaylı B2B Odaları Neden Daha Verimlidir?",
+    description:
+      "E-posta veya telefonla oluşturulan özel alıcı listeleriyle fiyatlarınızı koruyun ve ödemeleri hızlandırın.",
+    category: "Alıcı Yönetimi",
+    publishedAt: "2026-11-10",
+    readTime: "4 dk okuma",
+    keywords: ["özel alıcı listesi", "B2B açık artırma"],
+    sections: [
+      {
+        heading: "Yalnızca Onaylı İş Ortakları",
+        paragraphs: [
+          "Özel odalara yalnızca Alıcı Listelerinizde kayıtlı e-posta veya telefon numarasına sahip alıcılar girebilir.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Endüstriyel Stok Fazlası", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Paneli Aç", href: "/dashboard" },
+    ],
+  },
+];
+
+export const BLOG_POSTS_RU: BlogPost[] = [
+  {
+    slug: "how-to-run-a-private-b2b-wholesale-auction",
+    title: "Как провести закрытый B2B-аукцион без хаоса в WhatsApp",
+    description:
+      "Узнайте, как оптовики заменяют рассылки в WhatsApp и Excel-таблицы на 15-минутные живые аукционы.",
+    category: "Руководство",
+    publishedAt: "2026-11-18",
+    readTime: "5 мин чтения",
+    keywords: ["закрытый B2B аукцион", "оптовые торги", "альтернатива WhatsApp"],
+    sections: [
+      {
+        heading: "Почему WhatsApp и Excel тормозят продажи",
+        paragraphs: [
+          "Ручная переписка с десятками покупателей отнимает часы и не дает реального рыночного роста цены.",
+        ],
+        bullets: [
+          "Прозрачная конкуренция среди проверенных покупателей в реальном времени",
+          "Черновики бесплатны — €25 за билет только при запуске или планировании",
+          "Комиссия 0% весь 2026 год",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Альтернатива WhatsApp для B2B", href: "/solutions/whatsapp-b2b-auction-alternative" },
+      { label: "Калькулятор Маржи", href: "/tools" },
+      { label: "Смотреть Цены", href: "/pricing" },
+    ],
+  },
+  {
+    slug: "anti-sniping-in-live-b2b-auctions-explained",
+    title: "Анти-снайпинг на B2B-аукционах: как мягкое закрытие повышает цену",
+    description:
+      "Как таймер анти-снайпинга защищает последние секунды торгов и увеличивает итоговую выручку.",
+    category: "Механика",
+    publishedAt: "2026-11-16",
+    readTime: "4 мин чтения",
+    keywords: ["анти-снайпинг", "B2B аукцион"],
+    sections: [
+      {
+        heading: "Как работает Анти-Снайпинг",
+        paragraphs: [
+          "Ставка в последние секунды автоматически продлевает таймер (например, на 15с), давая конкурентам шанс ответить.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Как работает ArcBids", href: "/how-it-works" },
+      { label: "Расчет шага ставки", href: "/tools" },
+    ],
+  },
+  {
+    slug: "itad-and-refurbished-electronics-liquidation-guide",
+    title: "ITAD и смартфоны: статичные прайс-листы против живых аукционов",
+    description:
+      "Сравнение CSV-прайсов и живых B2B-аукционов для ITAD-оборудования и партий смартфонов.",
+    category: "ITAD и Электроника",
+    publishedAt: "2026-11-14",
+    readTime: "5 мин чтения",
+    keywords: ["ITAD аукционы", "смартфоны оптом"],
+    sections: [
+      {
+        heading: "Продавайте все грейды, а не только Grade A",
+        paragraphs: [
+          "Живые лоты позволяют быстро реализовать сбалансированные партии электроники до падения рыночной цены.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "ITAD-аукционы", href: "/solutions/itad-hardware-auctions" },
+      { label: "Партии смартфонов", href: "/solutions/b2b-smartphone-stock-auctions" },
+    ],
+  },
+  {
+    slug: "how-to-price-liquidation-pallets-and-overstock-lots",
+    title: "Как оценить паллеты ликвидации и стоки для максимальной выручки",
+    description:
+      "Практические советы по выбору стартовой цены и минимального шага для оптовых паллет.",
+    category: "Ценообразование",
+    publishedAt: "2026-11-12",
+    readTime: "4 мин чтения",
+    keywords: ["оценка паллет", "оптовые стоки"],
+    sections: [
+      {
+        heading: "Стартуйте достаточно низко, чтобы запустить конкуренцию",
+        paragraphs: [
+          "Доступная стартовая цена вовлекает нескольких покупателей с первых секунд и поднимает финальную ставку.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Бесплатный калькулятор", href: "/tools" },
+    ],
+  },
+  {
+    slug: "invite-only-buyer-lists-why-vetted-b2b-rooms-win",
+    title: "Закрытые списки покупателей: почему приватные B2B-залы эффективнее",
+    description:
+      "Защитите оптовые цены и исключите случайных участников с помощью списков по email или телефону.",
+    category: "Покупатели",
+    publishedAt: "2026-11-10",
+    readTime: "4 мин чтения",
+    keywords: ["список покупателей", "закрытый B2B аукцион"],
+    sections: [
+      {
+        heading: "Только проверенные партнеры",
+        paragraphs: [
+          "Доступ в закрытую комнату получают только покупатели из ваших списков по email или номеру телефона.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Промышленные излишки", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Открыть Панель", href: "/dashboard" },
+    ],
+  },
+];
+
+const BLOG_BY_LOCALE: Record<Locale, BlogPost[]> = {
+  [Locale.EN]: BLOG_POSTS,
+  [Locale.DE]: BLOG_POSTS_DE,
+  [Locale.ES]: BLOG_POSTS_ES,
+  [Locale.FR]: BLOG_POSTS_FR,
+  [Locale.NL]: BLOG_POSTS_NL,
+  [Locale.TR]: BLOG_POSTS_TR,
+  [Locale.RU]: BLOG_POSTS_RU,
+};
+
 export function getBlogPosts(locale: Locale = Locale.EN): BlogPost[] {
-  return locale === Locale.DE ? BLOG_POSTS_DE : BLOG_POSTS;
+  return BLOG_BY_LOCALE[locale] ?? BLOG_POSTS;
 }
 
 export function getBlogPostBySlug(
