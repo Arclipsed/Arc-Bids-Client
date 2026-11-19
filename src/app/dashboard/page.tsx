@@ -1055,6 +1055,27 @@ export default function DashboardPage() {
           </div>
         ) : (
           <>
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#3ff2e0]/25 bg-[#3ff2e0]/[0.06] px-4 py-2.5 text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="rounded-full border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#3ff2e0]">
+                  2026
+                </span>
+                <p className="text-zinc-200">
+                  {isDe ? (
+                    <>
+                      <strong className="text-white">0 % Verkaufsprovision</strong>{" "}
+                      für das gesamte Jahr 2026 (regulär 5 %).
+                    </>
+                  ) : (
+                    <>
+                      <strong className="text-white">0% commission fees</strong>{" "}
+                      on all auction sales throughout 2026 (standard 5% thereafter).
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
+
             {/* Top Statistics Row */}
             <BentoGrid>
               <GlowCard accent="teal" className="lg:col-span-3">
@@ -1088,11 +1109,6 @@ export default function DashboardPage() {
                 <GlowCardHeader
                   title={d.TotalSold}
                   icon={<DollarSign className="h-4 w-4 text-amber-300" />}
-                  right={
-                    <span className="whitespace-nowrap rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-300">
-                      {isDe ? "2026: 0 % Provision" : "2026: 0% Fee"}
-                    </span>
-                  }
                 />
                 <p className="font-mono text-3xl font-bold tracking-tight text-[#e4fffb] tabular-nums">
                   {formatCurrency(stats.totalSoldCents)}
