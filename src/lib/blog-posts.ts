@@ -240,6 +240,49 @@ export const BLOG_POSTS: BlogPost[] = [
       { label: "Launch Your First Room", href: "/dashboard" },
     ],
   },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "How to Write Wholesale Lot Manifests That Sell Faster and Earn Higher Bids",
+    description:
+      "Learn how clear unit counts, condition grades, and transparent pallet manifests eliminate buyer hesitation and drive higher close prices in B2B auctions.",
+    category: "Playbook",
+    publishedAt: "2026-11-19",
+    readTime: "4 min read",
+    keywords: [
+      "wholesale lot manifest",
+      "B2B liquidation manifest",
+      "pallet manifest template",
+      "increase auction bids",
+      "wholesale lot description",
+    ],
+    sections: [
+      {
+        heading: "Why Vague Lot Descriptions Cost You Money",
+        paragraphs: [
+          "When B2B buyers see a lot labeled simply 'Mixed Electronics Pallet — 40 pcs', they automatically price in worst-case risk. Uncertainty forces conservative bids.",
+          "Providing structured specs—brand, model mix, condition grade, packaging, and exact unit count—gives buyers the confidence to bid closer to true wholesale value.",
+        ],
+      },
+      {
+        heading: "The 5-Point Wholesale Lot Checklist",
+        paragraphs: [
+          "Before launching your auction room, make sure every lot clearly answers the five questions every wholesale buyer checks first:",
+        ],
+        bullets: [
+          "Exact unit quantity so per-unit pricing calculates live",
+          "Clear condition grade (New/Sealed, Grade A/B/C, Customer Returns, or Untested)",
+          "Manifest status (Manifested vs. Unmanifested) and packaging type",
+          "Pickup or shipping location (city/country) for freight estimation",
+          "2 to 4 clear photos showing pallet wrap, labels, or sample units",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidation Pallet Auctions", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Free Margin & Bid Calculator", href: "/tools" },
+      { label: "Create a Room", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_DE: BlogPost[] = [
@@ -459,6 +502,34 @@ export const BLOG_POSTS_DE: BlogPost[] = [
       { label: "Ersten Raum starten", href: "/dashboard" },
     ],
   },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Wie Sie Großhandels-Loslisten erstellen, die schneller verkaufen und höhere Gebote erzielen",
+    description:
+      "Erfahren Sie, wie klare Stückzahlen, Zustandsstufen und transparente Paletten-Manifeste Käuferzweifel beseitigen und höhere Endpreise erzielen.",
+    category: "Leitfaden",
+    publishedAt: "2026-11-19",
+    readTime: "4 Min. Lesezeit",
+    keywords: ["Großhandel Manifest", "B2B Palettenliste", "Auktionsgebot steigern"],
+    sections: [
+      {
+        heading: "Warum ungenaue Losbeschreibungen Marge kosten",
+        paragraphs: [
+          "Sehen Käufer nur 'Gemischte Elektronik-Palette – 40 Stk.', kalkulieren sie automatisch das maximale Risiko ein und bieten vorsichtig.",
+        ],
+        bullets: [
+          "Genaue Stückzahl für die Live-Stückpreis-Anzeige",
+          "Klare Zustandsstufe (Neu, Grade A/B/C, Retouren, Ungeprüft)",
+          "Manifest-Status und Standort für die Frachtkalkulation",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Kostenloser Margenrechner", href: "/tools" },
+      { label: "Raum erstellen", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_ES: BlogPost[] = [
@@ -597,6 +668,33 @@ export const BLOG_POSTS_ES: BlogPost[] = [
       { label: "Abrir Panel", href: "/dashboard" },
     ],
   },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Cómo redactar manifiestos de lotes mayoristas que venden más rápido y logran pujas más altas",
+    description:
+      "Aprende cómo las cantidades exactas, grados de estado y manifiestos claros eliminan dudas y aumentan el precio final en subastas B2B.",
+    category: "Guía",
+    publishedAt: "2026-11-19",
+    readTime: "4 min de lectura",
+    keywords: ["manifiesto lote mayorista", "palé liquidación B2B"],
+    sections: [
+      {
+        heading: "Por qué las descripciones vagas reducen tus pujas",
+        paragraphs: [
+          "Cuando un comprador ve poca información, descuenta el riesgo en su oferta. Especificar unidades, grado y ubicación genera confianza.",
+        ],
+        bullets: [
+          "Cantidad exacta para mostrar el precio por unidad en vivo",
+          "Grado de estado claro y estado del manifiesto",
+          "2 a 4 fotos reales del palé o lote",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculadora Gratuita", href: "/tools" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_FR: BlogPost[] = [
@@ -714,6 +812,33 @@ export const BLOG_POSTS_FR: BlogPost[] = [
     relatedLinks: [
       { label: "Surplus Industriel", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Comment rédiger des manifestes de lots B2B qui se vendent plus vite",
+    description:
+      "Découvrez comment des quantités claires, grades précis et manifestes transparents augmentent les enchères B2B.",
+    category: "Guide",
+    publishedAt: "2026-11-19",
+    readTime: "4 min de lecture",
+    keywords: ["manifeste lot B2B", "palette liquidation"],
+    sections: [
+      {
+        heading: "La précision augmente la confiance des acheteurs",
+        paragraphs: [
+          "Indiquer la quantité exacte, le grade, le statut du manifeste et le lieu d'expédition réduit l'incertitude et stimule les offres.",
+        ],
+        bullets: [
+          "Quantité exacte pour le calcul du prix unitaire en direct",
+          "Grade clair et statut manifesté / non manifesté",
+          "Photos nettes de la palette ou des produits",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculateur gratuit", href: "/tools" },
     ],
   },
 ];
@@ -835,6 +960,33 @@ export const BLOG_POSTS_NL: BlogPost[] = [
       { label: "Naar Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Groothandels-kaveloverzichten schrijven die sneller verkopen en hogere biedingen opleveren",
+    description:
+      "Leer hoe duidelijke aantallen, conditiegrades en transparante palletmanifesten twijfel wegnemen en biedingen verhogen.",
+    category: "Handleiding",
+    publishedAt: "2026-11-19",
+    readTime: "4 min leestijd",
+    keywords: ["palletmanifest B2B", "groothandel kavelbeschrijving"],
+    sections: [
+      {
+        heading: "Duidelijke specificaties zorgen voor hogere biedingen",
+        paragraphs: [
+          "Kopers bieden hoger wanneer aantallen, conditie, manifeststatus en locatie direct helder zijn.",
+        ],
+        bullets: [
+          "Exact aantal voor live stuksprijsberekening",
+          "Duidelijke conditiegrade en manifeststatus",
+          "Scherpe foto's van de pallet of partij",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Gratis Calculator", href: "/tools" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_TR: BlogPost[] = [
@@ -954,6 +1106,33 @@ export const BLOG_POSTS_TR: BlogPost[] = [
       { label: "Paneli Aç", href: "/dashboard" },
     ],
   },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Daha Hızlı Satılan ve Yüksek Teklif Alan Toptan Lot Listeleri Nasıl Hazırlanır",
+    description:
+      "Net adet, durum sınıfı ve şeffaf palet listelerinin alıcı tereddüdünü nasıl azalttığını ve kapanış fiyatlarını yükselttiğini öğrenin.",
+    category: "Rehber",
+    publishedAt: "2026-11-19",
+    readTime: "4 dk okuma",
+    keywords: ["toptan lot listesi", "B2B palet manifestosu"],
+    sections: [
+      {
+        heading: "Şeffaf Lot Bilgisi Daha Yüksek Teklif Getirir",
+        paragraphs: [
+          "Adet, kalite sınıfı, manifesto durumu ve konum net olduğunda alıcılar risk payı düşmeden gerçek değer üzerinden teklif verir.",
+        ],
+        bullets: [
+          "Canlı birim fiyat için net adet bilgisi",
+          "Net kalite sınıfı ve paketleme detayı",
+          "Palet veya ürünleri gösteren net fotoğraflar",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Ücretsiz Hesaplayıcı", href: "/tools" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_RU: BlogPost[] = [
@@ -1071,6 +1250,33 @@ export const BLOG_POSTS_RU: BlogPost[] = [
     relatedLinks: [
       { label: "Промышленные излишки", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Открыть Панель", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "how-to-write-wholesale-lot-manifests-that-sell-faster",
+    title: "Как составлять описи оптовых лотов для быстрых продаж и высоких ставок",
+    description:
+      "Узнайте, как точное количество, грейды состояния и прозрачные манифесты паллет повышают доверие покупателей и финальную цену.",
+    category: "Руководство",
+    publishedAt: "2026-11-19",
+    readTime: "4 мин чтения",
+    keywords: ["опись оптового лота", "B2B манифест паллеты"],
+    sections: [
+      {
+        heading: "Прозрачность повышает итоговую цену",
+        paragraphs: [
+          "Когда покупатели видят точное количество единиц, грейд состояния, статус манифеста и локацию, они делают более уверенные ставки.",
+        ],
+        bullets: [
+          "Точное количество для live-расчета цены за единицу",
+          "Понятный грейд состояния и тип упаковки",
+          "Четкие фото паллеты или образцов товара",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Бесплатный калькулятор", href: "/tools" },
     ],
   },
 ];
