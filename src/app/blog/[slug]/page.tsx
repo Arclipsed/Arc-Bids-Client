@@ -113,7 +113,12 @@ export async function generateMetadata({
   });
 }
 
-async function BlogPostContent({ slug }: { slug: string }) {
+async function BlogPostContent({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const locale = await TranslationService.GetUserLocale();
   const post = getBlogPostBySlug(slug, locale);
   if (!post) notFound();
@@ -291,13 +296,11 @@ async function BlogPostContent({ slug }: { slug: string }) {
   );
 }
 
-export default async function BlogPostPage({
+export default function BlogPostPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-
   return (
     <Suspense
       fallback={
@@ -306,7 +309,7 @@ export default async function BlogPostPage({
         </div>
       }
     >
-      <BlogPostContent slug={slug} />
+      <BlogPostContent params={params} />
     </Suspense>
   );
 }
