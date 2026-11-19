@@ -14,4 +14,5 @@ export default {
   deviceId: __t.string(),
   deviceName: __t.string(),
   deviceType: __t.string(),
+  email: __t.string(),
 };

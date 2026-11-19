@@ -37,6 +37,7 @@ import {
 import AddApprovedBuyerReducer from "./add_approved_buyer_reducer";
 import AddAuctionItemReducer from "./add_auction_item_reducer";
 import AddBuyerListMemberReducer from "./add_buyer_list_member_reducer";
+import AdminGrantTicketsReducer from "./admin_grant_tickets_reducer";
 import CancelAutoBidReducer from "./cancel_auto_bid_reducer";
 import CreateBuyerListReducer from "./create_buyer_list_reducer";
 import CreateOrganizationReducer from "./create_organization_reducer";
@@ -75,6 +76,7 @@ import AuctionItemBidRow from "./auction_item_bid_table";
 import AuctionPresenceRow from "./auction_presence_table";
 import BuyerListRow from "./buyer_list_table";
 import BuyerListMemberRow from "./buyer_list_member_table";
+import MyAccountRow from "./my_account_table";
 import MyAutoBidsRow from "./my_auto_bids_table";
 import MyDevicesRow from "./my_devices_table";
 import OrganizationRow from "./organization_table";
@@ -210,6 +212,13 @@ const tablesSchema = __schema({
       { name: 'organization_whitelist_magic_token_key', constraint: 'unique', columns: ['magicToken'] },
     ],
   }, OrganizationWhitelistRow),
+  myAccount: __table({
+    name: 'my_account',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, MyAccountRow),
   myAutoBids: __table({
     name: 'my_auto_bids',
     indexes: [
@@ -231,6 +240,7 @@ const reducersSchema = __reducers(
   __reducerSchema("add_approved_buyer", AddApprovedBuyerReducer),
   __reducerSchema("add_auction_item", AddAuctionItemReducer),
   __reducerSchema("add_buyer_list_member", AddBuyerListMemberReducer),
+  __reducerSchema("admin_grant_tickets", AdminGrantTicketsReducer),
   __reducerSchema("cancel_auto_bid", CancelAutoBidReducer),
   __reducerSchema("create_buyer_list", CreateBuyerListReducer),
   __reducerSchema("create_organization", CreateOrganizationReducer),
@@ -283,6 +293,8 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "Organization": Omit<typeof tablesSchema.schemaType.tables["organization"], "accessorName"> & { readonly accessorName: "Organization" };
     /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
     readonly "OrganizationWhitelist": Omit<typeof tablesSchema.schemaType.tables["organizationWhitelist"], "accessorName"> & { readonly accessorName: "OrganizationWhitelist" };
+    /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
+    readonly "MyAccount": Omit<typeof tablesSchema.schemaType.tables["myAccount"], "accessorName"> & { readonly accessorName: "MyAccount" };
     /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
     readonly "MyAutoBids": Omit<typeof tablesSchema.schemaType.tables["myAutoBids"], "accessorName"> & { readonly accessorName: "MyAutoBids" };
     /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
@@ -313,6 +325,7 @@ const tableAccessorAliases = {
   "BuyerListMember": "buyerListMember",
   "Organization": "organization",
   "OrganizationWhitelist": "organizationWhitelist",
+  "MyAccount": "myAccount",
   "MyAutoBids": "myAutoBids",
   "MyDevices": "myDevices",
 } as const;
@@ -351,6 +364,8 @@ export type DbView = __DbViewBase & {
   readonly "Organization": __DbViewBase["organization"];
   /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
   readonly "OrganizationWhitelist": __DbViewBase["organizationWhitelist"];
+  /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
+  readonly "MyAccount": __DbViewBase["myAccount"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __DbViewBase["myAutoBids"];
   /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
@@ -375,6 +390,8 @@ export type Tables = __TablesBase & {
   readonly "Organization": __TablesBase["organization"];
   /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
   readonly "OrganizationWhitelist": __TablesBase["organizationWhitelist"];
+  /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
+  readonly "MyAccount": __TablesBase["myAccount"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __TablesBase["myAutoBids"];
   /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */

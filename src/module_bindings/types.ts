@@ -10,6 +10,15 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
+export const Account = __t.object("Account", {
+  identity: __t.identity(),
+  email: __t.string(),
+  createdAt: __t.timestamp(),
+  lastLoginAt: __t.timestamp(),
+  auctionCredits: __t.u32(),
+});
+export type Account = __Infer<typeof Account>;
+
 export const Auction = __t.object("Auction", {
   id: __t.u64(),
   orgId: __t.u64(),
@@ -143,7 +152,6 @@ export const Organization = __t.object("Organization", {
   country: __t.string(),
   vatNumber: __t.string(),
   description: __t.string(),
-  auctionCredits: __t.u32(),
 });
 export type Organization = __Infer<typeof Organization>;
 

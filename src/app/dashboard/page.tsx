@@ -68,7 +68,6 @@ import { normalizeCategory } from "@/lib/lot-categories";
 interface OrgRow extends OrganizationProfile {
   id: bigint;
   ownerHex: string;
-  auctionCredits: number;
 }
 
 interface RoomRow {
@@ -176,6 +175,7 @@ export default function DashboardPage() {
   );
 
   const [orgs, setOrgs] = useState<OrgRow[]>([]);
+  const [myAccountCredits, setMyAccountCredits] = useState(0);
   const [rooms, setRooms] = useState<RoomRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
   const [buyers, setBuyers] = useState<BuyerRow[]>([]);
@@ -286,9 +286,10 @@ export default function DashboardPage() {
           country: o.country ?? "",
           vatNumber: o.vatNumber ?? "",
           description: o.description ?? "",
-          auctionCredits: o.auctionCredits ?? 0,
         }))
       );
+      const myAccount = Array.from(conn.db.myAccount.iter())[0];
+      setMyAccountCredits(myAccount?.auctionCredits ?? 0);
       setRooms(
         Array.from(conn.db.auction.iter()).map((r) => ({
           id: r.id,
@@ -392,6 +393,7 @@ export default function DashboardPage() {
             deviceId: info.deviceId,
             deviceName: info.deviceName,
             deviceType: info.deviceType,
+            email: userEmail,
           });
         } catch {
           // Ignore device registration errors
@@ -412,7 +414,10 @@ export default function DashboardPage() {
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
             "SELECT * FROM my_devices",
+            "SELECT * FROM my_account",
           ]);
+        connectedConn.db.myAccount.onInsert(() => sync(connectedConn));
+        connectedConn.db.myAccount.onUpdate(() => sync(connectedConn));
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
         connectedConn.db.organization.onUpdate(() => sync(connectedConn));
         connectedConn.db.auction.onInsert((_ctx, newRoom) => {
@@ -1166,7 +1171,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-mono text-3xl font-bold tracking-tight text-white tabular-nums">
                     <NumberTicker
-                      value={myOrg.auctionCredits}
+                      value={myAccountCredits}
                       className="tracking-tight text-white dark:text-white"
                     />
                   </p>
@@ -1328,7 +1333,7 @@ export default function DashboardPage() {
 
                           <div className="relative z-10 flex items-center gap-2">
                           {(r.status === "Draft" || r.status === "Lobby") && (
-                            stripeConfigured && !r.isPaid && (myOrg?.auctionCredits ?? 0) === 0 ? (
+                            stripeConfigured && !r.isPaid && myAccountCredits === 0 ? (
                               <InteractivePill
                                 tone="accent"
                                 active
@@ -1637,7 +1642,7 @@ export default function DashboardPage() {
                 buyerLists={buyerListOptions}
                 copy={d}
                 isDe={isDe}
-                auctionCredits={myOrg.auctionCredits}
+                auctionCredits={myAccountCredits}
                 stripeConfigured={stripeConfigured}
                 onBuyTicket={() => void handleBuyTicket(1)}
                 onSubmit={handleCreateAuction}
@@ -1658,7 +1663,7 @@ export default function DashboardPage() {
                   buyerLists={buyerListOptions}
                   copy={d}
                   isDe={isDe}
-                  auctionCredits={myOrg.auctionCredits}
+                  auctionCredits={myAccountCredits}
                   initialHasTicket={editingRoom.isPaid}
                   stripeConfigured={stripeConfigured}
                   onBuyTicket={() => void handleBuyTicket(1)}
