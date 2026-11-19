@@ -17,6 +17,7 @@ import {
   Info,
   LogOut,
   Mail,
+  Package,
   Pencil,
   Plus,
   Ticket,
@@ -28,7 +29,7 @@ import {
 import type { DbConnection } from "@/module_bindings";
 import { createReconnectingSpacetimeConnection, clearSavedToken } from "@/lib/spacetime";
 import { clearOidcSession, saveOidcIdToken } from "@/lib/auth";
-import { formatCurrency } from "@/lib/format";
+import { formatCountdown, formatCurrency } from "@/lib/format";
 import { InteractivePill } from "@/components/ui/interactive-pill";
 import { IconButton } from "@/components/ui/icon-button";
 import { Dialog } from "@/components/ui/dialog";
@@ -60,6 +61,8 @@ import {
   CreateAuctionForm,
   type CreateAuctionPayload,
 } from "@/components/dashboard/CreateAuctionForm";
+import { CreateLotForm, type DraftLot } from "@/components/dashboard/CreateLotForm";
+import { normalizeCategory } from "@/lib/lot-categories";
 
 interface OrgRow extends OrganizationProfile {
   id: bigint;
@@ -98,6 +101,7 @@ interface ItemRow {
   quantity: number;
   category: string;
   metadataJson: string;
+  endsAtMs: number | null;
 }
 
 interface BuyerRow {
@@ -184,6 +188,11 @@ export default function DashboardPage() {
 
   const [createAuctionOpen, setCreateAuctionOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<RoomRow | null>(null);
+  const [addingLotRoom, setAddingLotRoom] = useState<RoomRow | null>(null);
+  const [editingLot, setEditingLot] = useState<{
+    room: RoomRow;
+    item: ItemRow;
+  } | null>(null);
   const [resultsRoom, setResultsRoom] = useState<RoomRow | null>(null);
   const [buyerCompany, setBuyerCompany] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -195,6 +204,7 @@ export default function DashboardPage() {
     sessionId: string;
     quantity: number;
   } | null>(null);
+  const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
   useEffect(() => {
     setLocale(getClientLocale());
@@ -307,6 +317,7 @@ export default function DashboardPage() {
           quantity: i.quantity ?? 1,
           category: i.category || "General",
           metadataJson: i.metadataJson || "",
+          endsAtMs: i.endsAt ? Number(i.endsAt.toMillis()) : null,
         }))
       );
       setBuyers(
@@ -763,51 +774,73 @@ export default function DashboardPage() {
         allowAutoBid: payload.allowAutoBid,
       });
 
-      const existingRoomLots = items.filter((i) => i.roomId === editingRoom.id);
-      const keptIds = new Set(
-        payload.lots.map((l) => l.id).filter((id): id is bigint => id !== undefined)
-      );
-
-      // Delete removed lots
-      for (const existing of existingRoomLots) {
-        if (!keptIds.has(existing.id)) {
-          conn.reducers.deleteAuctionItem({ itemId: existing.id });
-        }
-      }
-
-      // Update existing lots & add new ones
-      payload.lots.forEach((lot, idx) => {
-        if (lot.id !== undefined) {
-          conn.reducers.updateAuctionItem({
-            itemId: lot.id,
-            title: lot.title,
-            description: lot.description,
-            images: lot.images,
-            startingPrice: lot.startingPriceCents,
-            quantity: lot.quantity,
-            category: lot.category ?? "General",
-            metadataJson: lot.metadataJson ?? "",
-          });
-        } else {
-          conn.reducers.addAuctionItem({
-            roomId: editingRoom.id,
-            orderIndex: existingRoomLots.length + idx,
-            title: lot.title,
-            description: lot.description,
-            images: lot.images,
-            startingPrice: lot.startingPriceCents,
-            quantity: lot.quantity,
-            category: lot.category ?? "General",
-            metadataJson: lot.metadataJson ?? "",
-          });
-        }
-      });
-
       setEditingRoom(null);
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to update auction.");
     }
   };
+
+  const handleSaveLot = (lot: DraftLot) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+
+    try {
+      if (editingLot) {
+        conn.reducers.updateAuctionItem({
+          itemId: editingLot.item.id,
+          title: lot.title,
+          description: lot.description,
+          images: lot.images,
+          startingPrice: lot.startingPriceCents,
+          quantity: lot.quantity,
+          category: lot.category ?? "General",
+          metadataJson: lot.metadataJson ?? "",
+        });
+        setEditingLot(null);
+      } else if (addingLotRoom) {
+        const roomLots = items.filter((i) => i.roomId === addingLotRoom.id);
+        const maxOrder = roomLots.reduce((max, i) => Math.max(max, i.orderIndex), -1);
+        conn.reducers.addAuctionItem({
+          roomId: addingLotRoom.id,
+          orderIndex: maxOrder + 1,
+          title: lot.title,
+          description: lot.description,
+          images: lot.images,
+          startingPrice: lot.startingPriceCents,
+          quantity: lot.quantity,
+          category: lot.category ?? "General",
+          metadataJson: lot.metadataJson ?? "",
+        });
+        setAddingLotRoom(null);
+      }
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to save lot.");
+    }
+  };
+
+  const handleDeleteLot = (itemId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.deleteAuctionItem({ itemId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete lot.");
+    }
+  };
+
+  const hasLiveRoom = useMemo(
+    () => rooms.some((r) => r.status === "Live"),
+    [rooms]
+  );
+
+  useEffect(() => {
+    if (!hasLiveRoom) return;
+    setNowMs(Date.now());
+    const id = window.setInterval(() => setNowMs(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [hasLiveRoom]);
 
   useEffect(() => {
     if (!tablesSynced || !pendingTicketRedeem) return;
@@ -1159,10 +1192,14 @@ export default function DashboardPage() {
                     myRooms.map((r) => {
                       const isLive = r.status === "Live";
                       const isEnded = r.status === "Ended";
+                      const isEditable = r.status === "Draft" || r.status === "Lobby";
+                      const roomLots = items
+                        .filter((i) => i.roomId === r.id)
+                        .sort((a, b) => a.orderIndex - b.orderIndex);
                       return (
                         <div
                           key={r.id.toString()}
-                          className={`relative flex flex-wrap items-center justify-between gap-3 overflow-hidden rounded-2xl border px-4 py-3 transition ${
+                          className={`relative overflow-hidden rounded-2xl border px-4 py-3 transition ${
                             isLive
                               ? "border-[#3ff2e0]/35 bg-[#0b181c]/85 shadow-[0_0_28px_rgba(63,242,224,0.12)]"
                               : isEnded
@@ -1182,7 +1219,8 @@ export default function DashboardPage() {
                               />
                             </>
                           )}
-                          <div className="relative z-10 min-w-0">
+                          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+                          <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2.5">
                               <p
                                 className={`truncate text-sm font-semibold ${
@@ -1261,12 +1299,32 @@ export default function DashboardPage() {
                               <InteractivePill
                                 tone="accent"
                                 active
+                                disabled={roomLots.length === 0}
+                                title={
+                                  roomLots.length === 0
+                                    ? isDe
+                                      ? "Mindestens 1 Los hinzufügen"
+                                      : "Add at least 1 lot to start"
+                                    : undefined
+                                }
                                 onClick={() => handleStartAuction(r.id)}
-                                className="h-8 px-3.5 text-[11px]"
+                                className="h-8 px-3.5 text-[11px] disabled:cursor-not-allowed disabled:opacity-40"
                               >
                                 {d.StartAction}
                               </InteractivePill>
                             )
+                          )}
+                          {isEditable && (
+                            <IconButton
+                              variant="subtle"
+                              size="sm"
+                              onClick={() => setAddingLotRoom(r)}
+                              aria-label={`Add lot to ${r.title}`}
+                              title={isDe ? "Los hinzufügen" : "Add lot"}
+                              className="h-8 w-8"
+                            >
+                              <Plus className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                            </IconButton>
                           )}
                           <Link
                             href={`/auction?room=${encodeURIComponent(r.roomCode)}`}
@@ -1324,6 +1382,163 @@ export default function DashboardPage() {
                           </IconButton>
                         </div>
                       </div>
+
+                      {/* Nested Lots List */}
+                      {(roomLots.length > 0 || isEditable) && (
+                        <div className="relative z-10 mt-3 space-y-1.5 border-t border-white/[0.06] pt-2.5 pl-3">
+                          {roomLots.length === 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => setAddingLotRoom(r)}
+                              className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/10 bg-white/[0.015] py-2 text-[11px] font-medium text-zinc-400 transition hover:border-[#3ff2e0]/40 hover:bg-[#3ff2e0]/[0.04] hover:text-[#3ff2e0]"
+                            >
+                              <Plus className="h-3 w-3" />
+                              {isDe ? "Erstes Los hinzufügen" : "Add first lot"}
+                            </button>
+                          ) : (
+                            roomLots.map((lot, idx) => {
+                              const isActiveLot =
+                                isLive &&
+                                (r.activeItemId === lot.id || lot.status === "Active");
+                              const isSoldLot = lot.status === "Sold";
+                              const isUnsoldLot = lot.status === "Unsold";
+                              const firstImg = lot.images.find((u) => u.trim());
+                              const remainingMs =
+                                isActiveLot && lot.endsAtMs !== null
+                                  ? Math.max(0, lot.endsAtMs - nowMs)
+                                  : null;
+
+                              return (
+                                <div
+                                  key={lot.id.toString()}
+                                  className={`relative flex items-center justify-between gap-2 overflow-hidden rounded-xl border px-3 py-2 transition ${
+                                    isActiveLot
+                                      ? "border-[#3ff2e0]/60 bg-gradient-to-r from-[#102d33] via-[#0d2228] to-[#0a171c] shadow-[0_0_24px_rgba(63,242,224,0.18)]"
+                                      : isSoldLot || isUnsoldLot
+                                        ? "border-white/[0.04] bg-[#06090f]/70 opacity-75"
+                                        : "border-white/[0.05] bg-[#080c14]/80"
+                                  }`}
+                                >
+                                  {isActiveLot && (
+                                    <>
+                                      <span
+                                        aria-hidden="true"
+                                        className="pointer-events-none absolute inset-0 animate-pulse bg-[radial-gradient(circle_at_10%_50%,rgba(63,242,224,0.12),transparent_55%)]"
+                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-[live-sweep_4s_linear_infinite] bg-gradient-to-r from-transparent via-[#3ff2e0]/[0.1] to-transparent"
+                                      />
+                                    </>
+                                  )}
+                                  <div className="relative z-10 flex min-w-0 flex-wrap items-center gap-2">
+                                    {firstImg ? (
+                                      <img
+                                        src={firstImg}
+                                        alt={lot.title}
+                                        className="h-7 w-7 shrink-0 rounded-lg border border-white/10 object-cover"
+                                      />
+                                    ) : (
+                                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/[0.07] bg-white/[0.03] text-zinc-500">
+                                        <Package className="h-3.5 w-3.5" />
+                                      </span>
+                                    )}
+                                    <span className="font-mono text-[10px] text-zinc-500">
+                                      #{idx + 1}
+                                    </span>
+                                    <p
+                                      className={`truncate text-xs font-medium ${
+                                        isActiveLot ? "text-white" : "text-zinc-200"
+                                      }`}
+                                    >
+                                      {lot.title}
+                                    </p>
+                                    {lot.category !== "General" && (
+                                      <span className="rounded-full border border-[#3ff2e0]/20 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[9px] font-semibold text-[#3ff2e0]">
+                                        {lot.category}
+                                      </span>
+                                    )}
+                                    {isActiveLot && (
+                                      <span className="inline-flex items-center gap-1 rounded-full border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[9px] font-semibold text-[#3ff2e0]">
+                                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3ff2e0]" />
+                                        {isDe ? "Aktiv" : "Live"}
+                                      </span>
+                                    )}
+                                    {isSoldLot && (
+                                      <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-semibold text-emerald-300">
+                                        {isDe ? "Verkauft" : "Sold"}
+                                      </span>
+                                    )}
+                                    {isUnsoldLot && (
+                                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[9px] font-medium text-zinc-400">
+                                        {isDe ? "Unverkauft" : "Unsold"}
+                                      </span>
+                                    )}
+                                    <span className="font-mono text-[10px] text-zinc-400">
+                                      {lot.quantity > 1 ? `${lot.quantity}× · ` : ""}
+                                      {lot.currentBid > BigInt(0)
+                                        ? formatCurrency(lot.currentBid, r.currency)
+                                        : formatCurrency(lot.startingPrice, r.currency)}
+                                      {lot.images.length > 0 && !firstImg
+                                        ? ` · ${lot.images.length} img`
+                                        : ""}
+                                    </span>
+                                  </div>
+                                  <div className="relative z-10 flex shrink-0 items-center gap-1.5">
+                                    {(isActiveLot || isSoldLot) && (
+                                      <span
+                                        className={`rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold tabular-nums ${
+                                          lot.currentBid > BigInt(0)
+                                            ? "border-emerald-400/35 bg-emerald-500/15 text-emerald-200"
+                                            : "border-white/15 bg-white/[0.05] text-zinc-300"
+                                        }`}
+                                      >
+                                        {lot.currentBid > BigInt(0)
+                                          ? `${isDe ? "Gebot" : "Bid"} ${formatCurrency(lot.currentBid, r.currency)}`
+                                          : `${isDe ? "Start" : "Start"} ${formatCurrency(lot.startingPrice, r.currency)}`}
+                                      </span>
+                                    )}
+                                    {remainingMs !== null && (
+                                      <span
+                                        className={`rounded-full border px-2 py-0.5 font-mono text-[10px] font-semibold tabular-nums ${
+                                          remainingMs <= 10_000
+                                            ? "border-rose-400/35 bg-rose-500/15 text-rose-300"
+                                            : "border-[#3ff2e0]/25 bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                                        }`}
+                                      >
+                                        {formatCountdown(remainingMs)}
+                                      </span>
+                                    )}
+                                    {isEditable && (
+                                      <>
+                                        <IconButton
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => setEditingLot({ room: r, item: lot })}
+                                          aria-label={`Edit ${lot.title}`}
+                                          className="h-7 w-7"
+                                        >
+                                          <Pencil className="h-3 w-3" />
+                                        </IconButton>
+                                        <IconButton
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => handleDeleteLot(lot.id)}
+                                          aria-label={`Delete ${lot.title}`}
+                                          className="h-7 w-7 enabled:hover:text-rose-400"
+                                        >
+                                          <Trash2 className="h-3 w-3" />
+                                        </IconButton>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      )}
+                    </div>
                       );
                     })
                   )}
@@ -1424,6 +1639,58 @@ export default function DashboardPage() {
                   }}
                   onSubmit={handleUpdateAuction}
                   onCancel={() => setEditingRoom(null)}
+                />
+              )}
+            </Dialog>
+
+            <Dialog
+              open={Boolean(addingLotRoom || editingLot)}
+              onClose={() => {
+                setAddingLotRoom(null);
+                setEditingLot(null);
+              }}
+              title={editingLot ? d.EditLotTitle : d.AddLotTitle}
+              description={
+                editingLot
+                  ? d.EditLotDesc
+                  : addingLotRoom
+                    ? `${addingLotRoom.title} — ${d.AddLotDesc}`
+                    : d.AddLotDesc
+              }
+            >
+              {(addingLotRoom || editingLot) && (
+                <CreateLotForm
+                  key={
+                    editingLot
+                      ? `edit-lot-${editingLot.item.id.toString()}`
+                      : `add-lot-${addingLotRoom?.id.toString()}`
+                  }
+                  currencySymbol={
+                    (editingLot?.room.currency ?? addingLotRoom?.currency) === "EUR"
+                      ? "€"
+                      : "$"
+                  }
+                  initialLot={
+                    editingLot
+                      ? {
+                          id: editingLot.item.id,
+                          title: editingLot.item.title,
+                          description: editingLot.item.description,
+                          startingPriceCents: editingLot.item.startingPrice,
+                          quantity: editingLot.item.quantity,
+                          images: editingLot.item.images,
+                          category: normalizeCategory(editingLot.item.category),
+                          metadataJson: editingLot.item.metadataJson,
+                        }
+                      : undefined
+                  }
+                  submitLabel={editingLot ? d.SaveLotAction : d.AddLot}
+                  copy={d}
+                  onSubmit={handleSaveLot}
+                  onCancel={() => {
+                    setAddingLotRoom(null);
+                    setEditingLot(null);
+                  }}
                 />
               )}
             </Dialog>

@@ -6,18 +6,13 @@ import {
   Check,
   ChevronDown,
   Lock,
-  Pencil,
-  Plus,
   Ticket,
-  Trash2,
   X,
 } from "lucide-react";
 import { format } from "date-fns";
-import { formatCurrency } from "@/lib/format";
 import { IconButton } from "@/components/ui/icon-button";
-import { Dialog } from "@/components/ui/dialog";
 import Calendar14 from "@/components/ui/c-calendar-14";
-import { CreateLotForm, type DraftLot } from "@/components/dashboard/CreateLotForm";
+import type { DraftLot } from "@/components/dashboard/CreateLotForm";
 import type { ITranslation } from "@/translations/ITranslation";
 import { EN } from "@/translations/en/en";
 
@@ -119,15 +114,11 @@ export function CreateAuctionForm({
     initialScheduled ? format(initialScheduled, "HH:mm") : null
   );
 
-  const [lots, setLots] = useState<DraftLot[]>(initialValues?.lots ?? []);
-  const [addLotOpen, setAddLotOpen] = useState(false);
-  const [editingLotIndex, setEditingLotIndex] = useState<number | null>(null);
-
   const scheduleLocked = !initialHasTicket && auctionCredits === 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!roomTitle.trim() || lots.length === 0) return;
+    if (!roomTitle.trim()) return;
     if (scheduleLocked && scheduledTime) return;
 
     onSubmit({
@@ -143,7 +134,7 @@ export function CreateAuctionForm({
       allowedListIds: isPublic ? [] : allowedListIds,
       scheduledDate: scheduledTime ? scheduledDate : undefined,
       scheduledTime,
-      lots,
+      lots: initialValues?.lots ?? [],
     });
   };
 
@@ -506,81 +497,6 @@ export function CreateAuctionForm({
           </div>
         </div>
 
-        {/* Lots List */}
-        <div className="space-y-3 border-t border-white/[0.06] pt-4">
-          <div className="flex items-center justify-between">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
-              {copy.LotsHeading} ({lots.length})
-            </p>
-          </div>
-
-          {lots.length > 0 && (
-            <ul className="space-y-2">
-              {lots.map((lot, idx) => (
-                <li
-                  key={lot.id ? lot.id.toString() : `${lot.title}-${idx}`}
-                  className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-3.5 py-2.5"
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate text-xs font-semibold text-white">
-                        #{idx + 1} · {lot.title}
-                      </p>
-                      {lot.category === "Car" && (
-                        <span className="shrink-0 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#3ff2e0]">
-                          Car
-                        </span>
-                      )}
-                    </div>
-                    <p className="font-mono text-[11px] text-zinc-400">
-                      {lot.quantity > 1 ? `${lot.quantity} units · ` : ""}
-                      Start {formatCurrency(lot.startingPriceCents, currency)}
-                      {lot.images.length > 0
-                        ? ` · ${lot.images.length} ${lot.images.length === 1 ? "image" : "images"}`
-                        : ""}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <IconButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingLotIndex(idx)}
-                      aria-label={`Edit ${lot.title}`}
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                    </IconButton>
-                    <IconButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        setLots((prev) => prev.filter((_, i) => i !== idx))
-                      }
-                      aria-label={`Remove ${lot.title}`}
-                      className="enabled:hover:text-rose-400"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </IconButton>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <button
-            type="button"
-            onClick={() => setAddLotOpen(true)}
-            className="flex h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] text-xs font-semibold text-zinc-200 transition hover:border-[#3ff2e0]/40 hover:bg-[#3ff2e0]/[0.05] hover:text-[#3ff2e0]"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            {copy.AddLot}
-          </button>
-          {lots.length === 0 && (
-            <p className="text-[11px] text-amber-300/90">
-              {isEdit ? copy.AddLotHintEdit : copy.AddLotHintCreate}
-            </p>
-          )}
-        </div>
-
         {/* Ticket Notice */}
         {(() => {
           const needsTicketForSchedule =
@@ -648,7 +564,7 @@ export function CreateAuctionForm({
                 </button>
                 <button
                   type="submit"
-                  disabled={lots.length === 0 || needsTicketForSchedule}
+                  disabled={!roomTitle.trim() || needsTicketForSchedule}
                   className="h-10 cursor-pointer rounded-full bg-[#e4fffb] px-6 text-xs font-semibold text-[#04070b] ring-1 ring-[#3ff2e0]/40 shadow-[0_0_20px_rgba(63,242,224,0.2)] transition enabled:hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {isEdit ? copy.SaveChanges : copy.CreateAuctionAction}
@@ -658,43 +574,6 @@ export function CreateAuctionForm({
           );
         })()}
       </form>
-
-      <Dialog
-        open={addLotOpen || editingLotIndex !== null}
-        onClose={() => {
-          setAddLotOpen(false);
-          setEditingLotIndex(null);
-        }}
-        title={editingLotIndex !== null ? copy.EditLotTitle : copy.AddLotTitle}
-        description={
-          editingLotIndex !== null ? copy.EditLotDesc : copy.AddLotDesc
-        }
-      >
-        <CreateLotForm
-          key={editingLotIndex !== null ? `edit-${editingLotIndex}` : "add-lot"}
-          currencySymbol={currencySymbol}
-          initialLot={
-            editingLotIndex !== null ? lots[editingLotIndex] : undefined
-          }
-          submitLabel={editingLotIndex !== null ? copy.SaveLotAction : copy.AddLot}
-          copy={copy}
-          onSubmit={(lot) => {
-            if (editingLotIndex !== null) {
-              setLots((prev) =>
-                prev.map((item, i) => (i === editingLotIndex ? lot : item))
-              );
-              setEditingLotIndex(null);
-            } else {
-              setLots((prev) => [...prev, lot]);
-              setAddLotOpen(false);
-            }
-          }}
-          onCancel={() => {
-            setAddLotOpen(false);
-            setEditingLotIndex(null);
-          }}
-        />
-      </Dialog>
     </>
   );
 }
