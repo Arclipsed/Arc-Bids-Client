@@ -1269,7 +1269,7 @@ export default function DashboardPage() {
                                 className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold ${
                                   r.isPublic
                                     ? "border border-emerald-400/25 bg-emerald-500/10 text-emerald-300"
-                                    : "border border-amber-400/30 bg-amber-500/10 text-amber-300"
+                                    : "border border-violet-400/30 bg-violet-500/10 text-violet-300"
                                 }`}
                               >
                                 {!r.isPublic && <Lock className="h-2.5 w-2.5" />}
