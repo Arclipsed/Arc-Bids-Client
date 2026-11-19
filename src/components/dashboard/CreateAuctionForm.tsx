@@ -299,12 +299,15 @@ export function CreateAuctionForm({
             {!isPublic && (
               <div className="mt-3 space-y-2 border-t border-white/[0.06] pt-3">
                 <p className="text-[11px] font-medium text-zinc-300">
-                  Choose Email Lists to Whitelist
+                  {isDe
+                    ? "Käuferlisten für Whitelist wählen"
+                    : "Choose Buyer Lists to Whitelist"}
                 </p>
                 {buyerLists.length === 0 ? (
                   <p className="text-[11px] text-zinc-400">
-                    No email lists created yet. Create a list on your dashboard to
-                    restrict access to specific buyers.
+                    {isDe
+                      ? "Noch keine Käuferlisten erstellt. Erstellen Sie eine Liste im Dashboard, um den Zugang einzuschränken."
+                      : "No buyer lists created yet. Create a list on your dashboard to restrict access to specific buyers."}
                   </p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
