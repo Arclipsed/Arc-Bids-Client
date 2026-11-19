@@ -253,7 +253,7 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
                         : "text-zinc-200"
                     )}
                   >
-                    Blog
+                    {nav.Blog ?? "Blog"}
                   </Link>
                 </li>
                 <li>
