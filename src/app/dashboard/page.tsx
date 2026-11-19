@@ -1491,8 +1491,8 @@ export default function DashboardPage() {
                                     )}
                                     <span className="font-mono text-[10px] text-zinc-400">
                                       {lot.quantity > 1 ? `${lot.quantity}× · ` : ""}
-                                      {lot.currentBid > BigInt(0)
-                                        ? formatCurrency(lot.currentBid, r.currency)
+                                      {isActiveLot || isSoldLot
+                                        ? `Start ${formatCurrency(lot.startingPrice, r.currency)}`
                                         : formatCurrency(lot.startingPrice, r.currency)}
                                       {lot.images.length > 0 && !firstImg
                                         ? ` · ${lot.images.length} img`
