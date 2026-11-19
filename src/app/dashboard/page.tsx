@@ -973,7 +973,7 @@ export default function DashboardPage() {
 
   const copyRoomLink = (room: RoomRow) => {
     const key = `room-${room.id.toString()}`;
-    const url = `${window.location.origin}/auction?room=${encodeURIComponent(room.roomCode)}`;
+    const url = `${window.location.origin}/auction/${encodeURIComponent(room.roomCode)}`;
     navigator.clipboard.writeText(url);
     setCopiedId(key);
     setTimeout(() => setCopiedId(null), 1800);
@@ -1352,7 +1352,7 @@ export default function DashboardPage() {
                             </IconButton>
                           )}
                           <Link
-                            href={`/auction?room=${encodeURIComponent(r.roomCode)}`}
+                            href={`/auction/${encodeURIComponent(r.roomCode)}`}
                             aria-label={`Open ${r.title}`}
                             title="Open room"
                             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-300 transition hover:border-white/25 hover:bg-white/[0.1] hover:text-white"

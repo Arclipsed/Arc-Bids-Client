@@ -297,7 +297,7 @@ export function OrganizationPublicClient({ slug }: { slug: string }) {
                         </div>
 
                         <Link
-                          href={`/auction?room=${encodeURIComponent(r.roomCode)}`}
+                          href={`/auction/${encodeURIComponent(r.roomCode)}`}
                           className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-[#e4fffb] px-4 text-xs font-semibold text-[#04070b] transition hover:bg-white"
                         >
                           {r.status === "Live" ? "Join Live Auction" : "Open Room"}

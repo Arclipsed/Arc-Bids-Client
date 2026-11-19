@@ -15,7 +15,7 @@ import { HighestBidderCard } from "./HighestBidderCard";
 import { UpcomingQueue } from "./UpcomingQueue";
 import FooterSection from "./FooterSection";
 
-export function AuctionPage() {
+export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}) {
   const connRef = useRef<DbConnection | null>(null);
   const [connectionState, setConnectionState] = useState<"connecting" | "connected" | "error">(
     "connecting"
@@ -24,6 +24,7 @@ export function AuctionPage() {
   const [notFoundReady, setNotFoundReady] = useState(false);
   const [nowMs, setNowMs] = useState<number>(0);
   const [selectedRoomKey, setSelectedRoomKey] = useState<string | null>(() => {
+    if (initialRoomKey?.trim()) return initialRoomKey.trim();
     if (typeof window === "undefined") return null;
     const roomParam = new URLSearchParams(window.location.search).get("room")?.trim();
     return roomParam || null;
