@@ -509,7 +509,7 @@ export default function DashboardPage() {
       conn.reducers.createOrganization({
         name,
         slug,
-        contactEmail: userEmail,
+        contactEmail: "",
         phone: "",
         website: "",
         addressLine1: "",
