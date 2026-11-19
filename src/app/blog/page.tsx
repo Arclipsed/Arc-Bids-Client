@@ -91,6 +91,9 @@ async function BlogIndexContent() {
   const pycieEntries = (await fetchPycieBlogEntries()).filter(
     (entry) => !localSlugs.has(entry.slug)
   );
+  const allPosts = [...localPosts, ...pycieEntries].sort((a, b) =>
+    (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "")
+  );
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-clip bg-[#05070c] text-zinc-100">
@@ -132,7 +135,7 @@ async function BlogIndexContent() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {localPosts.map((post) => (
+          {allPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -147,53 +150,19 @@ async function BlogIndexContent() {
                     <Clock className="h-3 w-3" />
                     {post.readTime}
                   </span>
-                  <span className="font-mono text-zinc-500">
-                    {post.publishedAt}
-                  </span>
-                </div>
-
-                <h2 className="mt-4 text-lg font-semibold leading-snug text-white transition group-hover:text-[#e4fffb]">
-                  {post.title}
-                </h2>
-                <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
-                  {post.description}
-                </p>
-              </div>
-
-              <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#3ff2e0]">
-                {copy.readArticle}
-                <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-              </div>
-            </Link>
-          ))}
-          {pycieEntries.map((entry) => (
-            <Link
-              key={entry.slug}
-              href={`/blog/${entry.slug}`}
-              className="group flex flex-col justify-between rounded-3xl border border-white/[0.08] bg-[#090d14]/90 p-6 transition hover:border-[#3ff2e0]/35 hover:bg-[#0c121c]"
-            >
-              <div>
-                <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
-                  <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
-                    {entry.category}
-                  </span>
-                  <span className="inline-flex items-center gap-1 font-mono text-zinc-500">
-                    <Clock className="h-3 w-3" />
-                    {entry.readTime}
-                  </span>
-                  {entry.publishedAt && (
+                  {post.publishedAt && (
                     <span className="font-mono text-zinc-500">
-                      {entry.publishedAt}
+                      {post.publishedAt}
                     </span>
                   )}
                 </div>
 
                 <h2 className="mt-4 text-lg font-semibold leading-snug text-white transition group-hover:text-[#e4fffb]">
-                  {entry.title}
+                  {post.title}
                 </h2>
-                {entry.description && (
+                {post.description && (
                   <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
-                    {entry.description}
+                    {post.description}
                   </p>
                 )}
               </div>
