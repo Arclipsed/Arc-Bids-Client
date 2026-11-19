@@ -1631,7 +1631,7 @@ export default function DashboardPage() {
                       icon={<Shield className="h-4 w-4 text-[#3ff2e0]" />}
                     />
                     <div className="grid gap-4 sm:grid-cols-3">
-                      <div className="rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                      <div className="min-w-0 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
                         <p className="text-[11px] font-medium text-zinc-400">
                           {isDe ? "Angemeldete E-Mail" : "Login Email"}
                         </p>
@@ -1639,7 +1639,7 @@ export default function DashboardPage() {
                           {userEmail}
                         </p>
                       </div>
-                      <div className="rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                      <div className="min-w-0 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
                         <p className="text-[11px] font-medium text-zinc-400">
                           {isDe ? "Konto-Identität" : "Account Identity"}
                         </p>
@@ -1647,7 +1647,7 @@ export default function DashboardPage() {
                           {myIdentityHex ?? "—"}
                         </p>
                       </div>
-                      <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
+                      <div className="flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3">
                         <div>
                           <p className="text-[11px] font-medium text-zinc-400">
                             {isDe ? "Auktions-Tickets" : "Auction Tickets"}

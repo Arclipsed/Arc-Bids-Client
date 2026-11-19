@@ -63,7 +63,7 @@ export function GlowCard({
           setActive(false);
         }
       }}
-      className={cn("relative rounded-3xl", className)}
+      className={cn("relative min-w-0 rounded-3xl", className)}
     >
       {/* Dim outer border */}
       <div
@@ -112,7 +112,7 @@ export function GlowCard({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex h-full flex-col p-5 sm:p-6">
+      <div className="relative z-10 flex h-full min-w-0 flex-col p-5 sm:p-6">
         {children}
       </div>
     </div>
