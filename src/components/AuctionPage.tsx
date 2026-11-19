@@ -711,7 +711,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         roomCode={activeRoom.roomCode}
       />
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-32 pt-5 sm:px-6 sm:pb-28 sm:pt-8">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-52 pt-5 sm:px-6 sm:pb-36 sm:pt-8">
         {(activeRoom.status === "Draft" || activeRoom.status === "Lobby") && (
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#3ff2e0]/25 bg-[#3ff2e0]/[0.06] px-4 py-3 text-xs">
             <div className="flex items-center gap-2.5">
