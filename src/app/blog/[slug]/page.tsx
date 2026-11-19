@@ -11,6 +11,7 @@ import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
 import { Locale } from "@/translations/Translations";
 import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/blog-posts";
+import { fetchPycieBlogPost } from "@/lib/pycie-blog";
 
 const POST_COPY: Record<
   Locale,
@@ -95,6 +96,18 @@ export async function generateMetadata({
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
+    const pyciePost = await fetchPycieBlogPost(slug);
+    if (pyciePost) {
+      return MetaTagService.CreateMetaTags({
+        url: `/blog/${slug}`,
+        title: `${pyciePost.title} — ArcBids`,
+        description:
+          pyciePost.description ||
+          "B2B wholesale auction guides and playbooks from ArcBids.",
+        imgUrl: "/opengraph-image",
+        tags: ["ArcBids", "B2B auction blog"],
+      });
+    }
     return MetaTagService.CreateMetaTags({
       url: "/blog",
       title: "Article Not Found — ArcBids",
@@ -121,7 +134,8 @@ async function BlogPostContent({
   const { slug } = await params;
   const locale = await TranslationService.GetUserLocale();
   const post = getBlogPostBySlug(slug, locale);
-  if (!post) notFound();
+  const pyciePost = post ? null : await fetchPycieBlogPost(slug);
+  if (!post && !pyciePost) notFound();
 
   const t = TranslationService.GetTranslations(locale);
   const copy = POST_COPY[locale] ?? POST_COPY.EN;
@@ -129,10 +143,10 @@ async function BlogPostContent({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: post.title,
-    description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    headline: post?.title ?? pyciePost!.title,
+    description: post?.description ?? pyciePost!.description,
+    datePublished: post?.publishedAt ?? pyciePost!.publishedAt,
+    dateModified: post?.publishedAt ?? pyciePost!.publishedAt,
     author: {
       "@type": "Organization",
       name: "ArcBids",
@@ -143,8 +157,8 @@ async function BlogPostContent({
       name: "ArcBids",
       url: SITE_URL,
     },
-    mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
-    keywords: post.keywords.join(", "),
+    mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
+    keywords: post ? post.keywords.join(", ") : "ArcBids, B2B auctions",
   };
 
   return (
@@ -186,58 +200,75 @@ async function BlogPostContent({
           {copy.backToAll}
         </Link>
 
-        <article className="mt-8">
-          <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
-            <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
-              {post.category}
-            </span>
-            <span className="inline-flex items-center gap-1 font-mono text-zinc-500">
-              <Clock className="h-3 w-3" />
-              {post.readTime}
-            </span>
-            <span className="font-mono text-zinc-500">{post.publishedAt}</span>
-          </div>
+        {post ? (
+          <article className="mt-8">
+            <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
+              <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
+                {post.category}
+              </span>
+              <span className="inline-flex items-center gap-1 font-mono text-zinc-500">
+                <Clock className="h-3 w-3" />
+                {post.readTime}
+              </span>
+              <span className="font-mono text-zinc-500">{post.publishedAt}</span>
+            </div>
 
-          <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-            {post.title}
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-zinc-300">
-            {post.description}
-          </p>
+            <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+              {post.title}
+            </h1>
+            <p className="mt-4 text-base leading-relaxed text-zinc-300">
+              {post.description}
+            </p>
 
-          <div className="mt-10 space-y-9 border-t border-white/[0.08] pt-9">
-            {post.sections.map((section) => (
-              <section key={section.heading} className="space-y-4">
-                <h2 className="text-xl font-semibold tracking-tight text-white">
-                  {section.heading}
-                </h2>
-                {section.paragraphs.map((p, idx) => (
-                  <p
-                    key={idx}
-                    className="text-sm leading-relaxed text-zinc-300 sm:text-[15px]"
-                  >
-                    {p}
-                  </p>
-                ))}
-                {section.bullets && section.bullets.length > 0 && (
-                  <ul className="space-y-2.5 rounded-2xl border border-white/[0.06] bg-[#090d14]/80 p-5">
-                    {section.bullets.map((bullet) => (
-                      <li
-                        key={bullet}
-                        className="flex items-start gap-2.5 text-sm text-zinc-300"
-                      >
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#3ff2e0]" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
-          </div>
-        </article>
+            <div className="mt-10 space-y-9 border-t border-white/[0.08] pt-9">
+              {post.sections.map((section) => (
+                <section key={section.heading} className="space-y-4">
+                  <h2 className="text-xl font-semibold tracking-tight text-white">
+                    {section.heading}
+                  </h2>
+                  {section.paragraphs.map((p, idx) => (
+                    <p
+                      key={idx}
+                      className="text-sm leading-relaxed text-zinc-300 sm:text-[15px]"
+                    >
+                      {p}
+                    </p>
+                  ))}
+                  {section.bullets && section.bullets.length > 0 && (
+                    <ul className="space-y-2.5 rounded-2xl border border-white/[0.06] bg-[#090d14]/80 p-5">
+                      {section.bullets.map((bullet) => (
+                        <li
+                          key={bullet}
+                          className="flex items-start gap-2.5 text-sm text-zinc-300"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#3ff2e0]" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
+            </div>
+          </article>
+        ) : (
+          <article className="mt-8">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+              {pyciePost!.title}
+            </h1>
+            {pyciePost!.description && (
+              <p className="mt-4 text-base leading-relaxed text-zinc-300">
+                {pyciePost!.description}
+              </p>
+            )}
+            <div
+              className="prose prose-invert mt-10 max-w-none border-t border-white/[0.08] pt-9 text-sm leading-relaxed text-zinc-300"
+              dangerouslySetInnerHTML={{ __html: pyciePost!.htmlContent }}
+            />
+          </article>
+        )}
 
-        {post.relatedLinks.length > 0 && (
+        {post && post.relatedLinks.length > 0 && (
           <div className="mt-12 rounded-3xl border border-white/[0.08] bg-[#090d14]/90 p-6">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3ff2e0]">
               {copy.relatedResources}

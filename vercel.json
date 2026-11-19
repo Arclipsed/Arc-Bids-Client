@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/sitemap-blog.xml",
+      "destination": "https://pycie.com/client-blog/arcbids-com/sitemap.xml"
+    }
+  ]
+}

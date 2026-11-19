@@ -10,6 +10,7 @@ import { MetaTagService } from "@/services/MetaTagService";
 import { TranslationService } from "@/services/TranslationService";
 import { Locale } from "@/translations/Translations";
 import { getBlogPosts } from "@/lib/blog-posts";
+import { fetchPycieBlogEntries } from "@/lib/pycie-blog";
 
 const BLOG_COPY: Record<
   Locale,
@@ -85,7 +86,11 @@ async function BlogIndexContent() {
   const locale = await TranslationService.GetUserLocale();
   const t = TranslationService.GetTranslations(locale);
   const copy = BLOG_COPY[locale] ?? BLOG_COPY.EN;
-  const posts = getBlogPosts(locale);
+  const localPosts = getBlogPosts(locale);
+  const localSlugs = new Set(localPosts.map((p) => p.slug));
+  const pycieEntries = (await fetchPycieBlogEntries()).filter(
+    (entry) => !localSlugs.has(entry.slug)
+  );
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-clip bg-[#05070c] text-zinc-100">
@@ -127,7 +132,7 @@ async function BlogIndexContent() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {posts.map((post) => (
+          {localPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -153,6 +158,35 @@ async function BlogIndexContent() {
                 <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
                   {post.description}
                 </p>
+              </div>
+
+              <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#3ff2e0]">
+                {copy.readArticle}
+                <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ))}
+          {pycieEntries.map((entry) => (
+            <Link
+              key={entry.slug}
+              href={`/blog/${entry.slug}`}
+              className="group flex flex-col justify-between rounded-3xl border border-white/[0.08] bg-[#090d14]/90 p-6 transition hover:border-[#3ff2e0]/35 hover:bg-[#0c121c]"
+            >
+              <div>
+                <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
+                  <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
+                    Article
+                  </span>
+                  {entry.publishedAt && (
+                    <span className="font-mono text-zinc-500">
+                      {entry.publishedAt}
+                    </span>
+                  )}
+                </div>
+
+                <h2 className="mt-4 text-lg font-semibold leading-snug text-white transition group-hover:text-[#e4fffb]">
+                  {entry.title}
+                </h2>
               </div>
 
               <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#3ff2e0]">
