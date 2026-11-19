@@ -13,7 +13,6 @@ import { BidControls } from "./BidControls";
 import { BidFeed } from "./BidFeed";
 import { HighestBidderCard } from "./HighestBidderCard";
 import { UpcomingQueue } from "./UpcomingQueue";
-import FooterSection from "./FooterSection";
 
 export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}) {
   const connRef = useRef<DbConnection | null>(null);
@@ -881,8 +880,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
           </div>
         )}
       </main>
-
-      <FooterSection />
 
       {activeItem && (
         <BidControls
