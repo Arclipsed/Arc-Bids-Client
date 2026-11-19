@@ -6,6 +6,7 @@ export const RU: ITranslation = {
     Features: "Возможности",
     HowItWorks: "Как это работает",
     Pricing: "Цены",
+    Blog: "Блог",
     Tools: "Инструменты",
     GetStarted: "Начать",
     Solutions: "Решения",

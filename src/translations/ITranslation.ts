@@ -6,6 +6,7 @@ export interface ITranslation {
     Features: string;
     HowItWorks: string;
     Pricing: string;
+    Blog?: string;
     Tools: string;
     GetStarted: string;
     Solutions: string;
