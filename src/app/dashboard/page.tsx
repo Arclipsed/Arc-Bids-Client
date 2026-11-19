@@ -1295,8 +1295,8 @@ export default function DashboardPage() {
                                     ? "Weiterleiten…"
                                     : "Redirecting…"
                                   : isDe
-                                    ? "Ticket · 10 €"
-                                    : "Buy Ticket · €10"}
+                                    ? "Ticket kaufen"
+                                    : "Buy Ticket"}
                               </InteractivePill>
                             ) : (
                               <InteractivePill
