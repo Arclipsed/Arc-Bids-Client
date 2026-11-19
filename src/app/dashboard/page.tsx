@@ -182,6 +182,7 @@ export default function DashboardPage() {
   const [buyerListMembers, setBuyerListMembers] = useState<BuyerListMemberRow[]>([]);
   const [bids, setBids] = useState<BidRow[]>([]);
   const [devices, setDevices] = useState<DeviceRow[]>([]);
+  const [roomPresenceCounts, setRoomPresenceCounts] = useState<Record<string, number>>({});
   const [currentDeviceId] = useState<string>(() =>
     typeof window !== "undefined" ? getDeviceDetails().deviceId : ""
   );
@@ -370,6 +371,12 @@ export default function DashboardPage() {
           lastSeenMs: Number(d.lastSeenAt.toMillis()),
         }))
       );
+      const counts: Record<string, number> = {};
+      for (const p of conn.db.auctionPresence.iter()) {
+        const key = p.roomId.toString();
+        counts[key] = (counts[key] ?? 0) + 1;
+      }
+      setRoomPresenceCounts(counts);
     };
 
     const client = createReconnectingSpacetimeConnection({
@@ -402,6 +409,7 @@ export default function DashboardPage() {
             "SELECT * FROM buyer_list",
             "SELECT * FROM buyer_list_member",
             "SELECT * FROM auction_item_bid",
+            "SELECT * FROM auction_presence",
             "SELECT * FROM my_devices",
           ]);
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
@@ -446,6 +454,9 @@ export default function DashboardPage() {
         connectedConn.db.buyerListMember.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
+        connectedConn.db.auctionPresence.onInsert(() => sync(connectedConn));
+        connectedConn.db.auctionPresence.onUpdate(() => sync(connectedConn));
+        connectedConn.db.auctionPresence.onDelete(() => sync(connectedConn));
         connectedConn.db.myDevices.onInsert(() => sync(connectedConn));
         connectedConn.db.myDevices.onUpdate(() => sync(connectedConn));
         connectedConn.db.myDevices.onDelete((_ctx, deletedDevice) => {
@@ -1262,6 +1273,17 @@ export default function DashboardPage() {
                               >
                                 {r.isPublic ? d.PublicBadge : d.InviteOnlyBadge}
                               </span>
+                              {isLive && (
+                                <span className="inline-flex items-center gap-1 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono text-[10px] font-medium text-[#3ff2e0]">
+                                  <Users className="h-3 w-3" />
+                                  {roomPresenceCounts[r.id.toString()] ?? 0}{" "}
+                                  {isDe
+                                    ? "Käufer"
+                                    : (roomPresenceCounts[r.id.toString()] ?? 0) === 1
+                                      ? "buyer"
+                                      : "buyers"}
+                                </span>
+                              )}
                               {r.scheduledAtMs !== null && (
                                 <span className="inline-flex items-center gap-1 rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono text-[10px] font-medium text-[#3ff2e0]">
                                   <CalendarIcon className="h-3 w-3" />
