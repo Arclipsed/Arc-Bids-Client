@@ -1088,6 +1088,11 @@ export default function DashboardPage() {
                 <GlowCardHeader
                   title={d.TotalSold}
                   icon={<DollarSign className="h-4 w-4 text-amber-300" />}
+                  right={
+                    <span className="whitespace-nowrap rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-300">
+                      {isDe ? "2026: 0 % Provision" : "2026: 0% Fee"}
+                    </span>
+                  }
                 />
                 <p className="font-mono text-3xl font-bold tracking-tight text-[#e4fffb] tabular-nums">
                   {formatCurrency(stats.totalSoldCents)}
