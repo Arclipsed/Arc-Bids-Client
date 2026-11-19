@@ -397,37 +397,41 @@ export function CreateAuctionForm({
           {/* Schedule Start Date & Time */}
           <div className="space-y-2.5">
             <div
-              className={`flex w-full items-center justify-between gap-2 rounded-2xl border px-3.5 py-2.5 transition ${
+              className={`flex w-full justify-between gap-3 rounded-2xl border px-3.5 py-3 transition ${
                 scheduleLocked
-                  ? "border-amber-400/20 bg-amber-500/[0.04]"
-                  : "border-white/[0.06] bg-[#0e1420]/70 hover:border-white/15"
+                  ? "flex-col border-amber-400/20 bg-amber-500/[0.04] sm:flex-row sm:items-center"
+                  : "items-center border-white/[0.06] bg-[#0e1420]/70 hover:border-white/15"
               }`}
             >
               <button
                 type="button"
                 disabled={scheduleLocked}
                 onClick={() => setShowSchedule((v) => !v)}
-                className={`flex min-w-0 flex-1 items-center gap-2 text-left ${
+                className={`flex min-w-0 flex-1 items-start gap-2.5 text-left sm:items-center ${
                   scheduleLocked ? "cursor-not-allowed opacity-80" : "cursor-pointer"
                 }`}
               >
                 {scheduleLocked ? (
-                  <Lock className="h-4 w-4 shrink-0 text-amber-300" />
+                  <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-300 sm:mt-0" />
                 ) : (
-                  <CalendarIcon className="h-4 w-4 shrink-0 text-[#3ff2e0]" />
+                  <CalendarIcon className="mt-0.5 h-4 w-4 shrink-0 text-[#3ff2e0] sm:mt-0" />
                 )}
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-xs font-medium text-white">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="whitespace-nowrap text-xs font-medium text-white">
                       {copy.ScheduleTitle}
                     </p>
                     {scheduleLocked && (
-                      <span className="rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-300">
+                      <span className="whitespace-nowrap rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-300">
                         {isDe ? "1 Ticket nötig" : "Needs 1 Ticket"}
                       </span>
                     )}
                   </div>
-                  <p className="truncate text-[11px] text-zinc-400">
+                  <p
+                    className={`mt-0.5 text-[11px] text-zinc-400 ${
+                      scheduleLocked ? "leading-relaxed" : "truncate"
+                    }`}
+                  >
                     {scheduleLocked
                       ? isDe
                         ? "1 Auktions-Ticket (10 €) kaufen, um Startzeiten zu planen"
@@ -439,13 +443,17 @@ export function CreateAuctionForm({
                 </div>
               </button>
 
-              <div className="flex shrink-0 items-center gap-1.5">
+              <div
+                className={`flex shrink-0 items-center gap-1.5 ${
+                  scheduleLocked ? "w-full sm:w-auto" : ""
+                }`}
+              >
                 {scheduleLocked ? (
                   stripeConfigured && onBuyTicket ? (
                     <button
                       type="button"
                       onClick={onBuyTicket}
-                      className="cursor-pointer whitespace-nowrap rounded-full bg-amber-300 px-3 py-1 text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200"
+                      className="w-full cursor-pointer whitespace-nowrap rounded-full bg-amber-300 px-3.5 py-1.5 text-center text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200 sm:w-auto sm:py-1"
                     >
                       {isDe ? "Ticket · 10 €" : "Buy Ticket · €10"}
                     </button>
