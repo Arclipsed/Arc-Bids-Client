@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/email-auth";
 
-const AUCTION_FEE_CENTS = 1000; // €10.00
+const AUCTION_FEE_CENTS = 2500; // €25.00
 
 export async function POST(req: NextRequest) {
   const token = req.cookies.get(SESSION_COOKIE_NAME)?.value;

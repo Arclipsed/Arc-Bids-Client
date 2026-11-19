@@ -428,8 +428,8 @@ export function CreateAuctionForm({
                   >
                     {scheduleLocked
                       ? isDe
-                        ? "1 Auktions-Ticket (10 €) kaufen, um Startzeiten zu planen"
-                        : "Buy 1 Auction Ticket (€10) to unlock scheduled start times"
+                        ? "1 Auktions-Ticket (25 €) kaufen, um Startzeiten zu planen"
+                        : "Buy 1 Auction Ticket (€25) to unlock scheduled start times"
                       : scheduledTime
                         ? `${format(scheduledDate, "EEE, MMM d")} ${copy.ScheduleAtWord} ${scheduledTime}`
                         : copy.ScheduleOptionalPrefix}
@@ -449,7 +449,7 @@ export function CreateAuctionForm({
                       onClick={onBuyTicket}
                       className="w-full cursor-pointer whitespace-nowrap rounded-full bg-amber-300 px-3.5 py-1.5 text-center text-[11px] font-semibold text-[#04070b] transition hover:bg-amber-200 sm:w-auto sm:py-1"
                     >
-                      {isDe ? "Ticket · 10 €" : "Buy Ticket · €10"}
+                      {isDe ? "Ticket · 25 €" : "Buy Ticket · €25"}
                     </button>
                   ) : null
                 ) : (
@@ -527,8 +527,8 @@ export function CreateAuctionForm({
                           : "1 Auction Ticket is already reserved for this scheduled auction."
                       ) : needsTicketForSchedule ? (
                         isDe
-                          ? "Für die Planung ist 1 Auktions-Ticket (10 €) erforderlich, damit die Auktion pünktlich startet."
-                          : "Scheduling requires 1 Auction Ticket (€10) so it auto-starts on time."
+                          ? "Für die Planung ist 1 Auktions-Ticket (25 €) erforderlich, damit die Auktion pünktlich startet."
+                          : "Scheduling requires 1 Auction Ticket (€25) so it auto-starts on time."
                       ) : isDe ? (
                         `Die Planung reserviert 1 Auktions-Ticket (${auctionCredits} verfügbar). Bei Stornierung vor Start erstattet.`
                       ) : (
@@ -539,9 +539,9 @@ export function CreateAuctionForm({
                         ? "Beim Entfernen des Zeitplans wird Ihr reserviertes Ticket zurückerstattet."
                         : "Unscheduling will refund your reserved Auction Ticket back to your balance."
                     ) : isDe ? (
-                      "Wird als kostenloser Entwurf gespeichert — 1 Auktions-Ticket (10 €) wird erst beim Starten oder Planen verbraucht."
+                      "Wird als kostenloser Entwurf gespeichert — 1 Auktions-Ticket (25 €) wird erst beim Starten oder Planen verbraucht."
                     ) : (
-                      "Saving as a free draft — 1 Auction Ticket (€10) is only used when you Go Live or Schedule."
+                      "Saving as a free draft — 1 Auction Ticket (€25) is only used when you Go Live or Schedule."
                     )}
                   </span>
                 </div>

@@ -1123,7 +1123,7 @@ export default function DashboardPage() {
                           {isDe ? (
                             <>
                               Entwürfe und Tests sind kostenlos. Sie verbrauchen{" "}
-                              <span className="text-zinc-200">1 Ticket (10 €)</span>,
+                              <span className="text-zinc-200">1 Ticket (25 €)</span>,
                               wenn Sie eine Auktion planen oder live starten. Bei
                               Stornierung oder Löschung vor Start wird das Ticket
                               erstattet.
@@ -1131,7 +1131,7 @@ export default function DashboardPage() {
                           ) : (
                             <>
                               Drafting and testing auctions is free. You spend{" "}
-                              <span className="text-zinc-200">1 Ticket (€10)</span>{" "}
+                              <span className="text-zinc-200">1 Ticket (€25)</span>{" "}
                               when you schedule or launch a live auction. Cancelled
                               or deleted drafts refund the ticket automatically.
                             </>
@@ -1160,8 +1160,8 @@ export default function DashboardPage() {
                           ? "Weiterleiten…"
                           : "Redirecting…"
                         : isDe
-                          ? "+ Kaufen · 10 €"
-                          : "+ Buy · €10"}
+                          ? "+ Kaufen · 25 €"
+                          : "+ Buy · €25"}
                     </button>
                   )}
                 </div>

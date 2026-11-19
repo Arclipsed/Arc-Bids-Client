@@ -20,14 +20,14 @@ const TICKET_PRICING_COPY = {
       "Pricing and volume plans will be adjusted in the future as we roll out new tiers.",
     planName: "Auction Ticket",
     badge: "Current Model",
-    price: "€10",
+    price: "€25",
     period: "/ per live auction",
     cta: "Buy Tickets in Dashboard",
     description:
       "Drafting and testing auctions is always free. You only spend 1 Auction Ticket when you schedule or launch a live auction room.",
     features: [
       "Free to create, edit & test draft auctions",
-      "1 Ticket (€10) = 1 scheduled or live auction room",
+      "1 Ticket (€25) = 1 scheduled or live auction room",
       "Automatic ticket refund if cancelled or deleted before start",
       "Unlimited lots, real-time bidding & private buyer lists",
       "0% commission on your auction sales",
@@ -41,14 +41,14 @@ const TICKET_PRICING_COPY = {
       "Preise und Volumenpakete werden in Zukunft mit neuen Tarifen angepasst.",
     planName: "Auktions-Ticket",
     badge: "Aktuelles Modell",
-    price: "10 €",
+    price: "25 €",
     period: "/ pro Live-Auktion",
     cta: "Tickets im Dashboard kaufen",
     description:
       "Das Erstellen und Testen von Entwürfen ist immer kostenlos. Sie verbrauchen erst 1 Auktions-Ticket, wenn Sie eine Auktion planen oder live starten.",
     features: [
       "Entwürfe kostenlos erstellen, bearbeiten & testen",
-      "1 Ticket (10 €) = 1 geplanter oder Live-Auktionsraum",
+      "1 Ticket (25 €) = 1 geplanter oder Live-Auktionsraum",
       "Automatische Ticket-Rückerstattung bei Stornierung oder Löschung vor Start",
       "Unbegrenzte Lose, Echtzeit-Gebote & private Käuferlisten",
       "0 % Provision auf Ihre Auktionserlöse",

@@ -18,7 +18,7 @@ const POST_COPY = {
     relatedResources: "Related Resources",
     ctaTitle: "Ready to run your next B2B auction?",
     ctaBody:
-      "Draft rooms for free and launch live for €10 per ticket with 0% commission.",
+      "Draft rooms for free and launch live for €25 per ticket with 0% commission.",
     ctaButton: "Open Dashboard",
   },
   DE: {
@@ -26,7 +26,7 @@ const POST_COPY = {
     relatedResources: "Weiterführende Ressourcen",
     ctaTitle: "Bereit für Ihre nächste B2B-Auktion?",
     ctaBody:
-      "Erstellen Sie Auktionsräume kostenlos als Entwurf und starten Sie live für 10 € pro Ticket bei 0 % Provision.",
+      "Erstellen Sie Auktionsräume kostenlos als Entwurf und starten Sie live für 25 € pro Ticket bei 0 % Provision.",
     ctaButton: "Zum Dashboard",
   },
 } as const;

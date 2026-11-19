@@ -61,14 +61,14 @@ export const BLOG_POSTS: BlogPost[] = [
         bullets: [
           "Draft and test your auction room for free before going live",
           "Restrict access to vetted B2B buyers via private invite lists",
-          "Use 1 Auction Ticket (€10) only when you schedule or launch live",
+          "Use 1 Auction Ticket (€25) only when you schedule or launch live",
         ],
       },
       {
         heading: "Zero Commission Means Higher Net Recovery",
         paragraphs: [
           "Traditional B2B auction marketplaces charge 10% to 15% seller or buyer fees on every pallet. On a €20,000 liquidation drop, that is €2,000 to €3,000 lost to platform commission.",
-          "With a flat €10 ticket per live auction room and 0% commission on sales, your net recovery stays in your business.",
+          "With a flat €25 ticket per live auction room and 0% commission on sales, your net recovery stays in your business.",
         ],
       },
     ],
@@ -280,14 +280,14 @@ export const BLOG_POSTS_DE: BlogPost[] = [
         bullets: [
           "Auktionsräume vorab kostenlos als Entwurf erstellen und testen",
           "Zugriff über private Käuferlisten auf geprüfte B2B-Händler beschränken",
-          "Nur beim Planen oder Live-Schalten 1 Auktions-Ticket (10 €) einsetzen",
+          "Nur beim Planen oder Live-Schalten 1 Auktions-Ticket (25 €) einsetzen",
         ],
       },
       {
         heading: "0 % Provision bedeutet höhere Netto-Erlöse",
         paragraphs: [
           "Klassische B2B-Auktionsmarktplätze verlangen 10 % bis 15 % Provision pro Palette. Bei einem Abverkauf von 20.000 € gehen so schnell 2.000 € bis 3.000 € an Gebühren verloren.",
-          "Mit pauschal 10 € pro Live-Auktion und 0 % Verkaufsprovision bleibt der gesamte Erlös in Ihrem Unternehmen.",
+          "Mit pauschal 25 € pro Live-Auktion und 0 % Verkaufsprovision bleibt der gesamte Erlös in Ihrem Unternehmen.",
         ],
       },
     ],
