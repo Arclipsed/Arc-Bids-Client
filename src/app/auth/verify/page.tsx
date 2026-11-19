@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { saveOidcIdToken } from "@/lib/auth";
+import { clearDeviceRegisteredMarkers } from "@/lib/device-info";
 
 function VerifyContent() {
   const router = useRouter();
@@ -34,6 +35,7 @@ function VerifyContent() {
         if (data.spacetimeToken) {
           saveOidcIdToken(data.spacetimeToken);
         }
+        clearDeviceRegisteredMarkers();
         if (active) router.replace("/dashboard");
       })
       .catch((err) => {

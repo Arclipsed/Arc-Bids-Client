@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import { ArcBidsLogo } from "@/components/ArcBidsLogo";
 import { Pattern as OtpPattern } from "@/components/ui/c-input-otp-1";
 import { saveOidcIdToken } from "@/lib/auth";
+import { clearDeviceRegisteredMarkers } from "@/lib/device-info";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -105,6 +106,7 @@ export default function LoginPage() {
       if (data.spacetimeToken) {
         saveOidcIdToken(data.spacetimeToken);
       }
+      clearDeviceRegisteredMarkers();
       router.replace("/dashboard");
       router.refresh();
     } catch {

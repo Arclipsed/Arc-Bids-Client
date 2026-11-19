@@ -1,4 +1,29 @@
 const DEVICE_ID_KEY = "arcbid_device_id";
+const DEVICE_REGISTERED_PREFIX = "arcbid_device_registered_";
+
+export function isDeviceRegisteredForIdentity(identityHex: string): boolean {
+  if (typeof window === "undefined" || !identityHex) return false;
+  return window.localStorage.getItem(`${DEVICE_REGISTERED_PREFIX}${identityHex}`) === "1";
+}
+
+export function markDeviceRegisteredForIdentity(identityHex: string): void {
+  if (typeof window === "undefined" || !identityHex) return;
+  window.localStorage.setItem(`${DEVICE_REGISTERED_PREFIX}${identityHex}`, "1");
+}
+
+export function clearDeviceRegisteredMarkers(): void {
+  if (typeof window === "undefined") return;
+  try {
+    for (let i = window.localStorage.length - 1; i >= 0; i--) {
+      const key = window.localStorage.key(i);
+      if (key && key.startsWith(DEVICE_REGISTERED_PREFIX)) {
+        window.localStorage.removeItem(key);
+      }
+    }
+  } catch {
+    // Ignore storage access errors
+  }
+}
 
 export function getOrCreateDeviceId(): string {
   if (typeof window === "undefined") return "server";
