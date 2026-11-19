@@ -15,11 +15,11 @@ const TICKET_PRICING_COPY = {
   EN: {
     title: "Simple Pay-Per-Auction Tickets",
     subtitleLead:
-      "We currently use a simple pay-per-auction ticket model with no monthly commitment.",
+      "We currently use a simple pay-per-auction ticket model with no monthly commitment — and as our 2026 launch offer, we take 0% commission for all of 2026 (standard 5% thereafter).",
     subtitleNote:
       "Pricing and volume plans will be adjusted in the future as we roll out new tiers.",
     planName: "Auction Ticket",
-    badge: "Current Model",
+    badge: "2026 Offer · 0% Fee",
     price: "€25",
     period: "/ per live auction",
     cta: "Buy Tickets in Dashboard",
@@ -30,17 +30,17 @@ const TICKET_PRICING_COPY = {
       "1 Ticket (€25) = 1 scheduled or live auction room",
       "Automatic ticket refund if cancelled or deleted before start",
       "Unlimited lots, real-time bidding & private buyer lists",
-      "0% commission on your auction sales",
+      "0% commission for all of 2026 (normally 5%)",
     ],
   },
   DE: {
     title: "Einfache Auktions-Tickets pro Auktion",
     subtitleLead:
-      "Aktuell nutzen wir ein einfaches Pay-per-Auction-Modell ohne monatliche Bindung.",
+      "Aktuell nutzen wir ein einfaches Pay-per-Auction-Modell ohne monatliche Bindung — und als unser 2026-Angebot berechnen wir das gesamte Jahr 2026 lang 0 % Provision (regulär 5 %).",
     subtitleNote:
       "Preise und Volumenpakete werden in Zukunft mit neuen Tarifen angepasst.",
     planName: "Auktions-Ticket",
-    badge: "Aktuelles Modell",
+    badge: "2026-Angebot · 0 %",
     price: "25 €",
     period: "/ pro Live-Auktion",
     cta: "Tickets im Dashboard kaufen",
@@ -51,7 +51,7 @@ const TICKET_PRICING_COPY = {
       "1 Ticket (25 €) = 1 geplanter oder Live-Auktionsraum",
       "Automatische Ticket-Rückerstattung bei Stornierung oder Löschung vor Start",
       "Unbegrenzte Lose, Echtzeit-Gebote & private Käuferlisten",
-      "0 % Provision auf Ihre Auktionserlöse",
+      "0 % Provision für ganz 2026 (regulär 5 %)",
     ],
   },
 } as const;
