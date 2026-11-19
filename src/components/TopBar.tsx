@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { LayoutDashboard } from "lucide-react";
+import { Check, LayoutDashboard, Share2 } from "lucide-react";
 import type { RoomStatusTag } from "@/lib/auction-types";
 
 interface TopBarProps {
@@ -11,6 +12,7 @@ interface TopBarProps {
   connectionState: "connecting" | "connected" | "error";
   isDemo: boolean;
   showDashboardLink?: boolean;
+  roomCode?: string;
 }
 
 export function TopBar({
@@ -20,8 +22,31 @@ export function TopBar({
   connectionState,
   isDemo,
   showDashboardLink = false,
+  roomCode,
 }: TopBarProps) {
   const isLive = status === "Live";
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = roomCode
+      ? `${window.location.origin}/auction/${encodeURIComponent(roomCode)}`
+      : window.location.href;
+    try {
+      if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+        await navigator.share({ title: roomTitle, url });
+        return;
+      }
+    } catch {
+      // User cancelled native share or unsupported; fall back to clipboard
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // Ignore clipboard errors
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#05070c]/85 backdrop-blur-xl">
@@ -53,6 +78,27 @@ export function TopBar({
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          {!isDemo && roomCode && (
+            <button
+              type="button"
+              onClick={() => void handleShare()}
+              aria-label="Share auction link"
+              title="Share auction link"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-200 transition hover:border-[#3ff2e0]/40 hover:bg-white/[0.08] hover:text-white"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                  <span className="text-[#3ff2e0]">Copied</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                  <span className="hidden sm:inline">Share</span>
+                </>
+              )}
+            </button>
+          )}
           {showDashboardLink && (
             <Link
               href="/dashboard"

@@ -709,6 +709,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         connectionState={connectionState}
         isDemo={false}
         showDashboardLink={isLoggedIn}
+        roomCode={activeRoom.roomCode}
       />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-32 pt-5 sm:px-6 sm:pb-28 sm:pt-8">
