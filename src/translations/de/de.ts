@@ -106,9 +106,9 @@ export const DE: ITranslation = {
       AntiSnipeDesc:
         "Gebote in letzter Sekunde verlängern den Timer automatisch, damit Mitbieter fair reagieren können und der Endpreis maximiert wird.",
       AntiSnipeExtended: "+15s verlängert",
-      InvitesTitle: "Käufer-E-Mail-Listen",
+      InvitesTitle: "Käuferlisten",
       InvitesDesc:
-        "Organisieren Sie freigegebene Käufer in benannten E-Mail-Listen, importieren Sie CSV-Dateien und wählen Sie pro privater Auktion die zugelassenen Listen.",
+        "Organisieren Sie freigegebene Käufer in benannten Listen (per E-Mail oder Telefonnummer), importieren Sie CSV-Dateien und wählen Sie pro privater Auktion die zugelassenen Listen.",
       InvitedLabel: "Eingeladen",
       PausedLabel: "Pausiert",
     },

@@ -6,7 +6,7 @@ import { Calendar as CalendarIcon, CalendarPlus, CheckCircle2, Globe, Lock, Mail
 import type { DbConnection } from "@/module_bindings";
 import type { UiBid, UiItem, UiRoom } from "@/lib/auction-types";
 import { createReconnectingSpacetimeConnection } from "@/lib/spacetime";
-import { formatCountdown } from "@/lib/format";
+import { formatCountdown, normalizeBuyerContact } from "@/lib/format";
 import { TopBar } from "./TopBar";
 import { ActiveLotCard } from "./ActiveLotCard";
 import { BidControls } from "./BidControls";
@@ -442,7 +442,7 @@ export function AuctionPage() {
   const isInviteVerified = useMemo(() => {
     if (!activeRoom) return false;
     if (isRoomOwner) return true;
-    const normalizedEmail = effectiveMagicToken.trim().toLowerCase();
+    const normalizedEmail = normalizeBuyerContact(effectiveMagicToken);
     if (!normalizedEmail) return false;
     if (activeRoom.isPublic) {
       return Boolean(effectiveBuyerName.trim());
@@ -459,7 +459,7 @@ export function AuctionPage() {
 
   const isDuplicateEmailSession = useMemo(() => {
     if (!activeRoom || isRoomOwner || !myIdentityHex) return false;
-    const normalizedEmail = effectiveMagicToken.trim().toLowerCase();
+    const normalizedEmail = normalizeBuyerContact(effectiveMagicToken);
     if (!normalizedEmail) return false;
     return roomPresences.some(
       (p) =>
@@ -475,7 +475,7 @@ export function AuctionPage() {
     }
     const conn = connRef.current;
     if (!conn) return;
-    const email = effectiveMagicToken.trim().toLowerCase();
+    const email = normalizeBuyerContact(effectiveMagicToken);
     const key = `${activeRoom.id.toString()}:${email}`;
     if (joinedKeyRef.current === key) return;
     joinedKeyRef.current = key;
@@ -494,7 +494,7 @@ export function AuctionPage() {
     if (!activeRoom) return;
     setInviteGateError(null);
     const trimmedName = inviteNameInput.trim();
-    const normalized = inviteEmailInput.trim().toLowerCase();
+    const normalized = normalizeBuyerContact(inviteEmailInput);
     if (!trimmedName || !normalized) return;
 
     if (!activeRoom.isPublic) {
@@ -511,11 +511,11 @@ export function AuctionPage() {
       );
 
       if (listMatches.length === 0) {
-        setInviteGateError("This email is not whitelisted for this auction.");
+        setInviteGateError("This email or phone number is not whitelisted for this auction.");
         return;
       }
       if (!listMatches.some((m) => !m.isBanned)) {
-        setInviteGateError("Access for this email has been revoked.");
+        setInviteGateError("Access for this buyer has been revoked.");
         return;
       }
     }
@@ -531,7 +531,7 @@ export function AuctionPage() {
       )
     ) {
       setInviteGateError(
-        "This email is already active in this auction from another device or tab."
+        "This buyer is already active in this auction from another device or tab."
       );
       return;
     }
@@ -628,12 +628,12 @@ export function AuctionPage() {
             <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">
               {activeRoom.isPublic ? (
                 <>
-                  Enter your name and email address to join and bid in{" "}
+                  Enter your name and email or phone number to join and bid in{" "}
                   <strong className="text-zinc-200">{activeRoom.title}</strong>.
                 </>
               ) : (
                 <>
-                  Enter your name and whitelisted email address to access{" "}
+                  Enter your name and whitelisted email or phone number to access{" "}
                   <strong className="text-zinc-200">{activeRoom.title}</strong>.
                 </>
               )}
@@ -655,11 +655,11 @@ export function AuctionPage() {
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
                 <input
-                  type="email"
+                  type="text"
                   required
                   value={inviteEmailInput}
                   onChange={(e) => setInviteEmailInput(e.target.value)}
-                  placeholder="buyer@company.com"
+                  placeholder="Email or phone (+49 170 1234567)"
                   className="h-11 w-full rounded-2xl border border-white/10 bg-[#0e1420] pl-10 pr-4 text-sm text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
                 />
               </div>

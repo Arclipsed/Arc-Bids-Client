@@ -27,3 +27,18 @@ export function formatRelativeTime(timestampMs: number, nowMs: number): string {
   if (diffMin < 60) return `${diffMin}m ago`;
   return `${Math.floor(diffMin / 60)}h ago`;
 }
+
+export function normalizeBuyerContact(input: string): string {
+  const trimmed = (input ?? "").trim();
+  if (!trimmed) return "";
+  if (trimmed.includes("@")) return trimmed.toLowerCase();
+
+  let out = "";
+  for (let i = 0; i < trimmed.length; i++) {
+    const ch = trimmed[i];
+    if ((ch >= "0" && ch <= "9") || (ch === "+" && out.length === 0)) {
+      out += ch;
+    }
+  }
+  return out.length > 0 ? out : trimmed.toLowerCase();
+}

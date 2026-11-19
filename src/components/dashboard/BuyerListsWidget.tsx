@@ -15,6 +15,7 @@ import {
 import { GlowCard, GlowCardHeader } from "@/components/ui/glow-bento-card";
 import { IconButton } from "@/components/ui/icon-button";
 import { Dialog } from "@/components/ui/dialog";
+import { normalizeBuyerContact } from "@/lib/format";
 
 export interface BuyerListRow {
   id: bigint;
@@ -65,6 +66,8 @@ function parseCsvBuyers(
     for (const part of parts) {
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(part)) {
         email = part.toLowerCase();
+      } else if (/^\+?[0-9][0-9\s\-().]{5,}$/.test(part) && !email) {
+        email = normalizeBuyerContact(part);
       } else if (part && !companyName) {
         companyName = part;
       }
@@ -77,10 +80,12 @@ function parseCsvBuyers(
       email,
       companyName:
         companyName ||
-        email
-          .split("@")[0]
-          .replace(/[._-]+/g, " ")
-          .replace(/\b\w/g, (c) => c.toUpperCase()),
+        (email.includes("@")
+          ? email
+              .split("@")[0]
+              .replace(/[._-]+/g, " ")
+              .replace(/\b\w/g, (c) => c.toUpperCase())
+          : email),
     });
   }
 
@@ -153,14 +158,17 @@ export function BuyerListsWidget({
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!managingList || !email.trim()) return;
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanContact = normalizeBuyerContact(email);
+    if (!cleanContact) return;
     const cleanCompany =
       companyName.trim() ||
-      cleanEmail
-        .split("@")[0]
-        .replace(/[._-]+/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase());
-    onAddMember(managingList.id, cleanCompany, cleanEmail);
+      (cleanContact.includes("@")
+        ? cleanContact
+            .split("@")[0]
+            .replace(/[._-]+/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase())
+        : cleanContact);
+    onAddMember(managingList.id, cleanCompany, cleanContact);
     setCompanyName("");
     setEmail("");
     setCsvFeedback(null);
@@ -173,7 +181,7 @@ export function BuyerListsWidget({
       const text = await file.text();
       const parsed = parseCsvBuyers(text);
       const existingEmails = new Set(
-        managingMembers.map((m) => m.email.toLowerCase())
+        managingMembers.map((m) => normalizeBuyerContact(m.email))
       );
       let added = 0;
       for (const row of parsed) {
@@ -185,7 +193,7 @@ export function BuyerListsWidget({
       setCsvFeedback(
         added > 0
           ? `Imported ${added} ${added === 1 ? "buyer" : "buyers"} from CSV.`
-          : "No new valid email addresses found in CSV."
+          : "No new valid emails or phone numbers found in CSV."
       );
     } catch {
       setCsvFeedback("Failed to read CSV file.");
@@ -209,15 +217,15 @@ export function BuyerListsWidget({
     <>
       <GlowCard accent="emerald" className={className}>
         <GlowCardHeader
-          title="Buyer Email Lists"
+          title="Buyer List"
           icon={<Users className="h-4 w-4 text-emerald-300" />}
           right={
             <IconButton
               variant="accent"
               size="sm"
               onClick={openCreate}
-              aria-label="Create email list"
-              title="Create email list"
+              aria-label="Create buyer list"
+              title="Create buyer list"
               className="h-8 w-8"
             >
               <Plus className="h-4 w-4" />
@@ -228,7 +236,7 @@ export function BuyerListsWidget({
         <div className="space-y-2">
           {lists.length === 0 ? (
             <p className="rounded-2xl border border-white/[0.05] bg-[#0e1420]/60 p-6 text-center text-xs text-zinc-400">
-              No email lists yet. Click + above to create a list and whitelist buyers per auction.
+              No buyer lists yet. Click + above to create a list and whitelist buyers by email or phone.
             </p>
           ) : (
             lists.map((list) => {
@@ -260,7 +268,7 @@ export function BuyerListsWidget({
                       size="sm"
                       onClick={() => openManage(list)}
                       aria-label={`Add or manage buyers in ${list.name}`}
-                      title="Add / manage emails"
+                      title="Add / manage buyers"
                       className="h-8 w-8"
                     >
                       <UserPlus className="h-3.5 w-3.5 text-[#3ff2e0]" />
@@ -297,8 +305,8 @@ export function BuyerListsWidget({
       <Dialog
         open={createOpen}
         onClose={() => setCreateOpen(false)}
-        title="Create Email List"
-        description="Group buyer emails so you can whitelist them on any private auction."
+        title="Create Buyer List"
+        description="Group buyer emails or phone numbers so you can whitelist them on any private auction."
       >
         <form onSubmit={handleCreateSubmit} className="space-y-4">
           <div>
@@ -395,12 +403,12 @@ export function BuyerListsWidget({
         </form>
       </Dialog>
 
-      {/* Manage Buyers / Add Emails / CSV Import Dialog */}
+      {/* Manage Buyers / Add Contacts / CSV Import Dialog */}
       <Dialog
         open={Boolean(managingList)}
         onClose={() => setManagingListId(null)}
         title={managingList ? `${managingList.name} · Buyers` : "Manage Buyers"}
-        description="Add buyers individually or import a CSV file (company,email or email per line)."
+        description="Add buyers by email or phone number, or import a CSV file (company,contact per line)."
       >
         {managingList && (
           <div className="space-y-4">
@@ -416,11 +424,11 @@ export function BuyerListsWidget({
                 className="h-9 w-full min-w-0 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0] sm:w-auto sm:flex-1"
               />
               <input
-                type="email"
+                type="text"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="buyer@company.com"
+                placeholder="Email or phone (+49...)"
                 className="h-9 w-full min-w-0 rounded-xl border border-white/10 bg-[#0e1420] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0] sm:w-auto sm:flex-1"
               />
               <div className="flex shrink-0 items-center gap-1.5">
