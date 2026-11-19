@@ -283,6 +283,62 @@ export const BLOG_POSTS: BlogPost[] = [
       { label: "Create a Room", href: "/dashboard" },
     ],
   },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Post-Auction Invoicing & Fulfillment: How to Settle B2B Wholesale Drops in 48 Hours",
+    description:
+      "A step-by-step post-auction workflow for B2B wholesalers and liquidators to invoice winning buyers fast, collect payments without friction, and clear warehouse floor space.",
+    category: "Operations",
+    publishedAt: "2026-11-19",
+    readTime: "5 min read",
+    keywords: [
+      "post-auction invoicing B2B",
+      "wholesale auction fulfillment",
+      "B2B liquidation settlement",
+      "auction winner checkout workflow",
+      "warehouse liquidation dispatch",
+    ],
+    sections: [
+      {
+        heading: "Why Fast Settlement Protects Your Wholesale Cash Flow",
+        paragraphs: [
+          "Winning the final bid is only half the job. When wholesale sellers take three days to sort spreadsheets and send manual emails after a live drop, buyer momentum cools down—and pallets keep blocking valuable warehouse dock space.",
+          "Top liquidators and distributors treat the first 2 hours after a room closes as critical. Moving immediately from hammer price to pro-forma invoice locks in commitment and accelerates cash conversion.",
+        ],
+        bullets: [
+          "Export winning lot results, buyer emails, and hammer prices immediately after close",
+          "Separate single-lot winners from multi-lot buyers to combine freight quotes",
+          "Set a clear 24-to-48-hour payment window in your room terms before bidding starts",
+        ],
+      },
+      {
+        heading: "The 4-Step Post-Auction Fulfillment Checklist",
+        paragraphs: [
+          "Standardizing your post-auction handoff eliminates back-and-forth messages between sales, finance, and warehouse teams:",
+        ],
+        bullets: [
+          "1. Consolidate wins per buyer: Group multiple won lots onto one itemized invoice with SKU/manifest references",
+          "2. Confirm Incoterms & pickup slots: Specify EXW warehouse pickup hours or palletized freight carrier options",
+          "3. Collect wire/SEPA or instant payment: Include exact payment reference numbers so finance reconciles without delays",
+          "4. Release warehouse pick ticket: Trigger dock staging only after cleared funds or approved credit terms",
+        ],
+      },
+      {
+        heading: "Keep 100% of Your Hammer Price During Settlement",
+        paragraphs: [
+          "Complex commission deductions make post-auction reconciliation messy—especially when marketplaces take 10% to 15% from every line item. With ArcBids, you pay a flat €25 per Auction Ticket when launching live and 0% commission on sales throughout 2026.",
+          "Your winning bid total is the exact gross figure you invoice your buyer, making accounting, VAT calculation, and margin tracking effortless.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidation Pallet Auctions", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Fashion Overstock Lot Auctions", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Free Margin & Fee Savings Calculator", href: "/tools" },
+      { label: "See Auction Ticket Pricing", href: "/pricing" },
+      { label: "Open Seller Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_DE: BlogPost[] = [
@@ -530,6 +586,60 @@ export const BLOG_POSTS_DE: BlogPost[] = [
       { label: "Raum erstellen", href: "/dashboard" },
     ],
   },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Rechnungsstellung & Versand nach der Auktion: B2B-Drops in 48 Stunden abwickeln",
+    description:
+      "Ein strukturierter Post-Auction-Workflow für Großhändler und Liquidatoren, um Gewinner schnell zu fakturieren, Zahlungen zu sichern und Lagerfläche freizumachen.",
+    category: "Operations",
+    publishedAt: "2026-11-19",
+    readTime: "5 Min. Lesezeit",
+    keywords: [
+      "Rechnungsstellung B2B Auktion",
+      "Großhandel Auktionsabwicklung",
+      "B2B Liquidation Versand",
+      "Post-Auction Workflow",
+    ],
+    sections: [
+      {
+        heading: "Warum schnelle Abwicklung Ihren Cashflow schützt",
+        paragraphs: [
+          "Der Zuschlag ist erst die halbe Miete. Wenn Verkäufer nach einer Live-Auktion tagelang Excel-Listen sortieren, sinkt die Zahlungsbereitschaft und Paletten blockieren weiter das Lager.",
+          "Professionelle Liquidatoren nutzen die ersten zwei Stunden nach Auktionsende konsequent für die Rechnungsstellung und verkürzen so die Durchlaufzeit bis zum Zahlungseingang.",
+        ],
+        bullets: [
+          "Zuschläge, Käufer-E-Mails und Endpreise direkt nach Raumende exportieren",
+          "Mehrfachgewinner bündeln, um Frachtkosten gemeinsam zu kalkulieren",
+          "Klares Zahlungsziel von 24 bis 48 Stunden vorab in den Raumregeln definieren",
+        ],
+      },
+      {
+        heading: "Die 4-Schritte-Checkliste nach Auktionsende",
+        paragraphs: [
+          "Ein standardisierter Ablauf verhindert Rückfragen zwischen Vertrieb, Buchhaltung und Lager:",
+        ],
+        bullets: [
+          "1. Gewonnene Lose je Käufer auf einer Sammelrechnung mit Manifest-Referenz bündeln",
+          "2. Incoterms und Abholfenster (EXW Lager oder Speditionsversand) direkt bestätigen",
+          "3. SEPA-Überweisung mit eindeutiger Rechnungsnummer für schnelle Zuordnung anfordern",
+          "4. Lagerfreigabe erst nach Zahlungseingang oder geprüfter Kreditlinie auslösen",
+        ],
+      },
+      {
+        heading: "100 % des Zuschlagspreises ohne Provisionsabzüge fakturieren",
+        paragraphs: [
+          "Komplexe Marktplatzgebühren erschweren die Abrechnung. Bei ArcBids zahlen Sie pauschal 25 € pro Auktions-Ticket und 0 % Verkaufsprovision im gesamten Jahr 2026 – der Zuschlagspreis entspricht exakt Ihrem Netto-Rechnungsbetrag.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Mode-Überhang-Auktionen", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Kostenloser Margen- & Gebührenrechner", href: "/tools" },
+      { label: "Auktions-Ticket-Preise ansehen", href: "/pricing" },
+      { label: "Zum Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_ES: BlogPost[] = [
@@ -695,6 +805,60 @@ export const BLOG_POSTS_ES: BlogPost[] = [
       { label: "Calculadora Gratuita", href: "/tools" },
     ],
   },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Facturación y Logística Post-Subasta: Cómo Cerrar Lotes B2B en 48 Horas",
+    description:
+      "Flujo práctico tras el cierre de la subasta para facturar rápido a los ganadores, cobrar sin fricciones y liberar espacio en tu almacén.",
+    category: "Operaciones",
+    publishedAt: "2026-11-19",
+    readTime: "5 min de lectura",
+    keywords: [
+      "facturación post-subasta B2B",
+      "logística subasta mayorista",
+      "liquidación B2B rápida",
+      "cobro ganadores subasta",
+    ],
+    sections: [
+      {
+        heading: "Por qué cobrar rápido protege tu flujo de caja",
+        paragraphs: [
+          "Cerrar la puja ganadora es solo la mitad del trabajo. Tardar días en revisar hojas de cálculo enfría el impulso del comprador y mantiene los palés ocupando muelle en tu almacén.",
+          "Los liquidadores más ágiles envían la factura proforma dentro de las dos horas posteriores al cierre de la sala.",
+        ],
+        bullets: [
+          "Exporta los resultados ganadores, correos y precios finales al instante tras cerrar",
+          "Agrupa varios lotes del mismo comprador en una sola factura y cotización de envío",
+          "Fija una ventana clara de pago de 24 a 48 horas en las condiciones de la sala",
+        ],
+      },
+      {
+        heading: "Lista de verificación logística en 4 pasos",
+        paragraphs: [
+          "Estandarizar la entrega entre ventas, administración y almacén elimina retrasos:",
+        ],
+        bullets: [
+          "1. Consolida los lotes ganados por comprador con referencia al manifiesto",
+          "2. Confirma Incoterms, horario de recogida EXW o transporte paletizado",
+          "3. Solicita transferencia SEPA con referencia exacta para conciliación rápida",
+          "4. Libera la orden de carga solo tras confirmar el pago",
+        ],
+      },
+      {
+        heading: "Factura el 100 % del precio de adjudicación sin comisiones",
+        paragraphs: [
+          "Con ArcBids pagas una tarifa plana de €25 por ticket de subasta al lanzar en vivo y 0 % de comisión sobre ventas durante todo 2026, simplificando la contabilidad y maximizando tu margen.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Sobrestock de Moda", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Calculadora de Margen Gratuita", href: "/tools" },
+      { label: "Ver Precios", href: "/pricing" },
+      { label: "Abrir Panel", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_FR: BlogPost[] = [
@@ -839,6 +1003,60 @@ export const BLOG_POSTS_FR: BlogPost[] = [
     relatedLinks: [
       { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Calculateur gratuit", href: "/tools" },
+    ],
+  },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Facturation et Expédition Post-Enchère : Boucler vos Ventes B2B en 48 Heures",
+    description:
+      "Méthode opérationnelle pour facturer les acheteurs gagnants dès la clôture, sécuriser les paiements et libérer votre entrepôt rapidement.",
+    category: "Opérations",
+    publishedAt: "2026-11-19",
+    readTime: "5 min de lecture",
+    keywords: [
+      "facturation post-enchère B2B",
+      "expédition vente en gros",
+      "règlement liquidation B2B",
+      "logistique palettes",
+    ],
+    sections: [
+      {
+        heading: "Pourquoi un règlement rapide protège votre trésorerie",
+        paragraphs: [
+          "Remporter l'enchère finale n'est que la moitié du travail. Attendre plusieurs jours pour envoyer les factures ralentit les paiements et immobilise vos quais.",
+          "Les grossistes performants exportent les résultats dès la fermeture de la salle et envoient la facture pro-forma dans les deux heures.",
+        ],
+        bullets: [
+          "Exportez les lots gagnés, e-mails et prix finaux immédiatement après clôture",
+          "Regroupez les achats multiples d'un même client pour optimiser le transport",
+          "Indiquez un délai de paiement de 24 à 48 heures dans les règles de la salle",
+        ],
+      },
+      {
+        heading: "La check-list logistique en 4 étapes",
+        paragraphs: [
+          "Un processus standardisé évite les allers-retours entre commerce, finance et entrepôt :",
+        ],
+        bullets: [
+          "1. Consolidez les lots remportés sur une facture unique avec référence manifeste",
+          "2. Confirmez les Incoterms et créneaux d'enlèvement EXW ou transport palettisé",
+          "3. Demandez un virement SEPA avec numéro de référence précis",
+          "4. Déclenchez la préparation de commande dès réception des fonds",
+        ],
+      },
+      {
+        heading: "Conservez 100 % du montant adjugé sans commission",
+        paragraphs: [
+          "Avec ArcBids, vous payez 25 € par ticket au lancement et 0 % de commission sur les ventes pendant tout 2026, ce qui rend votre facturation et votre suivi de marge parfaitement transparents.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Surstocks Mode", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Calculateur de Marge", href: "/tools" },
+      { label: "Voir les Tarifs", href: "/pricing" },
+      { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
     ],
   },
 ];
@@ -987,6 +1205,60 @@ export const BLOG_POSTS_NL: BlogPost[] = [
       { label: "Gratis Calculator", href: "/tools" },
     ],
   },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Facturatie & Verzending na de Veiling: B2B-Partijen binnen 48 Uur Afhandelen",
+    description:
+      "Een praktisch stappenplan om winnende B2B-kopers direct te factureren, betalingen snel te ontvangen en magazijnruimte vrij te maken.",
+    category: "Operaties",
+    publishedAt: "2026-11-19",
+    readTime: "5 min leestijd",
+    keywords: [
+      "facturatie B2B veiling",
+      "groothandel afhandeling",
+      "liquidatie verzending",
+      "betaling veilingwinnaar",
+    ],
+    sections: [
+      {
+        heading: "Waarom snelle afhandeling je cashflow beschermt",
+        paragraphs: [
+          "Het winnende bod is pas het begin. Dagenlang Excel-overzichten uitzoeken vertraagt de betaling en houdt pallets onnodig in het magazijn.",
+          "Ervaren groothandels exporteren de resultaten direct na sluiting en versturen binnen twee uur een verzamelfactuur.",
+        ],
+        bullets: [
+          "Exporteer winnende kavels, e-mailadressen en eindprijzen direct na sluiting",
+          "Combineer meerdere kavels per koper voor één overzichtelijke vrachtofferte",
+          "Stel vooraf een duidelijke betalingstermijn van 24 tot 48 uur in",
+        ],
+      },
+      {
+        heading: "De 4-stappen checklist na de veiling",
+        paragraphs: [
+          "Een vaste werkwijze voorkomt ruis tussen verkoop, administratie en magazijn:",
+        ],
+        bullets: [
+          "1. Bundel gewonnen kavels per koper op één factuur met manifestnummer",
+          "2. Bevestig Incoterms en afhaaltijden (EXW) of pallettransport",
+          "3. Vraag SEPA-betaling met duidelijk betalingskenmerk voor snelle verwerking",
+          "4. Geef de zending vrij zodra de betaling is ontvangen",
+        ],
+      },
+      {
+        heading: "Factureer 100% van de hamerprijs zonder commissie",
+        paragraphs: [
+          "Met ArcBids betaal je slechts €25 per veilingticket bij livegang en 0% commissie op de omzet in heel 2026, waardoor je boekhouding en margeberekening direct kloppen.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Mode Overstock Veilingen", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Gratis Margecalculator", href: "/tools" },
+      { label: "Prijzen Bekijken", href: "/pricing" },
+      { label: "Naar Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_TR: BlogPost[] = [
@@ -1133,6 +1405,60 @@ export const BLOG_POSTS_TR: BlogPost[] = [
       { label: "Ücretsiz Hesaplayıcı", href: "/tools" },
     ],
   },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Açık Artırma Sonrası Faturalama ve Sevkiyat: B2B Satışları 48 Saatte Kapatma",
+    description:
+      "Canlı B2B açık artırma bittikten sonra kazanan alıcıları hızla faturalamak, ödemeyi tahsil etmek ve depo alanını boşaltmak için 4 adımlı operasyon rehberi.",
+    category: "Operasyon",
+    publishedAt: "2026-11-19",
+    readTime: "5 dk okuma",
+    keywords: [
+      "B2B açık artırma faturalama",
+      "toptan sevkiyat süreci",
+      "tasfiye ödeme takibi",
+      "açık artırma teslimat",
+    ],
+    sections: [
+      {
+        heading: "Hızlı Tahsilat Nakit Akışınızı Nasıl Korur?",
+        paragraphs: [
+          "Son teklifin verilmesi işin yarısıdır. Oda kapandıktan sonra tablolarla günler kaybetmek alıcı motivasyonunu düşürür ve paletlerin depoda yer kaplamasına yol açar.",
+          "Profesyonel toptancılar oda kapanır kapanmaz ilk iki saat içinde proforma faturayı iletir.",
+        ],
+        bullets: [
+          "Kapanıştan hemen sonra kazanan lotları, alıcı e-postalarını ve fiyatları dışa aktarın",
+          "Aynı alıcının kazandığı birden fazla lotu tek nakliye teklifinde birleştirin",
+          "Oda kurallarında 24–48 saatlik net ödeme süresi belirtin",
+        ],
+      },
+      {
+        heading: "4 Adımlı Sevkiyat Kontrol Listesi",
+        paragraphs: [
+          "Standart bir teslimat süreci satış, finans ve depo ekipleri arasındaki karmaşayı bitirir:",
+        ],
+        bullets: [
+          "1. Kazanan lotları manifesto referansıyla tek faturada toplayın",
+          "2. EXW depo teslim saatlerini veya paletli nakliye şartlarını netleştirin",
+          "3. Hızlı mutabakat için fatura numaralı banka/SEPA transferi isteyin",
+          "4. Ödeme onaylandıktan sonra depo yükleme emrini verin",
+        ],
+      },
+      {
+        heading: "Komisyon Kesintisi Olmadan %100 Kapanış Tutarı",
+        paragraphs: [
+          "ArcBids ile canlı başlatırken bilet başına sabit €25 ödersiniz ve 2026 boyunca satışlardan %0 komisyon alınır; böylece kapanış fiyatının tamamını doğrudan faturalarsınız.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Moda Stok Fazlası", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Ücretsiz Marj Hesaplayıcı", href: "/tools" },
+      { label: "Fiyatları Gör", href: "/pricing" },
+      { label: "Paneli Aç", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_RU: BlogPost[] = [
@@ -1277,6 +1603,60 @@ export const BLOG_POSTS_RU: BlogPost[] = [
     relatedLinks: [
       { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Бесплатный калькулятор", href: "/tools" },
+    ],
+  },
+  {
+    slug: "post-auction-invoicing-and-fulfillment-workflow-b2b-auctions",
+    title: "Выставление счетов и отгрузка после B2B-аукциона: закрытие сделок за 48 часов",
+    description:
+      "Пошаговый процесс после завершения торгов: быстрое выставление счетов победителям, сбор оплаты без задержек и освобождение склада.",
+    category: "Операции",
+    publishedAt: "2026-11-19",
+    readTime: "5 мин чтения",
+    keywords: [
+      "выставление счетов B2B аукцион",
+      "отгрузка оптовых лотов",
+      "расчеты после ликвидации",
+      "логистика B2B торгов",
+    ],
+    sections: [
+      {
+        heading: "Почему быстрый расчет защищает денежный поток",
+        paragraphs: [
+          "Финальная ставка — лишь половина дела. Если продавец тратит несколько дней на разбор таблиц, покупатели остывают, а паллеты продолжают занимать склад.",
+          "Эффективные оптовики экспортируют итоги сразу после закрытия комнаты и отправляют счет в течение первых двух часов.",
+        ],
+        bullets: [
+          "Сразу выгружайте выигранные лоты, email покупателей и итоговые цены",
+          "Объединяйте несколько лотов одного победителя для общей логистики",
+          "Заранее фиксируйте окно оплаты 24–48 часов в условиях комнаты",
+        ],
+      },
+      {
+        heading: "Чек-лист отгрузки из 4 шагов",
+        paragraphs: [
+          "Единый регламент убирает лишние согласования между продажами, бухгалтерией и складом:",
+        ],
+        bullets: [
+          "1. Объедините выигранные лоты покупателя в один счет со ссылкой на манифест",
+          "2. Подтвердите условия Incoterms, окно самовывоза EXW или доставку паллет",
+          "3. Укажите точное назначение платежа для быстрой банковской сверки",
+          "4. Отдавайте заказ в отгрузку только после поступления оплаты",
+        ],
+      },
+      {
+        heading: "Выставляйте счет на 100% финальной цены без комиссий",
+        paragraphs: [
+          "В ArcBids вы платите фиксированные €25 за билет при запуске комнаты и 0% комиссии с продаж весь 2026 год — итоговая ставка полностью остается в вашем бизнесе.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Стоки одежды", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Калькулятор Маржи", href: "/tools" },
+      { label: "Смотреть Цены", href: "/pricing" },
+      { label: "Открыть Панель", href: "/dashboard" },
     ],
   },
 ];
