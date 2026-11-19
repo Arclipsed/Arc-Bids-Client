@@ -1413,7 +1413,7 @@ export default function DashboardPage() {
                                   key={lot.id.toString()}
                                   className={`relative flex items-center justify-between gap-2 overflow-hidden rounded-xl border px-3 py-2 transition ${
                                     isActiveLot
-                                      ? "border-[#3ff2e0]/60 bg-gradient-to-r from-[#102d33] via-[#0d2228] to-[#0a171c] shadow-[0_0_24px_rgba(63,242,224,0.18)]"
+                                      ? "border-[#3ff2e0]/40 bg-[#0b181c]/90 shadow-[0_0_20px_rgba(63,242,224,0.12)]"
                                       : isSoldLot || isUnsoldLot
                                         ? "border-white/[0.04] bg-[#06090f]/70 opacity-75"
                                         : "border-white/[0.05] bg-[#080c14]/80"
