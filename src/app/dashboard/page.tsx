@@ -15,6 +15,7 @@ import {
   Eye,
   Gavel,
   Info,
+  Lock,
   LogOut,
   Mail,
   Package,
@@ -1265,12 +1266,13 @@ export default function DashboardPage() {
                                       : r.status}
                               </span>
                               <span
-                                className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold ${
+                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold ${
                                   r.isPublic
                                     ? "border border-emerald-400/25 bg-emerald-500/10 text-emerald-300"
-                                    : "border border-white/10 bg-white/[0.04] text-zinc-400"
+                                    : "border border-amber-400/30 bg-amber-500/10 text-amber-300"
                                 }`}
                               >
+                                {!r.isPublic && <Lock className="h-2.5 w-2.5" />}
                                 {r.isPublic ? d.PublicBadge : d.InviteOnlyBadge}
                               </span>
                               {isLive && (
