@@ -175,7 +175,11 @@ async function BlogIndexContent() {
               <div>
                 <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
                   <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
-                    Article
+                    {entry.category}
+                  </span>
+                  <span className="inline-flex items-center gap-1 font-mono text-zinc-500">
+                    <Clock className="h-3 w-3" />
+                    {entry.readTime}
                   </span>
                   {entry.publishedAt && (
                     <span className="font-mono text-zinc-500">
@@ -187,6 +191,11 @@ async function BlogIndexContent() {
                 <h2 className="mt-4 text-lg font-semibold leading-snug text-white transition group-hover:text-[#e4fffb]">
                   {entry.title}
                 </h2>
+                {entry.description && (
+                  <p className="mt-2.5 text-sm leading-relaxed text-zinc-400">
+                    {entry.description}
+                  </p>
+                )}
               </div>
 
               <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#3ff2e0]">

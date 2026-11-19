@@ -253,7 +253,17 @@ async function BlogPostContent({
           </article>
         ) : (
           <article className="mt-8">
-            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+            <div className="flex flex-wrap items-center gap-2.5 text-[11px]">
+              <span className="rounded-full border border-[#3ff2e0]/25 bg-[#3ff2e0]/10 px-2.5 py-0.5 font-mono font-semibold text-[#3ff2e0]">
+                {pyciePost!.category}
+              </span>
+              <span className="inline-flex items-center gap-1 font-mono text-zinc-500">
+                <Clock className="h-3 w-3" />
+                {pyciePost!.readTime}
+              </span>
+            </div>
+
+            <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
               {pyciePost!.title}
             </h1>
             {pyciePost!.description && (
@@ -261,10 +271,46 @@ async function BlogPostContent({
                 {pyciePost!.description}
               </p>
             )}
-            <div
-              className="prose prose-invert mt-10 max-w-none border-t border-white/[0.08] pt-9 text-sm leading-relaxed text-zinc-300"
-              dangerouslySetInnerHTML={{ __html: pyciePost!.htmlContent }}
-            />
+
+            {pyciePost!.sections.length > 0 ? (
+              <div className="mt-10 space-y-9 border-t border-white/[0.08] pt-9">
+                {pyciePost!.sections.map((section, idx) => (
+                  <section key={`${section.heading}-${idx}`} className="space-y-4">
+                    {section.heading && (
+                      <h2 className="text-xl font-semibold tracking-tight text-white">
+                        {section.heading}
+                      </h2>
+                    )}
+                    {section.paragraphs.map((p, pIdx) => (
+                      <p
+                        key={pIdx}
+                        className="text-sm leading-relaxed text-zinc-300 sm:text-[15px]"
+                      >
+                        {p}
+                      </p>
+                    ))}
+                    {section.bullets.length > 0 && (
+                      <ul className="space-y-2.5 rounded-2xl border border-white/[0.06] bg-[#090d14]/80 p-5">
+                        {section.bullets.map((bullet) => (
+                          <li
+                            key={bullet}
+                            className="flex items-start gap-2.5 text-sm text-zinc-300"
+                          >
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#3ff2e0]" />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <div
+                className="prose prose-invert mt-10 max-w-none border-t border-white/[0.08] pt-9 text-sm leading-relaxed text-zinc-300"
+                dangerouslySetInnerHTML={{ __html: pyciePost!.rawHtml }}
+              />
+            )}
           </article>
         )}
 
