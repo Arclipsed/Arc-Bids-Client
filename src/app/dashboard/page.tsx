@@ -193,7 +193,10 @@ export default function DashboardPage() {
     room: RoomRow;
     item: ItemRow;
   } | null>(null);
-  const [resultsRoom, setResultsRoom] = useState<RoomRow | null>(null);
+  const [resultsLot, setResultsLot] = useState<{
+    room: RoomRow;
+    item: ItemRow;
+  } | null>(null);
   const [buyerCompany, setBuyerCompany] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -1348,18 +1351,6 @@ export default function DashboardPage() {
                               <Copy className="h-3.5 w-3.5" />
                             )}
                           </IconButton>
-                          {isEnded && (
-                            <IconButton
-                              variant="subtle"
-                              size="sm"
-                              onClick={() => setResultsRoom(r)}
-                              aria-label={`View winners for ${r.title}`}
-                              title="Winners & contact info"
-                              className="h-8 w-8 border-amber-400/25 text-amber-300 enabled:hover:border-amber-400/50 enabled:hover:bg-amber-500/10"
-                            >
-                              <Trophy className="h-3.5 w-3.5" />
-                            </IconButton>
-                          )}
                           {(r.status === "Draft" || r.status === "Lobby") && (
                             <IconButton
                               variant="subtle"
@@ -1510,6 +1501,18 @@ export default function DashboardPage() {
                                       >
                                         {formatCountdown(remainingMs)}
                                       </span>
+                                    )}
+                                    {isSoldLot && (
+                                      <IconButton
+                                        variant="subtle"
+                                        size="sm"
+                                        onClick={() => setResultsLot({ room: r, item: lot })}
+                                        aria-label={`View winner for ${lot.title}`}
+                                        title={isDe ? "Gewinner & Kontakt" : "Winner & contact info"}
+                                        className="h-7 w-7 border-amber-400/25 text-amber-300 enabled:hover:border-amber-400/50 enabled:hover:bg-amber-500/10"
+                                      >
+                                        <Trophy className="h-3 w-3" />
+                                      </IconButton>
                                     )}
                                     {isEditable && (
                                       <>
@@ -1698,127 +1701,110 @@ export default function DashboardPage() {
             </Dialog>
 
             <Dialog
-              open={Boolean(resultsRoom)}
-              onClose={() => setResultsRoom(null)}
-              title={resultsRoom ? `${resultsRoom.title} · ${d.WinnersTitleSuffix}` : d.WinnersTitleSuffix}
-              description={d.WinnersDesc}
+              open={Boolean(resultsLot)}
+              onClose={() => setResultsLot(null)}
+              title={
+                resultsLot
+                  ? `${resultsLot.item.title} · ${d.WinnersTitleSuffix}`
+                  : d.WinnersTitleSuffix
+              }
+              description={resultsLot ? resultsLot.room.title : d.WinnersDesc}
             >
-              {resultsRoom && (() => {
-                const roomLots = items
-                  .filter((i) => i.roomId === resultsRoom.id)
-                  .sort((a, b) => a.orderIndex - b.orderIndex);
-                const soldLots = roomLots.filter((i) => i.status === "Sold");
-                const totalSales = soldLots.reduce(
-                  (sum, i) => sum + i.currentBid,
-                  BigInt(0)
-                );
+              {resultsLot && (() => {
+                const { room, item: lot } = resultsLot;
+                const winningBid = bids
+                  .filter((b) => b.itemId === lot.id)
+                  .sort((a, b) => Number(b.amount - a.amount) || Number(b.id - a.id))[0];
+                const matchedBuyer =
+                  winningBid && winningBid.buyerId > BigInt(0)
+                    ? buyers.find((b) => b.id === winningBid.buyerId)
+                    : undefined;
+                const winnerContact =
+                  winningBid?.buyerEmail || matchedBuyer?.magicToken || "";
+                const isEmailContact = winnerContact.includes("@");
+                const isSold = lot.status === "Sold" && Boolean(winningBid);
 
                 return (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-[#0e1420]/70 px-4 py-3 text-xs">
-                      <span className="text-zinc-400">
-                        {soldLots.length} / {roomLots.length} {d.LotsSoldSummary}
-                      </span>
-                      <span className="font-mono font-semibold text-[#3ff2e0]">
-                        {d.TotalLabel} {formatCurrency(totalSales, resultsRoom.currency)}
-                      </span>
-                    </div>
-
-                    <div className="max-h-[55vh] space-y-2.5 overflow-y-auto pr-1">
-                      {roomLots.map((lot) => {
-                        const winningBid = bids
-                          .filter((b) => b.itemId === lot.id)
-                          .sort((a, b) => Number(b.amount - a.amount) || Number(b.id - a.id))[0];
-                        const matchedBuyer =
-                          winningBid && winningBid.buyerId > BigInt(0)
-                            ? buyers.find((b) => b.id === winningBid.buyerId)
-                            : undefined;
-                        const winnerEmail =
-                          winningBid?.buyerEmail || matchedBuyer?.magicToken || "";
-                        const isSold = lot.status === "Sold" && Boolean(winningBid);
-
-                        return (
-                          <div
-                            key={lot.id.toString()}
-                            className="rounded-2xl border border-white/[0.07] bg-[#0e1420]/80 p-4"
-                          >
-                            <div className="flex flex-wrap items-start justify-between gap-2">
-                              <div>
-                                <p className="text-sm font-semibold text-white">
-                                  Lot #{lot.orderIndex + 1} · {lot.title}
-                                </p>
-                                {isSold && winningBid ? (
-                                  <p className="mt-1 text-xs text-zinc-300">
-                                    {d.WinnerLabel}{" "}
-                                    <span className="font-semibold text-white">
-                                      {winningBid.buyerName}
-                                    </span>
-                                    {winnerEmail && (
-                                      <span className="ml-1.5 font-mono text-zinc-400">
-                                        ({winnerEmail})
-                                      </span>
-                                    )}
-                                  </p>
-                                ) : (
-                                  <p className="mt-1 text-xs text-zinc-500">
-                                    {d.NoWinningBids}
-                                  </p>
-                                )}
-                              </div>
-
-                              <span
-                                className={`rounded-full px-2.5 py-0.5 font-mono text-xs font-semibold ${
-                                  isSold
-                                    ? "border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 text-[#3ff2e0]"
-                                    : "border border-white/10 bg-white/[0.04] text-zinc-400"
-                                }`}
-                              >
-                                {isSold
-                                  ? formatCurrency(lot.currentBid, resultsRoom.currency)
-                                  : d.UnsoldLabel}
+                  <div className="rounded-2xl border border-white/[0.07] bg-[#0e1420]/80 p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <p className="text-sm font-semibold text-white">
+                          Lot #{lot.orderIndex + 1} · {lot.title}
+                        </p>
+                        {isSold && winningBid ? (
+                          <p className="mt-1 text-xs text-zinc-300">
+                            {d.WinnerLabel}{" "}
+                            <span className="font-semibold text-white">
+                              {winningBid.buyerName}
+                            </span>
+                            {winnerContact && (
+                              <span className="ml-1.5 font-mono text-zinc-400">
+                                ({winnerContact})
                               </span>
-                            </div>
-
-                            {isSold && winnerEmail && (
-                              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
-                                <a
-                                  href={`mailto:${encodeURIComponent(winnerEmail)}?subject=${encodeURIComponent(
-                                    `You won Lot #${lot.orderIndex + 1}: ${lot.title} (${resultsRoom.title})`
-                                  )}&body=${encodeURIComponent(
-                                    `Hi ${winningBid?.buyerName ?? ""},\n\nCongratulations on winning Lot #${lot.orderIndex + 1} (${lot.title}) in ${resultsRoom.title} for ${formatCurrency(lot.currentBid, resultsRoom.currency)}.\n\nPlease reply to arrange payment and delivery.\n`
-                                  )}`}
-                                  className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[#e4fffb] px-3.5 text-xs font-semibold text-[#04070b] transition hover:bg-white"
-                                >
-                                  <Mail className="h-3.5 w-3.5" />
-                                  {d.EmailWinner}
-                                </a>
-                                <button
-                                  type="button"
-                                  onClick={async () => {
-                                    await navigator.clipboard.writeText(winnerEmail);
-                                    setCopiedId(`winner-${lot.id.toString()}`);
-                                    window.setTimeout(() => setCopiedId(null), 1800);
-                                  }}
-                                  className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.09] hover:text-white"
-                                >
-                                  {copiedId === `winner-${lot.id.toString()}` ? (
-                                    <>
-                                      <Check className="h-3.5 w-3.5 text-[#3ff2e0]" />
-                                      {d.Copied}
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Copy className="h-3.5 w-3.5" />
-                                      {d.CopyEmail}
-                                    </>
-                                  )}
-                                </button>
-                              </div>
                             )}
-                          </div>
-                        );
-                      })}
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-xs text-zinc-500">
+                            {d.NoWinningBids}
+                          </p>
+                        )}
+                      </div>
+
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 font-mono text-xs font-semibold ${
+                          isSold
+                            ? "border border-[#3ff2e0]/30 bg-[#3ff2e0]/10 text-[#3ff2e0]"
+                            : "border border-white/10 bg-white/[0.04] text-zinc-400"
+                        }`}
+                      >
+                        {isSold
+                          ? formatCurrency(lot.currentBid, room.currency)
+                          : d.UnsoldLabel}
+                      </span>
                     </div>
+
+                    {isSold && winnerContact && (
+                      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
+                        {isEmailContact && (
+                          <a
+                            href={`mailto:${encodeURIComponent(winnerContact)}?subject=${encodeURIComponent(
+                              `You won Lot #${lot.orderIndex + 1}: ${lot.title} (${room.title})`
+                            )}&body=${encodeURIComponent(
+                              `Hi ${winningBid?.buyerName ?? ""},\n\nCongratulations on winning Lot #${lot.orderIndex + 1} (${lot.title}) in ${room.title} for ${formatCurrency(lot.currentBid, room.currency)}.\n\nPlease reply to arrange payment and delivery.\n`
+                            )}`}
+                            className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[#e4fffb] px-3.5 text-xs font-semibold text-[#04070b] transition hover:bg-white"
+                          >
+                            <Mail className="h-3.5 w-3.5" />
+                            {d.EmailWinner}
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(winnerContact);
+                            setCopiedId(`winner-${lot.id.toString()}`);
+                            window.setTimeout(() => setCopiedId(null), 1800);
+                          }}
+                          className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.09] hover:text-white"
+                        >
+                          {copiedId === `winner-${lot.id.toString()}` ? (
+                            <>
+                              <Check className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                              {d.Copied}
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3.5 w-3.5" />
+                              {isEmailContact
+                                ? d.CopyEmail
+                                : isDe
+                                  ? "Kontakt kopieren"
+                                  : "Copy contact"}
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 );
               })()}
