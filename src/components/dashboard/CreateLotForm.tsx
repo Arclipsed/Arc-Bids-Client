@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Car, ChevronDown, Loader2, Package, Upload, X } from "lucide-react";
+import { Boxes, Car, ChevronDown, Cpu, Loader2, Package, Upload, X } from "lucide-react";
 import type { ITranslation } from "@/translations/ITranslation";
 import { EN } from "@/translations/en/en";
 import {
@@ -11,12 +11,22 @@ import {
   CAR_MAKES_AND_MODELS,
   CAR_SERVICE_HISTORIES,
   CAR_TRANSMISSIONS,
+  ELECTRONICS_BRANDS,
+  ELECTRONICS_GRADES,
+  ELECTRONICS_PACKAGING,
   LOT_CATEGORIES,
+  PALLET_CONDITIONS,
+  PALLET_MANIFEST_OPTIONS,
+  PALLET_TYPES,
   normalizeCategory,
+  parseJsonMetadata,
   parseLotMetadata,
+  serializeCategoryMetadata,
   serializeLotMetadata,
   type CarMetadata,
+  type ElectronicsMetadata,
   type LotCategory,
+  type PalletMetadata,
 } from "@/lib/lot-categories";
 
 export interface DraftLot {
@@ -108,6 +118,14 @@ export function CreateLotForm({
     const parsed = parseLotMetadata(initialLot?.category, initialLot?.metadataJson);
     return parsed ?? { mileageUnit: "km" };
   });
+  const [electronicsMeta, setElectronicsMeta] = useState<ElectronicsMetadata>(() => {
+    if (normalizeCategory(initialLot?.category) !== "Electronics") return {};
+    return parseJsonMetadata<ElectronicsMetadata>(initialLot?.metadataJson) ?? {};
+  });
+  const [palletMeta, setPalletMeta] = useState<PalletMetadata>(() => {
+    if (normalizeCategory(initialLot?.category) !== "Pallet") return {};
+    return parseJsonMetadata<PalletMetadata>(initialLot?.metadataJson) ?? {};
+  });
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -154,6 +172,15 @@ export function CreateLotForm({
     e.preventDefault();
     if (!title.trim()) return;
 
+    const metadataJson =
+      category === "Car"
+        ? serializeLotMetadata(category, carMeta)
+        : category === "Electronics"
+          ? serializeCategoryMetadata(category, electronicsMeta as Record<string, string | undefined>)
+          : category === "Pallet"
+            ? serializeCategoryMetadata(category, palletMeta as Record<string, string | undefined>)
+            : "";
+
     onSubmit({
       id: initialLot?.id,
       title: title.trim(),
@@ -164,7 +191,7 @@ export function CreateLotForm({
       quantity: Math.max(1, Math.floor(Number(quantity) || 1)),
       images,
       category,
-      metadataJson: serializeLotMetadata(category, carMeta),
+      metadataJson,
     });
   };
 
@@ -523,10 +550,213 @@ export function CreateLotForm({
             </div>
           </div>
         </div>
+      ) : category === "Electronics" ? (
+        <div className="space-y-3 rounded-2xl border border-[#3ff2e0]/20 bg-[#0e1420]/60 p-3.5">
+          <div className="flex items-center gap-2">
+            <Cpu className="h-4 w-4 text-[#3ff2e0]" />
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[#3ff2e0]">
+              Electronics / ITAD Specifications
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Brand</label>
+              <div className="relative mt-1">
+                <select
+                  value={electronicsMeta.brand ?? ""}
+                  onChange={(e) =>
+                    setElectronicsMeta((p) => ({ ...p, brand: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select brand…</option>
+                  {ELECTRONICS_BRANDS.map((b) => (
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Model</label>
+              <input
+                type="text"
+                value={electronicsMeta.model ?? ""}
+                onChange={(e) =>
+                  setElectronicsMeta((p) => ({ ...p, model: e.target.value }))
+                }
+                placeholder="e.g. iPhone 15 Pro"
+                className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#090d14] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Storage / Spec</label>
+              <input
+                type="text"
+                value={electronicsMeta.storage ?? ""}
+                onChange={(e) =>
+                  setElectronicsMeta((p) => ({ ...p, storage: e.target.value }))
+                }
+                placeholder="e.g. 256GB / 16GB RAM"
+                className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#090d14] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Grade</label>
+              <div className="relative mt-1">
+                <select
+                  value={electronicsMeta.grade ?? ""}
+                  onChange={(e) =>
+                    setElectronicsMeta((p) => ({ ...p, grade: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select grade…</option>
+                  {ELECTRONICS_GRADES.map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Packaging</label>
+              <div className="relative mt-1">
+                <select
+                  value={electronicsMeta.packaging ?? ""}
+                  onChange={(e) =>
+                    setElectronicsMeta((p) => ({ ...p, packaging: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select packaging…</option>
+                  {ELECTRONICS_PACKAGING.map((pkg) => (
+                    <option key={pkg} value={pkg}>
+                      {pkg}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Location</label>
+              <input
+                type="text"
+                value={electronicsMeta.location ?? ""}
+                onChange={(e) =>
+                  setElectronicsMeta((p) => ({ ...p, location: e.target.value }))
+                }
+                placeholder="e.g. Berlin, DE"
+                className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#090d14] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+              />
+            </div>
+          </div>
+        </div>
+      ) : category === "Pallet" ? (
+        <div className="space-y-3 rounded-2xl border border-[#3ff2e0]/20 bg-[#0e1420]/60 p-3.5">
+          <div className="flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-[#3ff2e0]" />
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[#3ff2e0]">
+              Pallet / Liquidation Specifications
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Pallet Type</label>
+              <div className="relative mt-1">
+                <select
+                  value={palletMeta.palletType ?? ""}
+                  onChange={(e) =>
+                    setPalletMeta((p) => ({ ...p, palletType: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select type…</option>
+                  {PALLET_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Manifest</label>
+              <div className="relative mt-1">
+                <select
+                  value={palletMeta.manifested ?? ""}
+                  onChange={(e) =>
+                    setPalletMeta((p) => ({ ...p, manifested: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select…</option>
+                  {PALLET_MANIFEST_OPTIONS.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Pallet Count</label>
+              <input
+                type="number"
+                min={1}
+                value={palletMeta.palletCount ?? ""}
+                onChange={(e) =>
+                  setPalletMeta((p) => ({ ...p, palletCount: e.target.value }))
+                }
+                placeholder="e.g. 4"
+                className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#090d14] px-3 font-mono text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-zinc-300">Condition</label>
+              <div className="relative mt-1">
+                <select
+                  value={palletMeta.condition ?? ""}
+                  onChange={(e) =>
+                    setPalletMeta((p) => ({ ...p, condition: e.target.value }))
+                  }
+                  className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-[#090d14] pl-3 pr-8 text-xs text-white outline-none focus:border-[#3ff2e0]"
+                >
+                  <option value="">Select condition…</option>
+                  {PALLET_CONDITIONS.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label className="text-xs font-medium text-zinc-300">Location</label>
+              <input
+                type="text"
+                value={palletMeta.location ?? ""}
+                onChange={(e) =>
+                  setPalletMeta((p) => ({ ...p, location: e.target.value }))
+                }
+                placeholder="e.g. Munich, DE"
+                className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#090d14] px-3 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-[#3ff2e0]"
+              />
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[11px] text-zinc-400">
           <Package className="h-3.5 w-3.5 text-zinc-400" />
-          <span>General lot — switch Category above to add vehicle specifications.</span>
+          <span>General lot — switch Category above for Vehicle, Electronics, or Pallet specs.</span>
         </div>
       )}
 
@@ -616,7 +846,8 @@ export function CreateLotForm({
                   type="button"
                   onClick={() => handleRemoveImage(idx)}
                   aria-label="Remove image"
-                  className="absolute right-1.5 top-1.5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-black/75 text-zinc-200 opacity-0 transition group-hover:opacity-100 hover:bg-rose-500 hover:text-white"
+                  title="Remove image"
+                  className="absolute right-1.5 top-1.5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-black/80 text-white ring-1 ring-white/20 transition hover:bg-rose-500 hover:ring-rose-400"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>

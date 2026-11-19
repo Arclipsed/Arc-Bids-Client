@@ -13,10 +13,9 @@ import {
 import type { UiItem } from "@/lib/auction-types";
 import { formatCountdown, formatCurrency } from "@/lib/format";
 import {
-  getCarHighlights,
-  getCarSpecRows,
+  getLotHighlights,
+  getLotSpecRows,
   normalizeCategory,
-  parseLotMetadata,
 } from "@/lib/lot-categories";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
@@ -39,9 +38,8 @@ export function ActiveLotCard({
   const [expanded, setExpanded] = useState(false);
 
   const category = normalizeCategory(item.category);
-  const carMeta = parseLotMetadata(item.category, item.metadataJson);
-  const carHighlights = carMeta ? getCarHighlights(carMeta) : [];
-  const carSpecRows = carMeta ? getCarSpecRows(carMeta) : [];
+  const carHighlights = getLotHighlights(item.category, item.metadataJson);
+  const carSpecRows = getLotSpecRows(item.category, item.metadataJson);
   const hasExpandableDetails = Boolean(item.description?.trim()) || carSpecRows.length > 0;
 
   const remainingMs = item.endsAtMs !== null ? Math.max(0, item.endsAtMs - nowMs) : 0;

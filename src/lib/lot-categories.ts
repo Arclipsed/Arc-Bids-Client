@@ -1,4 +1,4 @@
-export type LotCategory = "General" | "Car";
+export type LotCategory = "General" | "Car" | "Electronics" | "Pallet";
 
 export const LOT_CATEGORIES: { value: LotCategory; label: string; description: string }[] = [
   {
@@ -10,6 +10,16 @@ export const LOT_CATEGORIES: { value: LotCategory; label: string; description: s
     value: "Car",
     label: "Car / Vehicle",
     description: "Expanded vehicle specs (make, model, year, mileage, VIN, condition)",
+  },
+  {
+    value: "Electronics",
+    label: "Electronics / ITAD",
+    description: "Device specs (brand, model, storage, grading, packaging, location)",
+  },
+  {
+    value: "Pallet",
+    label: "Wholesale Pallet / Liquidation",
+    description: "Pallet specs (type, manifest status, pallet count, condition, location)",
   },
 ];
 
@@ -97,8 +107,76 @@ export interface CarMetadata {
   serviceHistory?: string;
 }
 
+export interface ElectronicsMetadata {
+  brand?: string;
+  model?: string;
+  storage?: string;
+  grade?: string;
+  packaging?: string;
+  location?: string;
+}
+
+export interface PalletMetadata {
+  palletType?: string;
+  manifested?: string;
+  palletCount?: string;
+  condition?: string;
+  location?: string;
+}
+
+export const ELECTRONICS_BRANDS = [
+  "Apple",
+  "Samsung",
+  "Google",
+  "Xiaomi",
+  "Dell",
+  "Lenovo",
+  "HP",
+  "Microsoft",
+  "Sony",
+  "Mixed / Other",
+] as const;
+
+export const ELECTRONICS_GRADES = [
+  "New / Sealed",
+  "Grade A · Like New",
+  "Grade B · Light Wear",
+  "Grade C · Visible Wear",
+  "Refurbished",
+  "Untested / As-Is",
+] as const;
+
+export const ELECTRONICS_PACKAGING = [
+  "Original Box",
+  "Bulk / Tray",
+  "Mixed / Palletized",
+] as const;
+
+export const PALLET_TYPES = [
+  "Overstock / New",
+  "Customer Returns",
+  "Shelf Pulls",
+  "Mixed Liquidation",
+  "Machinery / Industrial",
+] as const;
+
+export const PALLET_MANIFEST_OPTIONS = [
+  "Manifested",
+  "Unmanifested",
+] as const;
+
+export const PALLET_CONDITIONS = [
+  "New / Sealed",
+  "Tested Working",
+  "Mixed Returns",
+  "Salvage / Untested",
+] as const;
+
 export function normalizeCategory(category?: string | null): LotCategory {
-  return category === "Car" ? "Car" : "General";
+  if (category === "Car") return "Car";
+  if (category === "Electronics") return "Electronics";
+  if (category === "Pallet") return "Pallet";
+  return "General";
 }
 
 export function parseLotMetadata(
@@ -176,4 +254,93 @@ export function getCarSpecRows(meta: CarMetadata): { label: string; value: strin
   if (meta.vin) rows.push({ label: "VIN / Chassis", value: meta.vin });
 
   return rows;
+}
+
+export function parseJsonMetadata<T extends object>(
+  metadataJson?: string | null
+): T | null {
+  if (!metadataJson?.trim()) return null;
+  try {
+    const parsed = JSON.parse(metadataJson) as T;
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+export function serializeCategoryMetadata(
+  category: LotCategory,
+  meta: Record<string, string | undefined>
+): string {
+  if (category === "General") return "";
+  const cleaned: Record<string, string> = {};
+  for (const [key, val] of Object.entries(meta)) {
+    if (typeof val === "string" && val.trim()) {
+      cleaned[key] = val.trim();
+    }
+  }
+  return Object.keys(cleaned).length > 0 ? JSON.stringify(cleaned) : "";
+}
+
+export function getLotHighlights(
+  category?: string | null,
+  metadataJson?: string | null
+): string[] {
+  const cat = normalizeCategory(category);
+  if (cat === "Car") {
+    const meta = parseLotMetadata(category, metadataJson);
+    return meta ? getCarHighlights(meta) : [];
+  }
+  if (cat === "Electronics") {
+    const meta = parseJsonMetadata<ElectronicsMetadata>(metadataJson);
+    if (!meta) return [];
+    return [meta.brand, meta.storage, meta.grade].filter(
+      (v): v is string => Boolean(v?.trim())
+    );
+  }
+  if (cat === "Pallet") {
+    const meta = parseJsonMetadata<PalletMetadata>(metadataJson);
+    if (!meta) return [];
+    const list: string[] = [];
+    if (meta.palletType) list.push(meta.palletType);
+    if (meta.manifested) list.push(meta.manifested);
+    if (meta.palletCount) list.push(`${meta.palletCount} pallets`);
+    return list;
+  }
+  return [];
+}
+
+export function getLotSpecRows(
+  category?: string | null,
+  metadataJson?: string | null
+): { label: string; value: string }[] {
+  const cat = normalizeCategory(category);
+  if (cat === "Car") {
+    const meta = parseLotMetadata(category, metadataJson);
+    return meta ? getCarSpecRows(meta) : [];
+  }
+  if (cat === "Electronics") {
+    const meta = parseJsonMetadata<ElectronicsMetadata>(metadataJson);
+    if (!meta) return [];
+    const rows: { label: string; value: string }[] = [];
+    if (meta.brand) rows.push({ label: "Brand", value: meta.brand });
+    if (meta.model) rows.push({ label: "Model", value: meta.model });
+    if (meta.storage) rows.push({ label: "Storage / Spec", value: meta.storage });
+    if (meta.grade) rows.push({ label: "Grade", value: meta.grade });
+    if (meta.packaging) rows.push({ label: "Packaging", value: meta.packaging });
+    if (meta.location) rows.push({ label: "Location", value: meta.location });
+    return rows;
+  }
+  if (cat === "Pallet") {
+    const meta = parseJsonMetadata<PalletMetadata>(metadataJson);
+    if (!meta) return [];
+    const rows: { label: string; value: string }[] = [];
+    if (meta.palletType) rows.push({ label: "Pallet Type", value: meta.palletType });
+    if (meta.manifested) rows.push({ label: "Manifest", value: meta.manifested });
+    if (meta.palletCount) rows.push({ label: "Pallet Count", value: meta.palletCount });
+    if (meta.condition) rows.push({ label: "Condition", value: meta.condition });
+    if (meta.location) rows.push({ label: "Location", value: meta.location });
+    return rows;
+  }
+  return [];
 }
