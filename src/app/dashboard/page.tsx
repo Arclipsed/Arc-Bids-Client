@@ -1414,9 +1414,11 @@ export default function DashboardPage() {
                                   className={`relative flex items-center justify-between gap-2 overflow-hidden rounded-xl border px-3 py-2 transition ${
                                     isActiveLot
                                       ? "border-[#3ff2e0]/40 bg-[#0b181c]/90 shadow-[0_0_20px_rgba(63,242,224,0.12)]"
-                                      : isSoldLot || isUnsoldLot
-                                        ? "border-white/[0.04] bg-[#06090f]/70 opacity-75"
-                                        : "border-white/[0.05] bg-[#080c14]/80"
+                                      : isSoldLot
+                                        ? "border-emerald-400/25 bg-emerald-500/[0.06]"
+                                        : isUnsoldLot
+                                          ? "border-rose-500/25 bg-rose-500/[0.06]"
+                                          : "border-white/[0.05] bg-[#080c14]/80"
                                   }`}
                                 >
                                   {isActiveLot && (
@@ -1470,7 +1472,7 @@ export default function DashboardPage() {
                                       </span>
                                     )}
                                     {isUnsoldLot && (
-                                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[9px] font-medium text-zinc-400">
+                                      <span className="rounded-full border border-rose-400/30 bg-rose-500/15 px-2 py-0.5 font-mono text-[9px] font-semibold text-rose-300">
                                         {isDe ? "Unverkauft" : "Unsold"}
                                       </span>
                                     )}
