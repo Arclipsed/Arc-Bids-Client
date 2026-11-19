@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, CalendarPlus, CheckCircle2, Globe, Lock, Mail, User } from "lucide-react";
+import { Calendar as CalendarIcon, CalendarPlus, CheckCircle2, ChevronLeft, ChevronRight, Globe, Lock, Mail, User } from "lucide-react";
 import type { DbConnection } from "@/module_bindings";
 import type { UiBid, UiItem, UiRoom } from "@/lib/auction-types";
 import { createReconnectingSpacetimeConnection } from "@/lib/spacetime";
@@ -57,6 +57,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
   const isLoggedIn = Boolean(sessionEmail);
   const [liveViewers, setLiveViewers] = useState<number>(0);
+  const [inspectedItemId, setInspectedItemId] = useState<bigint | null>(null);
   const joinedKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -311,12 +312,16 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
 
   const activeItem = useMemo(() => {
     if (!activeRoom) return null;
+    if (activeRoom.status !== "Live" && inspectedItemId !== null) {
+      const inspected = roomItems.find((i) => i.id === inspectedItemId);
+      if (inspected) return inspected;
+    }
     if (activeRoom.activeItemId !== null) {
       const found = roomItems.find((i) => i.id === activeRoom.activeItemId);
       if (found) return found;
     }
     return roomItems.find((i) => i.status === "Active") ?? roomItems[0] ?? null;
-  }, [activeRoom, roomItems]);
+  }, [activeRoom, roomItems, inspectedItemId]);
 
   const activeBids = useMemo(() => {
     if (!activeItem) return [];
@@ -330,6 +335,16 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       (i) => i.status === "Queued" && (!activeItem || i.id !== activeItem.id)
     );
   }, [roomItems, activeItem]);
+
+  const doneCount = useMemo(
+    () => roomItems.filter((i) => i.status === "Sold" || i.status === "Unsold").length,
+    [roomItems]
+  );
+
+  const activeIndex = useMemo(
+    () => (activeItem ? roomItems.findIndex((i) => i.id === activeItem.id) : -1),
+    [roomItems, activeItem]
+  );
 
   const minNextBid = useMemo(() => {
     if (!activeItem || !activeRoom) return BigInt(0);
@@ -733,6 +748,42 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
           </div>
         )}
 
+        {activeRoom.status === "Live" && roomItems.length > 0 && (
+          <div className="mb-4 rounded-2xl border border-white/[0.07] bg-[#090d14]/90 px-4 py-2.5 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[#3ff2e0]" />
+                <span className="font-semibold text-white">
+                  Lot {activeIndex >= 0 ? activeIndex + 1 : 1} of {roomItems.length}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 font-mono text-[11px] text-zinc-400">
+                <span>
+                  <strong className="text-zinc-200">{doneCount}</strong> done
+                </span>
+                <span className="text-zinc-600">·</span>
+                <span>
+                  <strong className="text-[#3ff2e0]">{upcomingItems.length}</strong> upcoming
+                </span>
+              </div>
+            </div>
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/[0.06]">
+              <div
+                className="h-full rounded-full bg-[#3ff2e0] transition-all duration-300"
+                style={{
+                  width: `${Math.min(
+                    100,
+                    Math.max(
+                      5,
+                      (((activeIndex >= 0 ? activeIndex + 1 : 1) / roomItems.length) * 100)
+                    )
+                  )}%`,
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         {activeRoom.status === "Ended" && (
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-500/[0.07] px-4 py-3 text-xs">
             <div className="flex items-center gap-2.5">
@@ -749,9 +800,36 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
                 </span>
               </div>
             </div>
-            <span className="rounded-full border border-amber-400/30 bg-[#05070c]/80 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-amber-300">
-              Closed
-            </span>
+            <div className="flex items-center gap-2">
+              {roomItems.length > 1 && activeIndex >= 0 && (
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    disabled={activeIndex <= 0}
+                    onClick={() => setInspectedItemId(roomItems[activeIndex - 1].id)}
+                    aria-label="Previous lot"
+                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-[#05070c]/80 text-zinc-200 transition hover:border-amber-300/40 disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                  </button>
+                  <span className="px-1.5 font-mono text-[11px] text-zinc-300 tabular-nums">
+                    {activeIndex + 1}/{roomItems.length}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={activeIndex >= roomItems.length - 1}
+                    onClick={() => setInspectedItemId(roomItems[activeIndex + 1].id)}
+                    aria-label="Next lot"
+                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-[#05070c]/80 text-zinc-200 transition hover:border-amber-300/40 disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              )}
+              <span className="rounded-full border border-amber-400/30 bg-[#05070c]/80 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+                Closed
+              </span>
+            </div>
           </div>
         )}
 
@@ -773,7 +851,24 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
             <div className="flex flex-col gap-4 lg:col-span-5">
               <HighestBidderCard topBid={activeBids[0]} />
               <BidFeed bids={activeBids} nowMs={nowMs} className="flex-1" />
-              <UpcomingQueue items={upcomingItems} />
+              <UpcomingQueue
+                items={activeRoom.status === "Live" ? upcomingItems : roomItems}
+                title={
+                  activeRoom.status === "Live"
+                    ? "Up Next"
+                    : activeRoom.status === "Ended"
+                      ? "All Lots"
+                      : "Preview Lots"
+                }
+                currency={activeRoom.currency}
+                selectedItemId={activeRoom.status !== "Live" ? activeItem.id : null}
+                onSelectItem={
+                  activeRoom.status !== "Live"
+                    ? (id) => setInspectedItemId(id)
+                    : undefined
+                }
+                showStatus={activeRoom.status === "Ended"}
+              />
             </div>
           </div>
         ) : (
