@@ -4,14 +4,14 @@
       <stop offset="0%" stop-color="#0e1726" />
       <stop offset="100%" stop-color="#05080f" />
     </linearGradient>
-    <linearGradient id="arcbids-accent" x1="24" y1="38" x2="49" y2="17" gradientUnits="userSpaceOnUse">
+    <linearGradient id="arcbids-accent" x1="16" y1="38" x2="49" y2="17" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#0f8f9f" />
       <stop offset="55%" stop-color="#3ff2e0" />
       <stop offset="100%" stop-color="#e4fffb" />
     </linearGradient>
   </defs>
   <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#arcbids-bg)" stroke="#3ff2e0" stroke-opacity="0.35" stroke-width="2" />
+  <path d="M39.5 38L21 38C14 38 14 27 22 22C30 17 40 16 49 17" stroke="url(#arcbids-accent)" stroke-width="3.5" stroke-linecap="round" />
   <path d="M21 47L32 18L43 47" stroke="#e4fffb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M24.5 38L34.5 38C40.5 38 45.5 29.5 49 17" stroke="url(#arcbids-accent)" stroke-width="3.5" stroke-linecap="round" />
   <circle cx="49" cy="17" r="3.5" fill="#3ff2e0" />
 </svg>
