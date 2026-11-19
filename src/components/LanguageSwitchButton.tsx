@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Globe } from "lucide-react";
+import { getClientLocale } from "@/translations/Translations";
 
 const LANGUAGES = [
   { code: "EN", label: "English" },
@@ -14,14 +15,23 @@ const LANGUAGES = [
 ] as const;
 
 interface LanguageSwitchButtonProps {
-  currentLocale: string;
+  currentLocale?: string;
+  placement?: "up" | "down";
 }
 
 export function LanguageSwitchButton({
   currentLocale,
+  placement = "up",
 }: LanguageSwitchButtonProps) {
   const [open, setOpen] = useState(false);
+  const [clientLocale, setClientLocale] = useState<string>("EN");
   const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setClientLocale(getClientLocale());
+  }, []);
+
+  const activeLocale = currentLocale ?? clientLocale;
 
   useEffect(() => {
     if (!open) return;
@@ -57,13 +67,17 @@ export function LanguageSwitchButton({
         className="inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 text-[11px] font-bold tracking-wider text-zinc-300 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
       >
         <Globe className="h-3.5 w-3.5 text-[#3ff2e0]" />
-        {currentLocale}
+        {activeLocale}
       </button>
 
       {open && (
-        <div className="absolute right-0 bottom-full z-50 mb-2 w-40 overflow-hidden rounded-2xl border border-white/10 bg-[#0b101b]/95 p-1.5 shadow-2xl backdrop-blur-md">
+        <div
+          className={`absolute right-0 z-50 w-40 overflow-hidden rounded-2xl border border-white/10 bg-[#0b101b]/95 p-1.5 shadow-2xl backdrop-blur-md ${
+            placement === "down" ? "top-full mt-2" : "bottom-full mb-2"
+          }`}
+        >
           {LANGUAGES.map((lang) => {
-            const active = lang.code === currentLocale;
+            const active = lang.code === activeLocale;
             return (
               <button
                 key={lang.code}

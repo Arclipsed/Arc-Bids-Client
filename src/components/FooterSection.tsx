@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LanguageSwitchButton } from "./LanguageSwitchButton";
 
 interface FooterSectionProps {
   brandName?: string;
@@ -148,7 +149,10 @@ export default function FooterSection({
 
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 text-xs text-zinc-500 sm:flex-row">
-          <p>{copyright}</p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <p>{copyright}</p>
+            <LanguageSwitchButton placement="up" />
+          </div>
           <p className="flex flex-wrap items-center gap-2">
             <span>{craftedWith}</span>
             <span aria-hidden="true">·</span>

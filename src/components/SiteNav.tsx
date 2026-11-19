@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { ITranslation } from "@/translations/ITranslation"
 import { EN } from "@/translations/en/en"
+import { LanguageSwitchButton } from "@/components/LanguageSwitchButton"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -172,9 +173,13 @@ export function SiteNav({ nav = EN.Nav }: { nav?: ITranslation["Nav"] }) {
             </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
+        <div className="ml-2">
+          <LanguageSwitchButton placement="down" />
+        </div>
       </NavigationMenu>
 
-      <div className="min-[850px]:hidden">
+      <div className="flex items-center gap-2 min-[850px]:hidden">
+        <LanguageSwitchButton placement="down" />
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
