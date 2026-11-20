@@ -398,52 +398,21 @@ export default function DashboardPage() {
       onConnect: (connectedConn, _tok, identity: Identity) => {
         connRef.current = connectedConn;
         setConnState("connected");
-        const identityHex = identity.toHexString();
-        setMyIdentityHex(identityHex);
+        setMyIdentityHex(identity.toHexString());
         const info = getDeviceDetails();
-        const wasPreviouslyRegistered = isDeviceRegisteredForIdentity(identityHex);
-
-        if (!wasPreviouslyRegistered) {
-          try {
-            connectedConn.reducers.registerDevice({
-              deviceId: info.deviceId,
-              deviceName: info.deviceName,
-              deviceType: info.deviceType,
-              email: userEmail,
-            });
-          } catch {
-            // Ignore device registration errors
-          }
+        try {
+          connectedConn.reducers.registerDevice({
+            deviceId: info.deviceId,
+            deviceName: info.deviceName,
+            deviceType: info.deviceType,
+            email: userEmail,
+          });
+        } catch {
+          // Ignore device registration errors
         }
         connectedConn
           .subscriptionBuilder()
           .onApplied(() => {
-            const hasThisDevice = Array.from(connectedConn.db.myDevices.iter()).some(
-              (d) => d.deviceId === info.deviceId
-            );
-            if (wasPreviouslyRegistered && !hasThisDevice) {
-              clearDeviceRegisteredMarkers();
-              clearOidcSession();
-              void fetch("/api/auth/logout", { method: "POST" }).finally(() => {
-                router.replace("/login");
-              });
-              return;
-            }
-            if (hasThisDevice) {
-              markDeviceRegisteredForIdentity(identityHex);
-              if (wasPreviouslyRegistered) {
-                try {
-                  connectedConn.reducers.registerDevice({
-                    deviceId: info.deviceId,
-                    deviceName: info.deviceName,
-                    deviceType: info.deviceType,
-                    email: userEmail,
-                  });
-                } catch {
-                  // Ignore device registration errors
-                }
-              }
-            }
             sync(connectedConn);
             setTablesSynced(true);
           })
