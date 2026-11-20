@@ -19,6 +19,7 @@ import {
   Lock,
   LogOut,
   Mail,
+  Monitor,
   Package,
   Pencil,
   Plus,
