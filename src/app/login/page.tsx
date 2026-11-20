@@ -80,9 +80,9 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerifyCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!challengeToken || !codeInput.trim()) return;
+  const verifyCode = async (rawCode: string) => {
+    const cleanCode = rawCode.replace(/\s+/g, "").trim();
+    if (!challengeToken || cleanCode.length < 6 || verifyingCode) return;
     setError(null);
     setVerifyingCode(true);
     try {
@@ -91,7 +91,7 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           challengeToken,
-          code: codeInput.trim(),
+          code: cleanCode,
         }),
       });
       const data = (await res.json()) as {
@@ -114,6 +114,11 @@ export default function LoginPage() {
     } finally {
       setVerifyingCode(false);
     }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await verifyCode(codeInput);
   };
 
   return (
