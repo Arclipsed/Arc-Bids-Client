@@ -177,7 +177,9 @@ export default function DashboardPage() {
   const isDe = locale === Locale.DE;
   const d = Translations[locale].DashboardPage.Copy;
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
-  const [dashboardTab, setDashboardTab] = useState<"overview" | "buyers" | "account">("overview");
+  const [dashboardTab, setDashboardTab] = useState<
+    "overview" | "buyers" | "devices" | "account"
+  >("overview");
   const [tablesSynced, setTablesSynced] = useState(false);
   const [connState, setConnState] = useState<"connecting" | "connected" | "error">(
     "connecting"
@@ -1714,16 +1716,6 @@ export default function DashboardPage() {
                   </GlowCard>
                 </BentoGrid>
 
-                {/* Logged-In Devices */}
-                <BentoGrid>
-                  <DevicesWidget
-                    devices={devices}
-                    currentDeviceId={currentDeviceId}
-                    onRemoveDevice={handleRemoveDevice}
-                    className="lg:col-span-12"
-                  />
-                </BentoGrid>
-
                 {/* Danger Zone */}
                 <DangerZoneWidget
                   orgName={myOrg.name}
@@ -1733,9 +1725,21 @@ export default function DashboardPage() {
               </>
             )}
 
+            {dashboardTab === "devices" && (
+              /* Logged-In Devices */
+              <BentoGrid>
+                <DevicesWidget
+                  devices={devices}
+                  currentDeviceId={currentDeviceId}
+                  onRemoveDevice={handleRemoveDevice}
+                  className="lg:col-span-12"
+                />
+              </BentoGrid>
+            )}
+
             {/* Bottom Navigation Dock */}
             <Dock
-              className="fixed inset-x-0 bottom-5 z-40"
+              className="fixed inset-x-0 bottom-0 z-40 sm:bottom-5"
               items={[
                 {
                   icon: LayoutGrid,
@@ -1745,16 +1749,28 @@ export default function DashboardPage() {
                 },
                 {
                   icon: Users,
-                  label: isDe ? "Käuferlisten" : "Buyer Lists",
+                  label: isDe ? "Käufer" : "Buyers",
                   active: dashboardTab === "buyers",
                   badge: myBuyerLists.length,
                   onClick: () => setDashboardTab("buyers"),
                 },
                 {
-                  icon: Shield,
-                  label: isDe ? "Konto & Geräte" : "Account & Devices",
-                  active: dashboardTab === "account",
+                  icon: Plus,
+                  label: isDe ? "Auktion" : "Create",
+                  variant: "primary",
+                  onClick: () => setCreateAuctionOpen(true),
+                },
+                {
+                  icon: Monitor,
+                  label: isDe ? "Geräte" : "Devices",
+                  active: dashboardTab === "devices",
                   badge: devices.length,
+                  onClick: () => setDashboardTab("devices"),
+                },
+                {
+                  icon: Shield,
+                  label: isDe ? "Konto" : "Account",
+                  active: dashboardTab === "account",
                   onClick: () => setDashboardTab("account"),
                 },
               ]}
