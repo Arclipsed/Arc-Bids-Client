@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
@@ -24,14 +24,46 @@ export function Dialog({
   children,
   className,
 }: DialogProps) {
+  const dialogId = useId();
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    let closedByPopstate = false;
+    const prevState =
+      window.history.state && typeof window.history.state === "object"
+        ? window.history.state
+        : {};
+    window.history.pushState({ ...prevState, __arcDialog: dialogId }, "");
+
+    const onPopState = () => {
+      closedByPopstate = true;
+      onCloseRef.current();
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+      if (
+        !closedByPopstate &&
+        window.history.state &&
+        typeof window.history.state === "object" &&
+        (window.history.state as { __arcDialog?: string }).__arcDialog === dialogId
+      ) {
+        window.history.back();
+      }
+    };
+  }, [open, dialogId]);
 
   return (
     <AnimatePresence>
