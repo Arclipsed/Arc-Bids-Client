@@ -1057,7 +1057,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 px-4 pt-6 pb-24 sm:space-y-5 sm:px-6 sm:pt-10 sm:pb-24">
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 px-4 pt-6 pb-8 sm:space-y-5 sm:px-6 sm:pt-10 sm:pb-10">
         {actionError && (
           <div className="rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
             {actionError}
@@ -1716,7 +1716,7 @@ export default function DashboardPage() {
               resultsLot
             ) && (
               <Dock
-                className="fixed inset-x-0 bottom-0 z-40 sm:bottom-5"
+                className="sticky bottom-0 z-40 mt-auto sm:bottom-5 sm:pb-5"
                 items={[
                   {
                     icon: LayoutGrid,
