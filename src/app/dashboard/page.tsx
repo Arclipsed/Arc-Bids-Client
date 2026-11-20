@@ -1708,43 +1708,51 @@ export default function DashboardPage() {
             )}
 
             {/* Bottom Navigation Dock */}
-            <Dock
-              className="fixed inset-x-0 bottom-0 z-40 sm:bottom-5"
-              items={[
-                {
-                  icon: LayoutGrid,
-                  label: isDe ? "Übersicht" : "Overview",
-                  active: dashboardTab === "overview",
-                  onClick: () => setDashboardTab("overview"),
-                },
-                {
-                  icon: Users,
-                  label: isDe ? "Käufer" : "Buyers",
-                  active: dashboardTab === "buyers",
-                  badge: myBuyerLists.length,
-                  onClick: () => setDashboardTab("buyers"),
-                },
-                {
-                  icon: Plus,
-                  label: isDe ? "Auktion" : "Create",
-                  variant: "primary",
-                  onClick: () => setCreateAuctionOpen(true),
-                },
-                {
-                  icon: Monitor,
-                  label: isDe ? "Geräte" : "Devices",
-                  active: dashboardTab === "devices",
-                  badge: devices.length,
-                  onClick: () => setDashboardTab("devices"),
-                },
-                {
-                  icon: Shield,
-                  label: isDe ? "Konto" : "Account",
-                  active: dashboardTab === "account",
-                  onClick: () => setDashboardTab("account"),
-                },
-              ]}
-            />
+            {!(
+              createAuctionOpen ||
+              editingRoom ||
+              addingLotRoom ||
+              editingLot ||
+              resultsLot
+            ) && (
+              <Dock
+                className="fixed inset-x-0 bottom-0 z-40 sm:bottom-5"
+                items={[
+                  {
+                    icon: LayoutGrid,
+                    label: isDe ? "Übersicht" : "Overview",
+                    active: dashboardTab === "overview",
+                    onClick: () => setDashboardTab("overview"),
+                  },
+                  {
+                    icon: Users,
+                    label: isDe ? "Käufer" : "Buyers",
+                    active: dashboardTab === "buyers",
+                    badge: myBuyerLists.length,
+                    onClick: () => setDashboardTab("buyers"),
+                  },
+                  {
+                    icon: Plus,
+                    label: isDe ? "Auktion" : "Create",
+                    variant: "primary",
+                    onClick: () => setCreateAuctionOpen(true),
+                  },
+                  {
+                    icon: Monitor,
+                    label: isDe ? "Geräte" : "Devices",
+                    active: dashboardTab === "devices",
+                    badge: devices.length,
+                    onClick: () => setDashboardTab("devices"),
+                  },
+                  {
+                    icon: Shield,
+                    label: isDe ? "Konto" : "Account",
+                    active: dashboardTab === "account",
+                    onClick: () => setDashboardTab("account"),
+                  },
+                ]}
+              />
+            )}
 
             <Dialog
               open={createAuctionOpen}

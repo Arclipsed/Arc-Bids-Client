@@ -31,8 +31,7 @@ const DockIconButton = React.forwardRef<HTMLButtonElement, DockIconButtonProps>(
       <motion.button
         ref={ref}
         type="button"
-        whileHover={{ scale: isPrimary ? 1.06 : 1.04, y: -2 }}
-        whileTap={{ scale: 0.94 }}
+        whileTap={{ scale: 0.95 }}
         onClick={onClick}
         aria-label={label}
         className={cn(
