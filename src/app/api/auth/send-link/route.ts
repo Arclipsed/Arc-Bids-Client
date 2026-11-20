@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import {
   buildMagicLinkEmailHtml,
+  buildMagicLinkEmailText,
   signCodeChallengeToken,
   signMagicLinkToken,
 } from "@/lib/email-auth";
@@ -43,10 +44,11 @@ export async function POST(req: NextRequest) {
     const { error } = await resend.emails.send({
       from,
       to: email,
-      subject: `Sign in to ArcBids · Code ${code}`,
+      subject: `${code} is your ArcBids sign-in code`,
       headers: {
         "X-Entity-Ref-ID": crypto.randomUUID(),
       },
+      text: buildMagicLinkEmailText(verifyUrl, email, code),
       html: buildMagicLinkEmailHtml(verifyUrl, email, code),
     });
 

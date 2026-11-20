@@ -102,6 +102,23 @@ export async function verifySessionToken(
 
 export { SESSION_COOKIE_NAME };
 
+export function buildMagicLinkEmailText(
+  verifyUrl: string,
+  email: string,
+  code: string
+): string {
+  return [
+    `Your ArcBids verification code is: ${code}`,
+    "",
+    `Enter this 6-digit code in your browser to sign in as ${email}. It expires in 15 minutes.`,
+    "",
+    `Or sign in directly with this link:`,
+    verifyUrl,
+    "",
+    `If you didn't request this email, you can safely ignore it.`,
+  ].join("\n");
+}
+
 export function buildMagicLinkEmailHtml(
   verifyUrl: string,
   email: string,
@@ -112,61 +129,70 @@ export function buildMagicLinkEmailHtml(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign in to ArcBids</title>
+  <meta name="color-scheme" content="dark" />
+  <title>${code} is your ArcBids sign-in code</title>
 </head>
-<body style="margin:0;padding:0;background-color:#05070c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f4f4f5;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#05070c;padding:36px 16px;">
+<body style="margin:0;padding:0;background-color:#05070c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f4f4f5;-webkit-font-smoothing:antialiased;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">
+    Your ArcBids verification code is ${code}. Expires in 15 minutes.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#05070c;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:480px;background-color:#090d14;border:1px solid #1e293b;border-radius:24px;overflow:hidden;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:460px;background-color:#090d14;border:1px solid #1e293b;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.55);">
           <tr>
-            <td style="padding:24px 28px;border-bottom:1px solid #151c28;">
+            <td style="height:3px;background:linear-gradient(90deg,#0f766e 0%,#3ff2e0 50%,#0f766e 100%);font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:22px 28px;border-bottom:1px solid #141b26;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td>
                     <table role="presentation" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style="width:34px;height:34px;border-radius:10px;background-color:#0e1420;border:1px solid rgba(63,242,224,0.35);text-align:center;vertical-align:middle;font-weight:700;font-size:15px;color:#3ff2e0;">
+                        <td style="width:32px;height:32px;border-radius:10px;background-color:#0e1420;border:1px solid rgba(63,242,224,0.35);text-align:center;vertical-align:middle;font-weight:700;font-size:14px;color:#3ff2e0;">
                           A
                         </td>
-                        <td style="padding-left:10px;font-size:17px;font-weight:700;letter-spacing:-0.02em;color:#ffffff;">
+                        <td style="padding-left:10px;font-size:16px;font-weight:700;letter-spacing:-0.02em;color:#ffffff;">
                           ArcBids
                         </td>
                       </tr>
                     </table>
                   </td>
-                  <td align="right" style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#3ff2e0;">
-                    Sign-In Code
+                  <td align="right">
+                    <span style="display:inline-block;padding:4px 10px;border-radius:9999px;background-color:rgba(63,242,224,0.08);border:1px solid rgba(63,242,224,0.22);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#3ff2e0;">
+                      Sign-In Code
+                    </span>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr>
-            <td style="padding:28px;">
-              <h1 style="margin:0 0 10px 0;font-size:22px;line-height:1.25;font-weight:700;color:#ffffff;">
-                Your verification code
+            <td style="padding:30px 28px 28px 28px;">
+              <h1 style="margin:0 0 8px 0;font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-0.015em;color:#ffffff;">
+                Sign in to your account
               </h1>
-              <p style="margin:0 0 22px 0;font-size:14px;line-height:1.6;color:#9ca3af;">
-                Enter this 6-digit code in your browser to sign in as <span style="color:#ffffff;font-weight:600;text-decoration:none;">${email}</span>. It expires in 15 minutes.
+              <p style="margin:0 0 24px 0;font-size:14px;line-height:1.6;color:#9ca3af;">
+                Use the verification code below to sign in as <span style="color:#f4f4f5;font-weight:600;text-decoration:none;">${email}</span>. Valid for 15 minutes.
               </p>
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 8px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 10px 0;">
                 <tr>
-                  <td align="center" style="padding:20px 24px;background-color:#0e1420;border:1px solid rgba(63,242,224,0.3);border-radius:16px;">
-                    <span style="display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace;font-size:34px;line-height:1;font-weight:700;letter-spacing:0.18em;color:#e4fffb;-webkit-user-select:all;user-select:all;">${code}</span>
+                  <td align="center" style="padding:22px 24px;background-color:#0d131f;border:1px solid rgba(63,242,224,0.28);border-radius:18px;">
+                    <code style="display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace;font-size:34px;line-height:1;font-weight:700;letter-spacing:0.2em;color:#e4fffb;-webkit-user-select:all;user-select:all;cursor:text;">${code}</code>
                   </td>
                 </tr>
               </table>
               <p style="margin:0 0 24px 0;text-align:center;font-size:12px;color:#71717a;">
-                Double-click the code above to select and copy all 6 digits.
+                Tap or double-click the code to select all 6 digits.
               </p>
 
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 22px 0;">
                 <tr>
-                  <td style="border-top:1px solid #151c28;height:1px;font-size:0;line-height:0;">&nbsp;</td>
-                  <td style="padding:0 12px;font-size:12px;color:#71717a;white-space:nowrap;">or sign in with one click</td>
-                  <td style="border-top:1px solid #151c28;height:1px;font-size:0;line-height:0;">&nbsp;</td>
+                  <td style="border-top:1px solid #141b26;height:1px;font-size:0;line-height:0;">&nbsp;</td>
+                  <td style="padding:0 12px;font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:#71717a;white-space:nowrap;">or continue with one click</td>
+                  <td style="border-top:1px solid #141b26;height:1px;font-size:0;line-height:0;">&nbsp;</td>
                 </tr>
               </table>
 

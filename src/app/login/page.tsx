@@ -210,6 +210,7 @@ export default function LoginPage() {
                   label="6-digit code"
                   value={codeInput}
                   onChange={(value) => setCodeInput(value)}
+                  onComplete={(value) => void verifyCode(value)}
                   disabled={verifyingCode}
                   autoFocus
                   className="justify-start"
