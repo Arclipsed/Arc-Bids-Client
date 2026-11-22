@@ -339,6 +339,63 @@ export const BLOG_POSTS: BlogPost[] = [
       { label: "Open Seller Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "European Cross-Border B2B Wholesale Auctions: How to Expand Buyer Liquidity Across the EU",
+    description:
+      "Learn how European wholesalers and liquidators attract cross-border trade buyers, manage intra-EU VAT reverse-charge checks, clarify EXW/DAP pallet freight, and sell stock faster at 0% commission.",
+    category: "Cross-Border Trade",
+    publishedAt: "2026-11-22",
+    readTime: "5 min read",
+    keywords: [
+      "cross-border B2B wholesale auctions",
+      "European wholesale liquidation platform",
+      "intra-EU B2B stocklot auctions",
+      "B2B auction VAT reverse charge",
+      "0% commission wholesale auctions Europe",
+    ],
+    sections: [
+      {
+        heading: "Why Domestic Buyer Lists Cap Your Wholesale Recovery",
+        paragraphs: [
+          "Selling surplus stock only to local buyers in one country limits competition. A pallet of refurbished smartphones, seasonal fashion, or industrial tools that moves slowly in one market often commands 15% to 25% higher bids from trade buyers in neighboring EU hubs.",
+          "When you open your private auction room to vetted buyers across Germany, the Netherlands, France, Spain, Poland, and beyond, regional demand differences work in your favor instead of sitting as unsold warehouse inventory.",
+        ],
+        bullets: [
+          "Turn regional price gaps across EU markets into competitive live bidding",
+          "Avoid relying on two or three domestic liquidators who anchor bids low",
+          "Run one centralized EUR-denominated drop instead of negotiating per country",
+        ],
+      },
+      {
+        heading: "Removing Cross-Border Friction: VAT IDs, Incoterms & Pickup Windows",
+        paragraphs: [
+          "Cross-border B2B buyers hesitate only when compliance and logistics feel uncertain. Setting clear rules inside your buyer vetting and lot descriptions removes the friction before the countdown begins:",
+        ],
+        bullets: [
+          "Verify buyer VAT numbers (VIES) during Buyer List onboarding for clean intra-EU 0% reverse-charge invoicing",
+          "State exact Incoterms per lot (e.g. EXW Munich or palletized DAP quote available after close)",
+          "Include pallet dimensions, gross weight, and Euro-pallet count so freight forwarders can quote fast",
+          "Publish a single 48-hour SEPA wire window and pickup booking instructions in the room terms",
+        ],
+      },
+      {
+        heading: "Multilingual Live Rooms Without 10–15% Marketplace Fees",
+        paragraphs: [
+          "Traditional European liquidation portals take 10% to 15% commission on every cross-border pallet—wiping out the extra margin you earned by reaching international buyers. On ArcBids, buyers join your room in English, German, Spanish, French, Dutch, Turkish, or Russian via a single invite link.",
+          "You pay a flat €25 Auction Ticket only when launching live and 0% commission on all sales throughout 2026, keeping your cross-border upside completely intact.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Smartphone Stock Auctions", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Liquidation Pallet Auctions", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Industrial Surplus Machinery Auctions", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Free Margin & Fee Savings Calculator", href: "/tools" },
+      { label: "See Auction Ticket Pricing", href: "/pricing" },
+      { label: "Open Seller Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_DE: BlogPost[] = [
@@ -640,6 +697,63 @@ export const BLOG_POSTS_DE: BlogPost[] = [
       { label: "Zum Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Grenzüberschreitende B2B-Auktionen in Europa: Mehr Käuferliquidität im EU-Großhandel",
+    description:
+      "So gewinnen europäische Großhändler und Liquidatoren internationale Fachkäufer, regeln USt-IdNr.-Prüfung sowie EXW/DAP-Fracht sauber und verkaufen mit 0 % Provision.",
+    category: "EU-Großhandel",
+    publishedAt: "2026-11-22",
+    readTime: "5 Min. Lesezeit",
+    keywords: [
+      "grenzüberschreitende B2B Auktion",
+      "europäischer Großhandel Liquidation",
+      "EU B2B Restposten Auktion",
+      "Reverse Charge Großhandel Auktion",
+      "0% Provision B2B Auktionsplattform",
+    ],
+    sections: [
+      {
+        heading: "Warum rein nationale Käuferlisten Ihre Erlöse begrenzen",
+        paragraphs: [
+          "Wer Überbestände nur an lokale Abnehmer im eigenen Land verkauft, verschenkt Wettbewerb. Eine Palette Refurbished-Smartphones, Saisonware oder Industriewerkzeug erzielt bei Fachhändlern in benachbarten EU-Märkten oft 15 % bis 25 % höhere Zuschläge.",
+          "Wenn Sie Ihren privaten Auktionsraum für geprüfte Käufer aus Deutschland, den Niederlanden, Frankreich, Spanien oder Polen öffnen, arbeiten regionale Preisunterschiede direkt für Ihre Marge.",
+        ],
+        bullets: [
+          "Regionale Nachfrageunterschiede in echte Bieterkonkurrenz verwandeln",
+          "Abhängigkeit von zwei oder drei lokalen Aufkäufern vermeiden",
+          "Einen zentralen EUR-Drop statt individueller Einzelverhandlungen pro Land steuern",
+        ],
+      },
+      {
+        heading: "Hürden abbauen: USt-IdNr., Incoterms & Abholfenster",
+        paragraphs: [
+          "Internationale B2B-Käufer zögern nur bei unklaren Steuer- oder Logistikregeln. Mit klaren Vorgaben in Käuferliste und Losbeschreibung entsteht sofortige Verlässlichkeit:",
+        ],
+        bullets: [
+          "USt-IdNr. (MIAS/VIES) vorab bei der Aufnahme in die Käuferliste für saubere innergemeinschaftliche Lieferungen prüfen",
+          "Klare Incoterms pro Los angeben (z. B. EXW München oder optionales DAP-Palettenangebot nach Zuschlag)",
+          "Palettenmaße, Bruttogewicht und Stellplätze für schnelle Speditionskalkulation hinterlegen",
+          "Einheitliches 48-Stunden-SEPA-Zahlungsziel und Zeitfenster für die Rampenabholung festlegen",
+        ],
+      },
+      {
+        heading: "Mehrsprachige Live-Auktionsräume ohne 10–15 % Marktplatzgebühr",
+        paragraphs: [
+          "Klassische europäische Liquidationsportale kassieren 10 % bis 15 % Provision auf jede grenzüberschreitende Palette. Bei ArcBids treten Käufer über einen Einladungslink auf Deutsch, Englisch, Französisch, Spanisch, Niederländisch, Türkisch oder Russisch bei.",
+          "Sie zahlen pauschal 25 € pro Auktions-Ticket beim Live-Start und 0 % Verkaufsprovision im gesamten Jahr 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B-Smartphone-Auktionen", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Industriemaschinen-Auktionen", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Kostenloser Margen- & Gebührenrechner", href: "/tools" },
+      { label: "Auktions-Ticket-Preise ansehen", href: "/pricing" },
+      { label: "Zum Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_ES: BlogPost[] = [
@@ -859,6 +973,63 @@ export const BLOG_POSTS_ES: BlogPost[] = [
       { label: "Abrir Panel", href: "/dashboard" },
     ],
   },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Subastas B2B Transfronterizas en Europa: Cómo Ampliar la Liquidez de Compradores en la UE",
+    description:
+      "Descubre cómo los mayoristas y liquidadores europeos atraen compradores internacionales, validan el IVA intracomunitario, aclaran Incoterms EXW/DAP y venden con 0 % de comisión.",
+    category: "Comercio Europeo",
+    publishedAt: "2026-11-22",
+    readTime: "5 min de lectura",
+    keywords: [
+      "subastas B2B transfronterizas Europa",
+      "plataforma liquidación mayorista UE",
+      "subasta lotes exportación Europa",
+      "IVA intracomunitario subastas B2B",
+      "subastas mayoristas 0% comisión",
+    ],
+    sections: [
+      {
+        heading: "Por qué depender solo de compradores locales frena tu recuperación",
+        paragraphs: [
+          "Limitar tus liquidaciones a compradores de un solo país reduce la puja competitiva. Un palé de smartphones reacondicionados, moda de temporada o maquinaria industrial suele alcanzar entre un 15 % y un 25 % más en otros mercados europeos con mayor demanda.",
+          "Abrir tu sala privada a compradores verificados de Alemania, Países Bajos, Francia, España o Polonia convierte las diferencias de precio regionales en pujas reales.",
+        ],
+        bullets: [
+          "Transforma la demanda regional europea en competencia directa en vivo",
+          "Evita depender de dos o tres liquidadores locales que presionan a la baja",
+          "Gestiona un único evento en EUR en lugar de negociar por separado en cada país",
+        ],
+      },
+      {
+        heading: "Eliminar fricción: NIF-IVA intracomunitario, Incoterms y carga",
+        paragraphs: [
+          "Los compradores B2B internacionales solo dudan cuando falta claridad fiscal o logística. Definir las reglas desde la ficha del lote acelera las pujas:",
+        ],
+        bullets: [
+          "Verifica el NIF-IVA europeo (VIES) al aprobar compradores para emitir facturas exentas intracomunitarias",
+          "Indica Incoterms claros por lote (p. ej. EXW almacén o presupuesto DAP tras el cierre)",
+          "Añade medidas, peso bruto y número de europalés para que coticen su transporte rápido",
+          "Establece un plazo claro de 48 horas por transferencia SEPA y franjas de recogida",
+        ],
+      },
+      {
+        heading: "Salas multilingües en vivo sin comisiones del 10 % al 15 %",
+        paragraphs: [
+          "Los portales tradicionales cobran entre un 10 % y un 15 % por cada palé exportado. En ArcBids, tus invitados entran con un solo enlace en español, inglés, alemán, francés, neerlandés, turco o ruso.",
+          "Pagas €25 por ticket de subasta al lanzar en vivo y 0 % de comisión sobre ventas durante todo 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Maquinaria y Excedente Industrial", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Calculadora de Margen Gratuita", href: "/tools" },
+      { label: "Ver Precios", href: "/pricing" },
+      { label: "Abrir Panel", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_FR: BlogPost[] = [
@@ -1054,6 +1225,63 @@ export const BLOG_POSTS_FR: BlogPost[] = [
     relatedLinks: [
       { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Surstocks Mode", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Calculateur de Marge", href: "/tools" },
+      { label: "Voir les Tarifs", href: "/pricing" },
+      { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Enchères B2B Transfrontalières en Europe : Élargir Votre Bassin d'Acheteurs en UE",
+    description:
+      "Comment les grossistes et déstockeurs européens attirent des acheteurs internationaux, sécurisent la TVA intracommunautaire, précisent les Incoterms EXW/DAP et vendent à 0 % de commission.",
+    category: "Commerce Européen",
+    publishedAt: "2026-11-22",
+    readTime: "5 min de lecture",
+    keywords: [
+      "enchères B2B transfrontalières Europe",
+      "plateforme déstockage grossiste UE",
+      "vente lots export B2B",
+      "TVA intracommunautaire enchères B2B",
+      "enchères gros 0% commission",
+    ],
+    sections: [
+      {
+        heading: "Pourquoi un réseau d'acheteurs purement national plafonne vos prix",
+        paragraphs: [
+          "Vendre vos surstocks uniquement à des acheteurs locaux limite la concurrence. Une palette de smartphones reconditionnés, de prêt-à-porter ou d'outillage obtient souvent 15 % à 25 % de plus auprès d'acheteurs professionnels d'autres pays de l'UE.",
+          "En ouvrant votre salle privée à des acheteurs vérifiés en Allemagne, aux Pays-Bas, en France, en Espagne ou en Pologne, vous transformez les écarts de demande européens en surenchères.",
+        ],
+        bullets: [
+          "Convertissez la demande paneuropéenne en compétition en direct",
+          "Évitez la dépendance à deux ou trois soldeurs locaux qui tirent les prix vers le bas",
+          "Pilotez une seule vente en EUR plutôt que des négociations séparées par pays",
+        ],
+      },
+      {
+        heading: "Supprimer les freins : TVA intracommunautaire, Incoterms et fret",
+        paragraphs: [
+          "Les acheteurs B2B transfrontaliers hésitent uniquement si la fiscalité ou la logistique restent floues. Cadrez ces points dès la préparation de la salle :",
+        ],
+        bullets: [
+          "Vérifiez le numéro de TVA intracommunautaire (VIES) lors de la validation de votre liste d'acheteurs",
+          "Précisez l'Incoterm de chaque lot (ex. EXW entrepôt ou devis palette DAP après clôture)",
+          "Indiquez dimensions, poids brut et nombre d'europalettes pour faciliter le devis transport",
+          "Fixez un délai de virement SEPA de 48 heures et des créneaux d'enlèvement clairs",
+        ],
+      },
+      {
+        heading: "Des salles multilingues en direct sans 10 à 15 % de commission",
+        paragraphs: [
+          "Les places de marché classiques prélèvent 10 % à 15 % sur chaque palette exportée. Sur ArcBids, vos acheteurs rejoignent la salle via un simple lien d'invitation en français, anglais, allemand, espagnol, néerlandais, turc ou russe.",
+          "Vous ne payez que 25 € par ticket au lancement en direct et 0 % de commission sur les ventes pendant tout 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Machines et Surplus Industriels", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Calculateur de Marge", href: "/tools" },
       { label: "Voir les Tarifs", href: "/pricing" },
       { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
@@ -1259,6 +1487,63 @@ export const BLOG_POSTS_NL: BlogPost[] = [
       { label: "Naar Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Grensoverschrijdende B2B-Groothandelsveilingen in Europa: Zo Vergroot Je Kopersliquiditeit",
+    description:
+      "Leer hoe Europese groothandels en opkopers internationale vakhandelaren aantrekken, EU-btw-nummers controleren, EXW/DAP-vracht verduidelijken en met 0% commissie verkopen.",
+    category: "Europese Handel",
+    publishedAt: "2026-11-22",
+    readTime: "5 min leestijd",
+    keywords: [
+      "grensoverschrijdende B2B veiling Europa",
+      "Europese groothandel liquidatieplatform",
+      "EU B2B restpartijen veiling",
+      "intracommunautaire btw B2B veiling",
+      "0% commissie groothandelsveiling",
+    ],
+    sections: [
+      {
+        heading: "Waarom een puur binnenlandse koperslijst je opbrengst beperkt",
+        paragraphs: [
+          "Wie overstock alleen aan lokale partijen in één land aanbiedt, mist biedconcurrentie. Een pallet refurbished smartphones, seizoensmode of industriële apparatuur levert bij handelaren in buurlanden vaak 15% tot 25% meer op.",
+          "Door je besloten veilingruimte open te stellen voor gescreende kopers uit Nederland, België, Duitsland, Frankrijk en Spanje benut je Europese prijsverschillen direct in jouw voordeel.",
+        ],
+        bullets: [
+          "Zet regionale vraagverschillen in de EU om in live biedstrijd",
+          "Voorkom afhankelijkheid van twee of drie lokale opkopers die laag bieden",
+          "Organiseer één centrale veiling in EUR in plaats van losse onderhandelingen per land",
+        ],
+      },
+      {
+        heading: "Drempels wegnemen: btw-nummers, Incoterms & laadvensters",
+        paragraphs: [
+          "Internationale B2B-kopers twijfelen alleen wanneer belastingregels of transport onduidelijk zijn. Leg dit vooraf strak vast in je koperslijst en kavelteksten:",
+        ],
+        bullets: [
+          "Controleer btw-nummers (VIES) bij toelating voor vlekkeloze 0% intracommunautaire facturatie",
+          "Vermeld heldere Incoterms per kavel (bijv. EXW magazijn of DAP-palletofferte na afloop)",
+          "Deel palletmaten, brutogewicht en aantal europallets voor snelle transportoffertes",
+          "Hanteer een duidelijke SEPA-betalingstermijn van 48 uur en vaste afhaaltijden",
+        ],
+      },
+      {
+        heading: "Meertalige live veilingen zonder 10–15% marktplaatscommissie",
+        paragraphs: [
+          "Traditionele Europese veilingportals rekenen 10% tot 15% commissie op elke exportpallet. Via ArcBids nemen kopers met één uitnodigingslink deel in het Nederlands, Engels, Duits, Frans, Spaans, Turks of Russisch.",
+          "Je betaalt alleen €25 per veilingticket bij livegang en 0% verkoopcommissie in heel 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Smartphone Veilingen", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Industriële Machines Veilingen", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Gratis Margecalculator", href: "/tools" },
+      { label: "Prijzen Bekijken", href: "/pricing" },
+      { label: "Naar Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_TR: BlogPost[] = [
@@ -1459,6 +1744,63 @@ export const BLOG_POSTS_TR: BlogPost[] = [
       { label: "Paneli Aç", href: "/dashboard" },
     ],
   },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Avrupa Sınır Ötesi B2B Toptan Açık Artırmaları: AB Genelinde Alıcı Likiditesi Nasıl Artırılır?",
+    description:
+      "Avrupalı toptancıların ve tasfiyecilerin sınır ötesi alıcıları nasıl çektiğini, AB KDV ters ibraz doğrulamasını, EXW/DAP navlun şartlarını ve %0 komisyonla satış yapmayı öğrenin.",
+    category: "Sınır Ötesi Ticaret",
+    publishedAt: "2026-11-22",
+    readTime: "5 dk okuma",
+    keywords: [
+      "Avrupa sınır ötesi B2B açık artırma",
+      "Avrupa toptan tasfiye platformu",
+      "AB B2B stok lot ihalesi",
+      "ihracat toptan açık artırma",
+      "%0 komisyon B2B açık artırma",
+    ],
+    sections: [
+      {
+        heading: "Yalnızca Yerel Alıcı Listeleri Toptan Geri Kazanımı Neden Sınırlar?",
+        paragraphs: [
+          "Fazla stokları tek bir ülkedeki yerel alıcılara satmak rekabeti kısıtlar. Yenilenmiş akıllı telefon, sezonluk tekstil veya endüstriyel ekipman paletleri, komşu AB pazarlarındaki alıcılardan genellikle %15 ila %25 daha yüksek teklif alır.",
+          "Özel açık artırma odanızı Almanya, Hollanda, Fransa, İspanya ve Polonya gibi pazarlardaki onaylı alıcılara açtığınızda bölgesel fiyat farkları doğrudan kârınıza çalışır.",
+        ],
+        bullets: [
+          "AB pazarlarındaki bölgesel talep farklarını canlı teklif rekabetine dönüştürün",
+          "Fiyatı aşağı çeken iki veya üç yerel tasfiyeciye bağlı kalmaktan kurtulun",
+          "Ülke bazlı tek tek pazarlık yerine EUR cinsinden tek bir merkezi drop yönetin",
+        ],
+      },
+      {
+        heading: "Sınır Ötesi Engelleri Kaldırma: KDV Kimliği, Incoterms ve Yükleme",
+        paragraphs: [
+          "Uluslararası B2B alıcılar yalnızca vergi ve lojistik belirsiz olduğunda tereddüt eder. Bu kuralları oda açılmadan netleştirmek teklif hızını artırır:",
+        ],
+        bullets: [
+          "AB içi %0 KDV faturalandırması için alıcı onayında KDV numarasını (VIES) doğrulayın",
+          "Her lot için Incoterms bilgisini net yazın (ör. EXW depo teslimi veya kapanış sonrası DAP teklifi)",
+          "Nakliye teklifi alınabilmesi için palet ölçülerini, brüt ağırlığı ve Euro-palet adedini ekleyin",
+          "Oda şartlarında net 48 saatlik SEPA havale süresi ve yükleme randevu penceresi belirleyin",
+        ],
+      },
+      {
+        heading: "%10–%15 Pazar Yeri Komisyonu Olmadan Çok Dilli Canlı Odalar",
+        paragraphs: [
+          "Geleneksel Avrupa tasfiye portalları sınır ötesi her paletten %10–%15 komisyon keser. ArcBids'te alıcılar tek davet bağlantısıyla Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Felemenkçe veya Rusça arayüzle odaya katılır.",
+          "Yalnızca canlı başlatırken bilet başına sabit €25 ödersiniz ve 2026 boyunca tüm satışlardan %0 komisyon alınır.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Akıllı Telefon Açık Artırmaları", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Endüstriyel Makine ve Stok Fazlası", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Ücretsiz Marj Hesaplayıcı", href: "/tools" },
+      { label: "Fiyatları Gör", href: "/pricing" },
+      { label: "Paneli Aç", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_RU: BlogPost[] = [
@@ -1654,6 +1996,63 @@ export const BLOG_POSTS_RU: BlogPost[] = [
     relatedLinks: [
       { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Стоки одежды", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Калькулятор Маржи", href: "/tools" },
+      { label: "Смотреть Цены", href: "/pricing" },
+      { label: "Открыть Панель", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "european-cross-border-b2b-wholesale-auctions-guide",
+    title: "Трансграничные B2B-аукционы в Европе: как расширить ликвидность покупателей по ЕС",
+    description:
+      "Как европейские оптовики привлекают международных байеров, проверяют VAT ID для сделок внутри ЕС, прописывают Incoterms EXW/DAP и продают стоки с комиссией 0%.",
+    category: "Международный опт",
+    publishedAt: "2026-11-22",
+    readTime: "5 мин чтения",
+    keywords: [
+      "трансграничные B2B аукционы Европа",
+      "европейская платформа ликвидации стоков",
+      "оптовые аукционы ЕС",
+      "B2B аукцион VAT reverse charge",
+      "оптовые торги 0% комиссия",
+    ],
+    sections: [
+      {
+        heading: "Почему локальный список покупателей ограничивает выручку",
+        paragraphs: [
+          "Продажа стоков только внутри одной страны снижает конкуренцию за лот. Паллета восстановленных смартфонов, сезонной одежды или промышленного оборудования часто уходит на 15–25% дороже покупателям из соседних рынков ЕС.",
+          "Открывая закрытую аукционную комнату для проверенных компаний из Германии, Нидерландов, Франции, Испании и Польши, вы превращаете разницу регионального спроса в рост итоговой ставки.",
+        ],
+        bullets: [
+          "Превратите разницу цен на рынках ЕС в живую конкуренцию ставок",
+          "Избавьтесь от зависимости от двух-трех местных перекупщиков",
+          "Проводите один централизованный аукцион в EUR вместо переговоров по каждой стране",
+        ],
+      },
+      {
+        heading: "Снимаем барьеры: VAT ID, Incoterms и график погрузки",
+        paragraphs: [
+          "Зарубежные B2B-покупатели сомневаются только при неясных условиях налога и доставки. Зафиксируйте правила заранее до старта торгов:",
+        ],
+        bullets: [
+          "Проверяйте европейский номер VAT (VIES) при добавлении байера для корректного 0% НДС внутри ЕС",
+          "Указывайте точные Incoterms для каждого лота (например, EXW склад или расчет доставки DAP после закрытия)",
+          "Добавляйте габариты, вес брутто и число европаллет для быстрого расчета логистики",
+          "Задавайте четкое окно оплаты по SEPA (48 часов) и правила бронирования погрузки",
+        ],
+      },
+      {
+        heading: "Мультиязычные живые комнаты без 10–15% комиссии площадок",
+        paragraphs: [
+          "Традиционные европейские порталы ликвидации забирают 10–15% комиссии с каждой экспортной паллеты. В ArcBids приглашенные покупатели заходят по одной ссылке на русском, английском, немецком, испанском, французском, нидерландском или турецком языке.",
+          "Вы платите €25 за билет при запуске комнаты и 0% комиссии с продаж весь 2026 год.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B-аукционы смартфонов", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Промышленное оборудование", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Калькулятор Маржи", href: "/tools" },
       { label: "Смотреть Цены", href: "/pricing" },
       { label: "Открыть Панель", href: "/dashboard" },
