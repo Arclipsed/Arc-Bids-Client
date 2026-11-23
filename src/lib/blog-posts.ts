@@ -396,6 +396,63 @@ export const BLOG_POSTS: BlogPost[] = [
       { label: "Open Seller Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Reserve Price vs. No-Reserve B2B Wholesale Auctions: Which Clears Stock Faster?",
+    description:
+      "Compare reserve-floor vs. unreserved B2B wholesale auctions. Learn when to protect high-ticket margins, when low-start drops drive higher recovery, and how 0% commission lowers your break-even floor.",
+    category: "Auction Strategy",
+    publishedAt: "2026-11-23",
+    readTime: "5 min read",
+    keywords: [
+      "reserve price vs no reserve wholesale auction",
+      "unreserved B2B liquidation auction",
+      "wholesale auction starting price strategy",
+      "B2B overstock clearance auction",
+      "0% commission wholesale auction",
+    ],
+    sections: [
+      {
+        heading: "Why Opening Floor Strategy Decides Whether a Drop Sells Out",
+        paragraphs: [
+          "Every wholesaler faces the same tension before launching a live room: set a high reserve or starting floor to protect your margin, and buyers may stay silent; open too low without guardrails, and a single bidder could walk away with underpriced stock.",
+          "Choosing between a reserve-protected floor and a true no-reserve (unreserved) drop depends on inventory liquidity, lot value, and how many vetted buyers are active in your room.",
+        ],
+        bullets: [
+          "Reserve / high-floor lots protect capital on specialized or high-ticket equipment",
+          "No-reserve / low-start lots maximize buyer participation and guarantee dock clearance",
+          "Hidden reserves often frustrate B2B buyers—transparent starting bids build faster trust",
+        ],
+      },
+      {
+        heading: "When to Use Reserve Floors vs. Unreserved Liquidation",
+        paragraphs: [
+          "Match your pricing rule to the asset class instead of using one rigid formula across your entire warehouse:",
+        ],
+        bullets: [
+          "Use a firm break-even starting floor for industrial machinery, sealed electronics, and current-season branded apparel where a narrow buyer pool makes cheap steals risky",
+          "Use unreserved or aggressive low-start bidding (e.g., 25%–35% of wholesale cost) for mixed customer returns, seasonal retail overstock, and aging pallet lots where holding costs exceed discount risk",
+          "Pair low opening bids with a 15-second anti-snipe soft-close timer so competing buyers drive the price up naturally in the final seconds",
+          "Invite at least 8 to 15 vetted buyers before running an unreserved lot so live competition replaces the need for a high floor",
+        ],
+      },
+      {
+        heading: "How 0% Commission Lets You Set Sharper Starting Bids",
+        paragraphs: [
+          "On traditional B2B marketplaces charging 10% to 15% commission, sellers inflate their reserve or starting prices just to cover platform fees—killing early bidding momentum before the auction even starts.",
+          "With ArcBids, you pay a flat €25 Auction Ticket when going live and 0% commission on sales throughout 2026. You can lower your break-even opening bid using our Margin & Fee Savings Calculator, attract more first-minute bids, and still net more cash per pallet.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Industrial Surplus Machinery Auctions", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Fashion Overstock Lot Auctions", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Liquidation Pallet Auctions", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Free Margin & Fee Savings Calculator", href: "/tools" },
+      { label: "See Auction Ticket Pricing", href: "/pricing" },
+      { label: "Open Seller Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_DE: BlogPost[] = [
@@ -754,6 +811,63 @@ export const BLOG_POSTS_DE: BlogPost[] = [
       { label: "Zum Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Mindestpreis vs. Ohne-Limit-Auktion im B2B-Großhandel: Was räumt Lager schneller?",
+    description:
+      "Mindestpreis-Untergrenze oder unlimitierte B2B-Auktion? Erfahren Sie, wann Sie Margen bei teuren Posten schützen, wann tiefe Startgebote höhere Erlöse erzielen und wie 0 % Provision Ihren Break-even senkt.",
+    category: "Auktionsstrategie",
+    publishedAt: "2026-11-23",
+    readTime: "5 Min. Lesezeit",
+    keywords: [
+      "Mindestpreis vs Ohne Limit Auktion",
+      "B2B Großhandel Auktion Startpreis",
+      "Restposten Auktion ohne Mindestpreis",
+      "Überbestände schnell abverkaufen B2B",
+      "0% Provision Großhandelsauktion",
+    ],
+    sections: [
+      {
+        heading: "Warum die Startpreis-Strategie über den Abverkauf entscheidet",
+        paragraphs: [
+          "Jeder Großhändler steht vor demselben Zielkonflikt: Setzen Sie ein hohes Start- oder Mindestgebot an, bleiben Bieter oft passiv. Starten Sie dagegen ohne Untergrenze bei zu wenigen Teilnehmern, droht ein Zuschlag unter Einkaufswert.",
+          "Ob sich ein festes Mindestgebot oder ein echter Tiefstart ohne Limit lohnt, hängt von Warenkategorie, Loswert und der Zahl aktiver Fachkäufer im Raum ab.",
+        ],
+        bullets: [
+          "Feste Untergrenzen schützen Kapital bei spezialisierten Maschinen und A-Ware",
+          "Tiefstart- bzw. Ohne-Limit-Lose maximieren Bieteraktivität und garantieren Rampenräumung",
+          "Verdeckte Mindestpreise frustrieren B2B-Käufer – transparente Startgebote schaffen Vertrauen",
+        ],
+      },
+      {
+        heading: "Wann Mindestuntergrenzen sinnvoll sind – und wann Ohne-Limit gewinnt",
+        paragraphs: [
+          "Passen Sie die Gebotslogik an das jeweilige Inventar an, statt starr eine einzige Regel für das gesamte Lager zu nutzen:",
+        ],
+        bullets: [
+          "Setzen Sie eine klare Break-even-Untergrenze bei Industriemaschinen, versiegelter Elektronik und aktueller Markenmode mit kleinem Käuferkreis",
+          "Nutzen Sie niedrige Startgebote (z. B. 25 %–35 % des Großhandelswerts) bei Retourenpaletten, Saisonüberhängen und Altbeständen mit hohen Lagerkosten",
+          "Kombinieren Sie niedrige Startgebote mit einem 15-Sekunden-Anti-Sniping-Timer, damit echte Konkurrenz den Preis in den Schlusssekunden nach oben treibt",
+          "Laden Sie vor einem Tiefstart-Drop mindestens 8 bis 15 geprüfte Käufer ein, damit Bieterwettbewerb das hohe Limit ersetzt",
+        ],
+      },
+      {
+        heading: "Wie 0 % Provision schärfere Startpreise ermöglicht",
+        paragraphs: [
+          "Auf klassischen B2B-Marktplätzen mit 10 % bis 15 % Provision schlagen Verkäufer diese Gebühren vorab auf den Mindestpreis auf – und bremsen die Bieterdynamik schon vor der ersten Sekunde.",
+          "Bei ArcBids zahlen Sie beim Live-Start pauschal 25 € pro Auktions-Ticket und im gesamten Jahr 2026 0 % Verkaufsprovision. Mit unserem Margen- & Gebührenrechner kalkulieren Sie ein attraktiveres Startgebot und behalten trotzdem mehr Nettoerlös pro Palette.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Industriemaschinen-Auktionen", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Mode- & Textil-Restposten-Auktionen", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Kostenloser Margen- & Gebührenrechner", href: "/tools" },
+      { label: "Auktions-Ticket-Preise ansehen", href: "/pricing" },
+      { label: "Zum Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_ES: BlogPost[] = [
@@ -1030,6 +1144,63 @@ export const BLOG_POSTS_ES: BlogPost[] = [
       { label: "Abrir Panel", href: "/dashboard" },
     ],
   },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Precio de Reserva vs. Subasta Sin Reserva en B2B: ¿Qué Liquida el Stock Más Rápido?",
+    description:
+      "Compara subastas mayoristas con suelo de reserva frente a lotes sin reserva. Aprende cuándo proteger márgenes, cuándo el arranque bajo genera más pujas y cómo el 0 % de comisión reduce tu umbral.",
+    category: "Estrategia de Subasta",
+    publishedAt: "2026-11-23",
+    readTime: "5 min de lectura",
+    keywords: [
+      "subasta con reserva vs sin reserva B2B",
+      "subasta mayorista sin precio mínimo",
+      "estrategia precio salida subasta B2B",
+      "liquidación excedente mayorista",
+      "subastas B2B 0% comisión",
+    ],
+    sections: [
+      {
+        heading: "Por qué la estrategia de salida define si el lote se vende",
+        paragraphs: [
+          "Todo mayorista enfrenta el mismo dilema antes de abrir una sala en vivo: fijar un precio mínimo alto para proteger el margen y arriesgar que nadie puje, o abrir demasiado bajo y ceder inventario por debajo de coste.",
+          "Elegir entre un suelo protegido y una liquidación sin reserva depende de la liquidez del producto, el valor del lote y el número de compradores verificados conectados.",
+        ],
+        bullets: [
+          "Los lotes con suelo protegido resguardan capital en maquinaria especializada y electrónica sellada",
+          "Los lotes sin reserva o con salida baja maximizan la participación y despejan el almacén",
+          "Las reservas ocultas generan desconfianza en compradores B2B; los precios de salida claros aceleran las pujas",
+        ],
+      },
+      {
+        heading: "Cuándo usar suelo de reserva frente a liquidación sin reserva",
+        paragraphs: [
+          "Adapta la regla de precio a cada categoría en lugar de aplicar una fórmula rígida a todo tu almacén:",
+        ],
+        bullets: [
+          "Usa un suelo de equilibrio firme en maquinaria industrial, electrónica nueva y moda de temporada actual donde pocos compradores elevan el riesgo de venta baja",
+          "Usa salida baja o sin reserva (p. ej. 25 %–35 % del coste mayorista) en devoluciones mixtas, excedentes fuera de temporada y palés antiguos cuyo almacenaje cuesta dinero",
+          "Combina salidas bajas con un temporizador anti-sniping de 15 segundos para que la competencia eleve el precio en los últimos segundos",
+          "Invita al menos de 8 a 15 compradores verificados antes de lanzar lotes sin reserva para que la puja sustituya al suelo alto",
+        ],
+      },
+      {
+        heading: "Cómo el 0 % de comisión te permite fijar salidas más competitivas",
+        paragraphs: [
+          "En portales B2B tradicionales con comisiones del 10 % al 15 %, los vendedores inflan sus precios de salida para cubrir la tarifa de la plataforma, frenando las pujas desde el primer minuto.",
+          "Con ArcBids pagas €25 fijos por ticket al lanzar en vivo y 0 % de comisión sobre ventas durante todo 2026. Usa nuestra Calculadora de Margen para definir salidas más atractivas y retener más neto por palé.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Maquinaria y Excedente Industrial", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Subastas de Moda y Excedentes", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculadora de Margen Gratuita", href: "/tools" },
+      { label: "Ver Precios", href: "/pricing" },
+      { label: "Abrir Panel", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_FR: BlogPost[] = [
@@ -1282,6 +1453,63 @@ export const BLOG_POSTS_FR: BlogPost[] = [
       { label: "Enchères Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
       { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Machines et Surplus Industriels", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Calculateur de Marge", href: "/tools" },
+      { label: "Voir les Tarifs", href: "/pricing" },
+      { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Prix de Réserve vs Enchère Sans Réserve en B2B : Quelle Stratégie Écoule Plus Vite ?",
+    description:
+      "Comparez enchères de gros avec prix plancher et ventes sans réserve. Découvrez quand protéger vos marges, quand démarrer bas dynamise les surenchères et comment 0 % de commission abaisse votre seuil.",
+    category: "Stratégie d'Enchères",
+    publishedAt: "2026-11-23",
+    readTime: "5 min de lecture",
+    keywords: [
+      "prix de réserve vs sans réserve B2B",
+      "enchère déstockage sans prix minimum",
+      "stratégie prix départ enchère gros",
+      "liquidation surstock B2B",
+      "enchères B2B 0% commission",
+    ],
+    sections: [
+      {
+        heading: "Pourquoi le prix d'ouverture conditionne le succès de la vente",
+        paragraphs: [
+          "Chaque grossiste hésite avant de lancer une salle en direct : fixer un plancher élevé protège la marge mais refroidit les acheteurs ; ouvrir très bas sans garde-fou expose à céder un lot sous son coût.",
+          "Le choix entre prix plancher et vente sans réserve dépend de la liquidité des produits, de la valeur du lot et du nombre d'acheteurs vérifiés présents.",
+        ],
+        bullets: [
+          "Un prix plancher protège le capital sur les machines spécialisées et l'électronique scellée",
+          "Les lots sans réserve ou à départ bas maximisent l'engagement et libèrent l'entrepôt",
+          "Les réserves cachées découragent les acheteurs B2B : une mise à prix transparente inspire confiance",
+        ],
+      },
+      {
+        heading: "Quand imposer un plancher vs vendre sans réserve",
+        paragraphs: [
+          "Adaptez votre règle tarifaire à chaque famille de stock plutôt que d'appliquer un seuil unique :",
+        ],
+        bullets: [
+          "Fixez un plancher au point mort pour les machines industrielles, le matériel IT neuf et le prêt-à-porter de saison en cours",
+          "Privilégiez un départ bas ou sans réserve (25 % à 35 % du coût gros) sur les retours clients mixtes, fins de série et palettes vieillissantes",
+          "Associez un départ bas à un minuteur anti-sniping de 15 secondes pour laisser la concurrence faire monter les offres jusqu'au bout",
+          "Invitez au moins 8 à 15 acheteurs validés avant tout lot sans réserve afin que l'émulation remplace le prix plancher",
+        ],
+      },
+      {
+        heading: "0 % de commission : des mises à prix plus attractives sans sacrifier la marge",
+        paragraphs: [
+          "Sur les places de marché prélevant 10 % à 15 % de commission, les vendeurs gonflent leur prix de réserve pour absorber les frais, bloquant les premières enchères.",
+          "Sur ArcBids, vous payez un ticket fixe de 25 € au lancement en direct et 0 % de commission sur les ventes pendant tout 2026. Calculez votre seuil net avec notre Calculateur de Marge pour attirer plus d'offres tout en conservant davantage de trésorerie.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Machines et Surplus Industriels", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Enchères Mode et Surstocks", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Calculateur de Marge", href: "/tools" },
       { label: "Voir les Tarifs", href: "/pricing" },
       { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
@@ -1544,6 +1772,63 @@ export const BLOG_POSTS_NL: BlogPost[] = [
       { label: "Naar Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Minimumprijs vs. Veiling Zonder Limiet in B2B-Groothandel: Wat Ruimt Sneller?",
+    description:
+      "Vergelijk B2B-groothandelsveilingen met minimumprijs en kavels zonder limiet. Leer wanneer je marges beschermt, wanneer laag starten meer bieders trekt en hoe 0% commissie je drempel verlaagt.",
+    category: "Veilingstrategie",
+    publishedAt: "2026-11-23",
+    readTime: "5 min leestijd",
+    keywords: [
+      "minimumprijs vs zonder limiet veiling B2B",
+      "groothandel veiling zonder minimumbod",
+      "startprijs strategie B2B veiling",
+      "overstock snel liquideren B2B",
+      "0% commissie groothandelsveiling",
+    ],
+    sections: [
+      {
+        heading: "Waarom de openingsprijs bepaalt of je veiling uitverkoopt",
+        paragraphs: [
+          "Elke groothandel staat voor dezelfde afweging vóór livegang: zet je een hoge minimumprijs om marge te beschermen, dan blijven bieders soms stil; start je te laag zonder dekking, dan loop je risico op verkoop onder kostprijs.",
+          "De keuze tussen een beschermde bodemprijs en een onbeperkte (no-reserve) drop hangt af van voorraadliquiditeit, kavelwaarde en het aantal actieve, gescreende kopers.",
+        ],
+        bullets: [
+          "Een bodemprijs beschermt werkkapitaal bij specialistische machines en gesealde elektronica",
+          "Kavels zonder limiet of met lage inzet maximaliseren biedactie en maken magazijnruimte vrij",
+          "Verborgen limieten frustreren B2B-kopers; een transparant startbod wekt sneller vertrouwen",
+        ],
+      },
+      {
+        heading: "Wanneer kies je een bodemprijs en wanneer veilen zonder limiet?",
+        paragraphs: [
+          "Stem je prijsregel af op het type voorraad in plaats van één vaste drempel voor je hele magazijn:",
+        ],
+        bullets: [
+          "Gebruik een strak break-even startbod bij industriële machines, nieuwe A-merk elektronica en actuele mode met een kleinere kopersgroep",
+          "Gebruik een lage inzet of geen limiet (bijv. 25%–35% van de groothandelswaarde) bij gemixte retouren, seizoensoverstock en oudere pallets",
+          "Combineer lage openingsbiedingen met een anti-snipe timer van 15 seconden zodat concurrentie de prijs in de slotseconden opdrijft",
+          "Nodig minimaal 8 tot 15 gescreende handelaren uit voordat je een kavel zonder limiet start",
+        ],
+      },
+      {
+        heading: "Met 0% commissie scherper openen zonder margeverlies",
+        paragraphs: [
+          "Op traditionele B2B-platforms met 10% tot 15% commissie verhogen verkopers hun minimumprijs om platformkosten te dekken—waardoor vroege biedlust verdwijnt.",
+          "Bij ArcBids betaal je alleen €25 per veilingticket bij livegang en 0% verkoopcommissie in heel 2026. Bereken een scherper startbod met onze Margecalculator en houd toch meer netto per pallet over.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Industriële Machines Veilingen", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Mode & Overstock Veilingen", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Gratis Margecalculator", href: "/tools" },
+      { label: "Prijzen Bekijken", href: "/pricing" },
+      { label: "Naar Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_TR: BlogPost[] = [
@@ -1801,6 +2086,63 @@ export const BLOG_POSTS_TR: BlogPost[] = [
       { label: "Paneli Aç", href: "/dashboard" },
     ],
   },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Taban Fiyatlı vs. Taban Fiyatsız B2B Toptan Açık Artırmalar: Stokları Hangisi Daha Hızlı Eritir?",
+    description:
+      "Taban fiyat korumalı ve tabansız B2B toptan açık artırmaları karşılaştırın. Yüksek değerli marjları ne zaman koruyacağınızı, düşük açılışın rekabeti nasıl artırdığını ve %0 komisyon avantajını öğrenin.",
+    category: "Açık Artırma Stratejisi",
+    publishedAt: "2026-11-23",
+    readTime: "5 dk okuma",
+    keywords: [
+      "taban fiyatlı vs tabansız B2B ihale",
+      "rezerv fiyatsız toptan açık artırma",
+      "B2B açık artırma açılış fiyatı stratejisi",
+      "fazla stok tasfiye ihalesi",
+      "%0 komisyon toptan açık artırma",
+    ],
+    sections: [
+      {
+        heading: "Açılış Fiyatı Stratejisi Drop Başarısını Neden Belirler?",
+        paragraphs: [
+          "Her toptancı canlı oda başlatmadan önce aynı ikilemi yaşar: marjı korumak için yüksek taban fiyat koyarsanız alıcılar sessiz kalabilir; korumasız çok düşük açarsanız stok maliyetinin altında satılabilir.",
+          "Taban fiyatlı koruma ile tabansız (no-reserve) satış arasındaki doğru seçim; ürün likiditesine, lot değerine ve odadaki aktif onaylı alıcı sayısına bağlıdır.",
+        ],
+        bullets: [
+          "Taban fiyat koruması özel makineler ve kapalı kutu elektroniklerde sermayeyi korur",
+          "Tabansız veya düşük açılışlı lotlar katılımı maksimize eder ve depoyu hızla boşaltır",
+          "Gizli rezervler B2B alıcıları soğutur; şeffaf açılış fiyatları daha hızlı güven oluşturur",
+        ],
+      },
+      {
+        heading: "Ne Zaman Taban Fiyat, Ne Zaman Tabansız Tasfiye Seçilmeli?",
+        paragraphs: [
+          "Tüm deponuza tek bir katı kural uygulamak yerine fiyatlama stratejisini ürün grubuna göre uyarlayın:",
+        ],
+        bullets: [
+          "Alıcı havuzu dar olan endüstriyel makinelerde, sıfır BT donanımında ve güncel sezon markalı tekstilde net başa baş açılış tabanı kullanın",
+          "Depolama maliyeti yüksek karışık iade paletlerinde, sezon sonu tekstilde ve eski stoklarda düşük açılışlı (%25–%35 toptan maliyet) veya tabansız model uygulayın",
+          "Düşük açılış fiyatlarını 15 saniyelik anti-sniping süre uzatma sayacıyla birleştirerek son saniyelerde doğal fiyat artışı sağlayın",
+          "Tabansız bir lot başlatmadan önce en az 8–15 onaylı alıcıyı davet ederek yüksek taban ihtiyacını canlı rekabetle ikame edin",
+        ],
+      },
+      {
+        heading: "%0 Komisyon Sayesinde Daha Keskin Açılış Fiyatları Belirleyin",
+        paragraphs: [
+          "%10–%15 komisyon kesen klasik B2B pazar yerlerinde satıcılar platform ücretini kapatmak için taban fiyatları şişirir ve ilk dakika tekliflerini baltalar.",
+          "ArcBids'te canlı yayın başlatırken yalnızca bilet başına sabit €25 ödersiniz ve 2026 boyunca satışlardan %0 komisyon alınır. Ücretsiz Marj Hesaplayıcımızla daha cazip açılış fiyatları belirleyip palet başına daha yüksek net gelir elde edebilirsiniz.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Endüstriyel Makine ve Stok Fazlası", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Moda ve Fazla Stok Açık Artırmaları", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Ücretsiz Marj Hesaplayıcı", href: "/tools" },
+      { label: "Fiyatları Gör", href: "/pricing" },
+      { label: "Paneli Aç", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_RU: BlogPost[] = [
@@ -2053,6 +2395,63 @@ export const BLOG_POSTS_RU: BlogPost[] = [
       { label: "B2B-аукционы смартфонов", href: "/solutions/b2b-smartphone-stock-auctions" },
       { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Промышленное оборудование", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Калькулятор Маржи", href: "/tools" },
+      { label: "Смотреть Цены", href: "/pricing" },
+      { label: "Открыть Панель", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "reserve-price-vs-no-reserve-b2b-wholesale-auctions",
+    title: "Аукцион с резервной ценой или без резерва в B2B-опте: что быстрее расчищает склад?",
+    description:
+      "Сравниваем оптовые B2B-аукционы с минимальным порогом и торги без резерва. Когда защищать маржу дорогих лотов, когда низкий старт дает выше цену и как комиссия 0% снижает точку безубыточности.",
+    category: "Стратегия торгов",
+    publishedAt: "2026-11-23",
+    readTime: "5 мин чтения",
+    keywords: [
+      "резервная цена vs без резерва B2B аукцион",
+      "оптовый аукцион без минимальной цены",
+      "стратегия стартовой цены B2B",
+      "ликвидация стоков без резерва",
+      "B2B аукцион 0% комиссия",
+    ],
+    sections: [
+      {
+        heading: "Почему стартовый порог определяет успех оптового дропа",
+        paragraphs: [
+          "Перед запуском живой комнаты каждый оптовик решает одну дилемму: поставишь высокий порог для защиты маржи — покупатели могут промолчать; откроешь торги слишком низко без страховки — есть риск отдать товар дешевле себестоимости.",
+          "Выбор между защитным порогом и форматом без резерва зависит от ликвидности категории, стоимости лота и числа активных проверенных байеров в комнате.",
+        ],
+        bullets: [
+          "Минимальный порог защищает капитал на спецтехнике и запечатанной электронике",
+          "Лоты без резерва или с низким стартом максимизируют вовлеченность и гарантируют освобождение склада",
+          "Скрытый резерв раздражает B2B-покупателей — прозрачная стартовая цена быстрее вызывает доверие",
+        ],
+      },
+      {
+        heading: "Когда ставить порог цены, а когда продавать без резерва",
+        paragraphs: [
+          "Привязывайте механику цены к типу остатков, а не применяйте одно жесткое правило ко всему складу:",
+        ],
+        bullets: [
+          "Задавайте четкий порог безубыточности для промышленного оборудования, новой IT-техники и актуальной брендовой одежды с узким кругом покупателей",
+          "Используйте низкий старт или торги без резерва (например, 25%–35% от оптовой цены) для смешанных возвратов, сезонных остатков и залежалых паллет",
+          "Сочетайте низкую стартовую ставку с 15-секундным анти-снайпинг таймером, чтобы конкуренция сама подняла цену в финале",
+          "Приглашайте минимум 8–15 проверенных байеров до запуска лота без резерва, чтобы живая борьба заменила высокий порог",
+        ],
+      },
+      {
+        heading: "Как комиссия 0% позволяет ставить более привлекательный старт",
+        paragraphs: [
+          "На традиционных B2B-площадках с комиссией 10%–15% продавцы заранее завышают стартовые цены, чтобы компенсировать сбор платформы — и тем самым гасят активность ставок еще до начала.",
+          "В ArcBids вы платите фиксированные €25 за билет при запуске комнаты и 0% комиссии с продаж весь 2026 год. Рассчитайте более острый старт через наш Калькулятор Маржи и сохраняйте больше чистой выручки с каждой паллеты.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Промышленное оборудование", href: "/solutions/industrial-surplus-machinery-auctions" },
+      { label: "Одежда и Сезонные Стоки", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Калькулятор Маржи", href: "/tools" },
       { label: "Смотреть Цены", href: "/pricing" },
       { label: "Открыть Панель", href: "/dashboard" },
