@@ -453,6 +453,76 @@ export const BLOG_POSTS: BlogPost[] = [
       { label: "Open Seller Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Wholesale Electronics Grading Standards: How Grade A/B/C Transparency Lifts B2B Auction Bids",
+    description:
+      "Learn how standardized Grade A+, A, B, C, and Salvage definitions, battery health disclosures, and IMEI lock checks eliminate buyer risk discounts and boost recovery in B2B electronics auctions.",
+    category: "ITAD & Electronics",
+    publishedAt: "2026-11-24",
+    readTime: "6 min read",
+    keywords: [
+      "wholesale electronics grading standards",
+      "B2B smartphone grading Grade A B C",
+      "refurbished phone lot grading",
+      "ITAD electronics auction recovery",
+      "wholesale mobile stock auction",
+    ],
+    sections: [
+      {
+        heading: "Why Vague Condition Labels Cost Wholesalers 10%–20% Per Lot",
+        paragraphs: [
+          "In wholesale smartphone, laptop, and ITAD auctions, one distributor's 'Grade A' is another buyer's 'Grade B-'. When lot descriptions rely on subjective terms like 'good condition' or 'mostly tested,' experienced B2B buyers automatically build a 10% to 20% risk buffer into their maximum bid to cover hidden screen scratches, worn batteries, or locked devices.",
+          "Replacing vague labels with consistent, verifiable grading criteria removes that guesswork—allowing vetted refurbishers and resellers to bid up to true market value from the opening round.",
+        ],
+        bullets: [
+          "Clear cosmetic and functional tiers reduce post-auction return claims and disputes",
+          "Consistent grading builds repeat trust with high-volume international buyers",
+          "Separate testing status from cosmetic appearance so buyers know exactly what they are pricing",
+        ],
+      },
+      {
+        heading: "Standard B2B Wholesale Electronics Grading Tiers (A+ to Salvage)",
+        paragraphs: [
+          "Publish a concise grading key inside your auction room description or lot manifest so every bidder evaluates Grade A, B, and C lots against the exact same standard:",
+        ],
+        bullets: [
+          "Grade A+ / Like New: Zero visible scuffs at 30 cm, original display and housing, 100% diagnostic pass, and minimum 85%–90%+ battery health",
+          "Grade A / Light Wear: Clean screen with no cracks or burn-in, minor micro-marks on bezel or chassis, 100% functional pass, and 80%+ battery health",
+          "Grade B / Moderate Wear: Light surface scratches on screen or housing (no deep gouges or cracked glass), fully functional hardware, ideal for value refurbishing channels",
+          "Grade C / Heavy Wear: Noticeable scuffs, dents, or screen blemishes, 100% power-on and core board functionality verified unless stated otherwise",
+          "Grade D / Untested & Salvage: Cracked glass, failed diagnostics, or parts-only units grouped transparently into dedicated salvage lots rather than mixed into tested grades",
+        ],
+      },
+      {
+        heading: "Diagnostic, Battery, and Lock Disclosures Every Buyer Checks",
+        paragraphs: [
+          "Cosmetic grade alone is no longer enough for modern ITAD and mobile wholesale buyers. Top-performing B2B sellers pair visual grades with four non-negotiable technical checks before launching a live drop:",
+        ],
+        bullets: [
+          "Verify clean IMEI/ESN status, zero carrier blacklist flags, and full MDM / iCloud / FRP activation unlock",
+          "State the exact battery health threshold (e.g., ≥80% or ≥85%) or list average battery percentage across the batch",
+          "Flag non-OEM replacement parts (aftermarket screens or batteries) separately so buyers do not get surprised during QC",
+          "Disclose accessory inclusion—bare unit vs. bulk box vs. OEM cable/adapter—and whether diagnostic logs (e.g., PhoneCheck or Blancco) are available",
+        ],
+      },
+      {
+        heading: "Structuring Graded Lots in Live B2B Rooms With 0% Commission",
+        paragraphs: [
+          "Never hide Grade C or untested returns inside a Grade A pallet hoping buyers will average up. Instead, segment your inventory into clean Grade A, Grade B, and Salvage lots inside one 15-to-30-minute ArcBids room so specialized buyers bid aggressively on the exact tiers they move fastest.",
+          "With ArcBids, you can model lot margins upfront using our Margin & Fee Savings Calculator, pay only a flat €25 Auction Ticket when you go live, and keep 100% of every winning bid with 0% sales commission throughout 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Smartphone Stock Auctions", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "ITAD Hardware Auctions", href: "/solutions/itad-hardware-auctions" },
+      { label: "Liquidation Pallet Auctions", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Free Margin & Fee Savings Calculator", href: "/tools" },
+      { label: "See Auction Ticket Pricing", href: "/pricing" },
+      { label: "Open Seller Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_DE: BlogPost[] = [
@@ -868,6 +938,76 @@ export const BLOG_POSTS_DE: BlogPost[] = [
       { label: "Zum Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Grading-Standards im Elektronik-Großhandel: Wie klare Grade-A/B/C-Regeln höhere Gebote erzielen",
+    description:
+      "Erfahren Sie, wie standardisierte Grade-A+-, A-, B-, C- und Defekt-Klassen, Akku-Werte und IMEI-Checks Risikoabschläge verhindern und den Erlös in B2B-Elektronikauktionen steigern.",
+    category: "ITAD & Elektronik",
+    publishedAt: "2026-11-24",
+    readTime: "6 Min. Lesezeit",
+    keywords: [
+      "Elektronik Großhandel Grading",
+      "Smartphone Refurbished Grade A B C",
+      "B2B Elektronik Auktion Standards",
+      "ITAD Hardware Bewertung",
+      "Großhandel Smartphone Restposten",
+    ],
+    sections: [
+      {
+        heading: "Warum unklare Zustandsangaben Großhändler 10 %–20 % Marge kosten",
+        paragraphs: [
+          "Im Großhandel mit Smartphones, Laptops und ITAD-Hardware versteht jeder Händler etwas anderes unter ‚Grade A‘. Sobald Losbeschreibungen vage Begriffe wie ‚guter Zustand‘ oder ‚größtenteils getestet‘ nutzen, kalkulieren erfahrene B2B-Käufer automatisch 10 % bis 20 % Sicherheitsabschlag ein.",
+          "Einheitliche, nachprüfbare Grading-Kriterien beseitigen diese Unsicherheit – sodass geprüfte Refurbisher ab der ersten Minute bis zum echten Marktwert mitbieten.",
+        ],
+        bullets: [
+          "Klare optische und technische Klassen senken Reklamationen nach Auktionsende",
+          "Verlässliches Grading schafft Stammkunden unter internationalen Großabnehmern",
+          "Trennen Sie den Funktionstest klar von der optischen Bewertung im Los-Text",
+        ],
+      },
+      {
+        heading: "Die wichtigsten B2B-Grading-Stufen von Grade A+ bis Defektware",
+        paragraphs: [
+          "Hinterlegen Sie einen kurzen Grading-Schlüssel direkt im Auktionsraum oder im Manifest, damit alle Bieter exakt denselben Maßstab anlegen:",
+        ],
+        bullets: [
+          "Grade A+ / Neuwertig: Keine sichtbaren Gebrauchsspuren aus 30 cm Abstand, Originaldisplay und -gehäuse, 100 % Funktionstest bestanden, mind. 85 %–90 %+ Akkukapazität",
+          "Grade A / Leichte Spuren: Sauberes Display ohne Risse oder Einbrennen, minimale Mikrospuren am Rahmen, voll funktionsfähig, mind. 80 %+ Akkuleistung",
+          "Grade B / Mittlere Nutzung: Leichte Kratzer auf Display oder Gehäuse (kein Glasbruch), vollständig geprüfte Hardware für den klassischen Refurbished-Vertrieb",
+          "Grade C / Deutliche Nutzung: Sichtbare Kratzer, Dellen oder Display-Mängel, technisch funktionsfähig sofern nicht anders im Los vermerkt",
+          "Grade D / Ungeprüft & Bastlerware: Glasbruch, Testfehler oder Ersatzteilgeräte konsequent als eigene Defekt-Lose anbieten statt mit geprüften Geräten zu mischen",
+        ],
+      },
+      {
+        heading: "Technik-, Akku- und Lock-Angaben, die jeder B2B-Käufer prüft",
+        paragraphs: [
+          "Die optische Note allein reicht im modernen ITAD- und Mobilfunk-Großhandel nicht mehr aus. Erfolgreiche Anbieter ergänzen vier zentrale Prüfdaten vor dem Live-Start:",
+        ],
+        bullets: [
+          "Saubere IMEI/Seriennummern ohne Blacklist-Eintrag sowie vollständige Entfernung von MDM-, iCloud- und FRP-Sperren",
+          "Verbindliche Angabe zur Mindest-Akkukapazität (z. B. ≥80 % oder ≥85 %) bzw. Durchschnittswert der Charge",
+          "Separate Kennzeichnung von Drittanbieter-Ersatzteilen (Aftermarket-Displays oder -Akkus) zur Vermeidung von QC-Überraschungen",
+          "Klare Angabe zu Verpackung und Zubehör (Bulk-Gerät vs. OVP/Netzteil) sowie verfügbaren Diagnoseberichten (z. B. PhoneCheck oder Blancco)",
+        ],
+      },
+      {
+        heading: "Sauber sortierte Lose live versteigern – bei 0 % Verkaufsprovision",
+        paragraphs: [
+          "Verstecken Sie keine Grade-C- oder Retourengeräte in einem Grade-A-Los. Teilen Sie Ihren Bestand stattdessen sauber in Grade-A-, Grade-B- und Defekt-Lose innerhalb einer 15- bis 30-minütigen ArcBids-Session auf, damit spezialisierte Käufer gezielt hoch bieten.",
+          "Kalkulieren Sie Ihre Los-Margen vorab mit unserem kostenlosen Margen- & Gebührenrechner, zahlen Sie beim Live-Start pauschal nur 25 € pro Auktions-Ticket und behalten Sie in 2026 volle 100 % Ihres Erlöses ohne Verkaufsprovision.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B-Smartphone-Auktionen", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "ITAD-Hardware-Auktionen", href: "/solutions/itad-hardware-auctions" },
+      { label: "Liquidationspaletten-Auktionen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Kostenloser Margen- & Gebührenrechner", href: "/tools" },
+      { label: "Auktions-Ticket-Preise ansehen", href: "/pricing" },
+      { label: "Zum Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_ES: BlogPost[] = [
@@ -1201,6 +1341,76 @@ export const BLOG_POSTS_ES: BlogPost[] = [
       { label: "Abrir Panel", href: "/dashboard" },
     ],
   },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Estándares de Grading en Electrónica Mayorista: Cómo los Grados A/B/C Elevan las Pujas B2B",
+    description:
+      "Descubre cómo definir Grados A+, A, B, C y Salvage, salud de batería y verificación de IMEI para eliminar descuentos por riesgo y maximizar precios en subastas B2B.",
+    category: "ITAD y Electrónica",
+    publishedAt: "2026-11-24",
+    readTime: "6 min de lectura",
+    keywords: [
+      "grading electrónica mayorista",
+      "clasificación smartphones Grado A B C",
+      "subastas telefonía reacondicionada B2B",
+      "estándares ITAD hardware",
+      "lotes móviles al por mayor",
+    ],
+    sections: [
+      {
+        heading: "Por qué las etiquetas ambiguas te cuestan un 10 %–20 % por lote",
+        paragraphs: [
+          "En la venta mayorista de smartphones, portátiles y hardware ITAD, el 'Grado A' de un proveedor equivale al 'Grado B-' de otro. Cuando un manifiesto usa frases vagas como 'buen estado' o 'mayormente probado', los compradores B2B aplican automáticamente un descuento de riesgo del 10 % al 20 % en su puja.",
+          "Un criterio de clasificación estandarizado elimina esa incertidumbre y permite que los reacondicionadores pujen hasta el valor real de mercado.",
+        ],
+        bullets: [
+          "Los niveles claros de estética y funcionamiento reducen disputas y devoluciones post-subasta",
+          "Un grading consistente fideliza a compradores internacionales de alto volumen",
+          "Separa siempre el estado técnico del aspecto cosmético en cada lote",
+        ],
+      },
+      {
+        heading: "Niveles estándar de Grading B2B en electrónica (de A+ a Salvage)",
+        paragraphs: [
+          "Incluye una guía breve de grados en la sala de subasta o en el manifiesto para que todos los postores evalúen cada lote bajo la misma regla:",
+        ],
+        bullets: [
+          "Grado A+ / Como nuevo: Sin marcas visibles a 30 cm, pantalla y chasis originales, 100 % aprobado en diagnóstico y batería ≥85 %–90 %",
+          "Grado A / Uso mínimo: Pantalla limpia sin grietas ni quemaduras, micro-marcas leves en el marco, 100 % funcional y batería ≥80 %",
+          "Grado B / Uso moderado: Rayones superficiales ligeros en pantalla o carcasa (sin cristal roto), hardware 100 % operativo ideal para reacondicionamiento",
+          "Grado C / Uso intenso: Marcas visibles, golpes o desgaste estético notable, encendido y placa base verificados salvo indicación contraria",
+          "Grado D / Sin probar y Salvage: Cristal roto, fallos de test o equipos para piezas agrupados en lotes propios sin mezclarse con stock probado",
+        ],
+      },
+      {
+        heading: "Datos técnicos, batería y bloqueos que todo comprador revisa",
+        paragraphs: [
+          "La nota estética ya no basta en el mercado ITAD y móvil actual. Los vendedores B2B con mayor recuperación acompañan el grado visual con cuatro comprobaciones clave:",
+        ],
+        bullets: [
+          "IMEI/ESN limpio, sin reportes ni bloqueos de operador y sin cuentas MDM, iCloud o FRP activas",
+          "Umbral exacto de salud de batería (p. ej. ≥80 % o ≥85 %) o media del lote",
+          "Identificación de piezas no originales (pantallas o baterías aftermarket) para evitar sorpresas en control de calidad",
+          "Detalle de presentación (solo equipo, caja bulk o cargador OEM) y disponibilidad de reportes de test como PhoneCheck o Blancco",
+        ],
+      },
+      {
+        heading: "Subasta lotes bien clasificados en vivo con 0 % de comisión",
+        paragraphs: [
+          "Nunca mezcles unidades Grado C o sin probar dentro de un palé Grado A. Segmenta tu inventario en lotes puros de Grado A, B y Salvage dentro de una sala ArcBids de 15 a 30 minutos para que cada especialista puje al máximo por su categoría.",
+          "Calcula tus márgenes antes de salir en vivo con nuestra Calculadora de Margen Gratuita, paga solo €25 fijos por ticket al lanzar y conserva el 100 % de la venta con 0 % de comisión durante todo 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Subastas de Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Subastas de Hardware ITAD", href: "/solutions/itad-hardware-auctions" },
+      { label: "Subastas de Palés", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculadora de Margen Gratuita", href: "/tools" },
+      { label: "Ver Precios", href: "/pricing" },
+      { label: "Abrir Panel", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_FR: BlogPost[] = [
@@ -1509,6 +1719,76 @@ export const BLOG_POSTS_FR: BlogPost[] = [
     relatedLinks: [
       { label: "Machines et Surplus Industriels", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Enchères Mode et Surstocks", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Calculateur de Marge", href: "/tools" },
+      { label: "Voir les Tarifs", href: "/pricing" },
+      { label: "Ouvrir le Tableau de Bord", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Standards de Grading Électronique B2B : Comment les Grades A/B/C Augmentent vos Enchères",
+    description:
+      "Découvrez comment des critères clairs (Grades A+, A, B, C, pièces), l'état de batterie et le contrôle IMEI suppriment les décotes de risque et boostent vos ventes en gros.",
+    category: "ITAD & Électronique",
+    publishedAt: "2026-11-24",
+    readTime: "6 min de lecture",
+    keywords: [
+      "grading électronique gros",
+      "smartphones reconditionnés Grade A B C",
+      "enchères B2B téléphonie",
+      "standards ITAD matériel",
+      "lots smartphones grossiste",
+    ],
+    sections: [
+      {
+        heading: "Pourquoi des états flous vous font perdre 10 % à 20 % par lot",
+        paragraphs: [
+          "Dans le commerce de gros de smartphones, PC portables et matériel ITAD, le « Grade A » d'un fournisseur correspond parfois au « Grade B- » d'un autre. Dès qu'une annonce reste vague (« bon état », « globalement testé »), les acheteurs B2B appliquent une marge de prudence de 10 % à 20 % sur leur offre.",
+          "Des critères de grading précis et vérifiables éliminent cette incertitude et permettent aux reconditionneurs d'enchérir jusqu'à la vraie valeur du marché.",
+        ],
+        bullets: [
+          "Des grades esthétiques et techniques précis réduisent les litiges après la vente",
+          "Un grading fiable fidélise les acheteurs professionnels internationaux",
+          "Distinguez toujours l'état fonctionnel de l'aspect cosmétique dans vos fiches de lots",
+        ],
+      },
+      {
+        heading: "Les grades B2B de référence pour l'électronique (de A+ à Salvage)",
+        paragraphs: [
+          "Affichez un barème synthétique dans votre salle d'enchères ou votre manifeste afin que chaque participant évalue les lots selon la même norme :",
+        ],
+        bullets: [
+          "Grade A+ / Comme neuf : Aucune trace visible à 30 cm, écran et châssis d'origine, 100 % validé au diagnostic et batterie ≥85 %–90 %",
+          "Grade A / Traces légères : Écran net sans fissure ni marquage, micro-traces discrètes sur le contour, 100 % fonctionnel et batterie ≥80 %",
+          "Grade B / Usure modérée : Légères rayures en surface sur écran ou coque (sans vitre cassée), matériel 100 % opérationnel pour le reconditionnement",
+          "Grade C / Usure marquée : Rayures visibles, impacts ou marques d'écran, allumage et carte mère testés sauf mention contraire",
+          "Grade D / Non testé & Pièces : Vitres cassées, pannes ou appareils pour pièces regroupés en lots dédiés plutôt que mélangés aux lots testés",
+        ],
+      },
+      {
+        heading: "Contrôles batterie, diagnostic et déblocage exigés par les acheteurs",
+        paragraphs: [
+          "La note esthétique seule ne suffit plus sur le marché ITAD et mobile actuel. Les vendeurs les plus performants joignent quatre vérifications clés avant de lancer un drop :",
+        ],
+        bullets: [
+          "IMEI/numéro de série propre, sans blacklist opérateur et sans verrouillage MDM, iCloud ou FRP",
+          "Seuil exact de santé batterie (ex. ≥80 % ou ≥85 %) ou moyenne mesurée sur le lot",
+          "Signalement des pièces non-OEM (écrans ou batteries compatibles) pour éviter tout litige au contrôle qualité",
+          "Précision sur le packaging (appareil nu, boîte bulk ou chargeur d'origine) et disponibilité des rapports de test (PhoneCheck, Blancco)",
+        ],
+      },
+      {
+        heading: "Vendre des lots gradés en direct avec 0 % de commission",
+        paragraphs: [
+          "Ne dissimulez jamais des appareils Grade C dans une palette Grade A. Segmentez plutôt votre stock en lots homogènes Grade A, Grade B et Pièces dans une salle ArcBids de 15 à 30 minutes afin que chaque acheteur spécialisé pousse les enchères au maximum.",
+          "Estimez vos marges avec notre Calculateur de Marge, payez uniquement un ticket fixe de 25 € au lancement en direct et conservez 100 % de vos ventes grâce à 0 % de commission pendant tout 2026.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Enchères Smartphones B2B", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "Enchères Matériel ITAD", href: "/solutions/itad-hardware-auctions" },
       { label: "Enchères Palettes", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Calculateur de Marge", href: "/tools" },
       { label: "Voir les Tarifs", href: "/pricing" },
@@ -1829,6 +2109,76 @@ export const BLOG_POSTS_NL: BlogPost[] = [
       { label: "Naar Dashboard", href: "/dashboard" },
     ],
   },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Grading-standaarden in Elektronica-groothandel: Hoe Grade A/B/C Hogere Biedingen Oplevert",
+    description:
+      "Ontdek hoe vaste Grade A+, A, B, C en Salvage-definities, batterijstatus en IMEI-checks risicokortingen wegnemen en de opbrengst van B2B-elektronicaveilingen verhogen.",
+    category: "ITAD & Elektronica",
+    publishedAt: "2026-11-24",
+    readTime: "6 min leestijd",
+    keywords: [
+      "elektronica groothandel grading",
+      "smartphones Grade A B C groothandel",
+      "B2B refurbished elektronica veiling",
+      "ITAD hardware classificatie",
+      "partijen telefoons veilen",
+    ],
+    sections: [
+      {
+        heading: "Waarom vage conditielabels groothandels 10%–20% per kavel kosten",
+        paragraphs: [
+          "In de groothandel voor smartphones, laptops en ITAD-hardware is de 'Grade A' van de ene leverancier soms de 'Grade B-' van de andere. Zodra omschrijvingen vaag blijven ('nette staat' of 'grotendeels getest'), rekenen ervaren B2B-kopers direct 10% tot 20% risicomarge in bij hun maximumbod.",
+          "Consistente, controleerbare grading-criteria nemen die gok weg en zorgen dat refurbishers vanaf de eerste minuut tot de echte marktwaarde bieden.",
+        ],
+        bullets: [
+          "Heldere cosmetische en functionele klassen verminderen geschillen na de veiling",
+          "Betrouwbare grading bouwt vaste relaties op met internationale kopers",
+          "Scheid testresultaten altijd duidelijk van uiterlijke gebruikssporen in het kavel",
+        ],
+      },
+      {
+        heading: "Standaard B2B-gradingniveaus voor elektronica (A+ tot Salvage)",
+        paragraphs: [
+          "Plaats een beknopte grading-legenda in je veilingruimte of kaveloverzicht zodat iedere bieder exact dezelfde maatstaf hanteert:",
+        ],
+        bullets: [
+          "Grade A+ / Als nieuw: Geen zichtbare sporen op 30 cm afstand, origineel scherm en behuizing, 100% diagnostisch getest en minimaal 85%–90%+ batterijcapaciteit",
+          "Grade A / Lichte sporen: Strak scherm zonder barsten of inbranding, minimale microsporen op de rand, 100% functioneel en minimaal 80%+ batterijconditie",
+          "Grade B / Normale gebruikssporen: Lichte krasjes op scherm of behuizing (geen gebroken glas), volledig werkende hardware voor reguliere refurbish-kanalen",
+          "Grade C / Duidelijke sporen: Zichtbare krassen, deukjes of schermsporen, functioneel getest tenzij anders vermeld",
+          "Grade D / Ongetest & Onderdelen: Gebroken glas, testfouten of slooptoestellen gebundeld als aparte salvage-kavels in plaats van gemixt met geteste graden",
+        ],
+      },
+      {
+        heading: "Technische, batterij- en lock-checks die elke koper controleert",
+        paragraphs: [
+          "Alleen een cosmetische score is niet meer voldoende in de ITAD- en mobiele groothandel. Topverkopers combineren het uiterlijk met vier vaste controles vóór livegang:",
+        ],
+        bullets: [
+          "Schone IMEI/serienummers zonder blacklist en volledig vrij van MDM-, iCloud- of FRP-locks",
+          "Exacte minimale batterijcapaciteit (bijv. ≥80% of ≥85%) of het gemiddelde percentage van de partij",
+          "Aparte vermelding van niet-originele onderdelen (aftermarket schermen of accu's) om QC-verrassingen te voorkomen",
+          "Duidelijke verpakkingsinfo (los toestel, bulkdoos of OEM-lader) en eventuele testlogs zoals PhoneCheck of Blancco",
+        ],
+      },
+      {
+        heading: "Strak gesorteerde kavels live veilen met 0% commissie",
+        paragraphs: [
+          "Verstop nooit Grade C- of ongeteste retouren in een Grade A-pallet. Splits je voorraad op in zuivere Grade A-, Grade B- en Salvage-kavels binnen één ArcBids-veiling van 15 tot 30 minuten zodat gespecialiseerde kopers maximaal opbieden.",
+          "Bereken vooraf je marges met onze Gratis Margecalculator, betaal alleen €25 per veilingticket bij livegang en behoud in heel 2026 100% van de opbrengst met 0% verkoopcommissie.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Smartphone Veilingen", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "ITAD Hardware Veilingen", href: "/solutions/itad-hardware-auctions" },
+      { label: "Liquidatiepallet Veilingen", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Gratis Margecalculator", href: "/tools" },
+      { label: "Prijzen Bekijken", href: "/pricing" },
+      { label: "Naar Dashboard", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_TR: BlogPost[] = [
@@ -2143,6 +2493,76 @@ export const BLOG_POSTS_TR: BlogPost[] = [
       { label: "Paneli Aç", href: "/dashboard" },
     ],
   },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Toptan Elektronik Sınıflandırma (Grading) Standartları: Grade A/B/C Şeffaflığı Teklifleri Nasıl Artırır?",
+    description:
+      "Standart Grade A+, A, B, C ve Hasarlı tanımları, pil sağlığı ve IMEI kilit kontrollerinin B2B elektronik açık artırmalarında risk indirimlerini nasıl ortadan kaldırdığını öğrenin.",
+    category: "ITAD ve Elektronik",
+    publishedAt: "2026-11-24",
+    readTime: "6 dk okuma",
+    keywords: [
+      "toptan elektronik grading standartları",
+      "B2B telefon Grade A B C sınıflandırma",
+      "yenilenmiş cihaz lot fiyatlandırma",
+      "ITAD donanım açık artırma",
+      "toptan cep telefonu stoku",
+    ],
+    sections: [
+      {
+        heading: "Belirsiz Durum Etiketleri Neden Lot Başına %10–%20 Kaybettirir?",
+        paragraphs: [
+          "Toptan akıllı telefon, dizüstü bilgisayar ve ITAD donanım ticaretinde bir satıcının 'Grade A' dediği ürün başka bir alıcıya göre 'Grade B-' olabilir. Lot açıklamaları 'iyi durumda' veya 'büyük ölçüde test edildi' gibi muğlak ifadelere dayandığında, deneyimli B2B alıcıları gizli arıza riskine karşı tekliflerinden otomatik olarak %10–%20 kesinti yapar.",
+          "Net ve doğrulanabilir sınıflandırma kuralları bu belirsizliği ortadan kaldırarak yenileme merkezlerinin gerçek piyasa değerinden teklif vermesini sağlar.",
+        ],
+        bullets: [
+          "Net kozmetik ve donanım dereceleri satış sonrası iade ve itirazları azaltır",
+          "Tutarlı sınıflandırma uluslararası toptan alıcılarla kalıcı güven kurar",
+          "Fonksiyon testi durumunu her zaman kozmetik görünümden ayrı belirtin",
+        ],
+      },
+      {
+        heading: "Standart B2B Elektronik Sınıflandırma Seviyeleri (A+'dan Hasarlıya)",
+        paragraphs: [
+          "Tüm alıcıların aynı ölçeği kullanması için açık artırma odanızda veya lot manifestonuzda kısa bir sınıflandırma rehberi paylaşın:",
+        ],
+        bullets: [
+          "Grade A+ / Sıfır Gibi: 30 cm mesafeden görünür iz yok, orijinal ekran ve kasa, %100 test onaylı ve en az %85–%90+ pil sağlığı",
+          "Grade A / Hafif Kullanım: Çatlaksız ve yaniksiz temiz ekran, kasada çok hafif mikro izler, %100 çalışır durumda ve en az %80+ pil sağlığı",
+          "Grade B / Orta Kullanım: Ekran veya kasada hafif yüzey çizikleri (kırık cam yok), yeniden satış ve yenileme için tam işlevsel donanım",
+          "Grade C / Yoğun Kullanım: Belirgin çizikler, ezikler veya ekran izleri; aksi belirtilmedikçe açılış ve anakart testinden geçmiş cihazlar",
+          "Grade D / Test Edilmemiş ve Yedek Parça: Kırık ekranlı, arızalı veya parça amaçlı ürünleri testli lotlara karıştırmak yerine ayrı hasarlı lotlarda sunun",
+        ],
+      },
+      {
+        heading: "Her Alıcının Kontrol Ettiği Teknik, Pil ve Kilit Bilgileri",
+        paragraphs: [
+          "Modern ITAD ve mobil toptan pazarında yalnızca kozmetik derece yeterli değildir. En yüksek getiriyi elde eden satıcılar canlı yayın öncesi dört kritik veriyi ekler:",
+        ],
+        bullets: [
+          "Temiz IMEI/seri numarası, operatör kara liste kaydı olmaması ve MDM / iCloud / FRP kilitlerinin tamamen kaldırılmış olması",
+          "Net minimum pil sağlığı eşiği (ör. ≥%80 veya ≥%85) ya da parti ortalama pil yüzdesi",
+          "Kalite kontrolde sürpriz yaşanmaması için orijinal olmayan parçaların (yan sanayi ekran veya pil) ayrıca belirtilmesi",
+          "Kutu/aksesuar durumu (yalnızca cihaz, toplu kutu veya orijinal şarj aleti) ve varsa PhoneCheck veya Blancco test raporları",
+        ],
+      },
+      {
+        heading: "Sınıflandırılmış Lotları %0 Komisyonla Canlı Açık Artırmada Satın",
+        paragraphs: [
+          "Grade C veya test edilmemiş iadeleri asla Grade A paletin içine gizlemeyin. Stokunuzu 15–30 dakikalık tek bir ArcBids odasında saf Grade A, Grade B ve Yedek Parça lotlarına ayırın ki uzman alıcılar kendi kategorileri için rekabet etsin.",
+          "Ücretsiz Marj Hesaplayıcı ile lot kârlılığınızı önceden planlayın, canlı yayına geçerken bilet başına yalnızca sabit €25 ödeyin ve 2026 boyunca %0 satış komisyonuyla gelirin tamamını koruyun.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "B2B Akıllı Telefon Açık Artırmaları", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "ITAD Donanım Açık Artırmaları", href: "/solutions/itad-hardware-auctions" },
+      { label: "Tasfiye Paleti Açık Artırmaları", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Ücretsiz Marj Hesaplayıcı", href: "/tools" },
+      { label: "Fiyatları Gör", href: "/pricing" },
+      { label: "Paneli Aç", href: "/dashboard" },
+    ],
+  },
 ];
 
 export const BLOG_POSTS_RU: BlogPost[] = [
@@ -2451,6 +2871,76 @@ export const BLOG_POSTS_RU: BlogPost[] = [
     relatedLinks: [
       { label: "Промышленное оборудование", href: "/solutions/industrial-surplus-machinery-auctions" },
       { label: "Одежда и Сезонные Стоки", href: "/solutions/fashion-overstock-lot-auctions" },
+      { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
+      { label: "Калькулятор Маржи", href: "/tools" },
+      { label: "Смотреть Цены", href: "/pricing" },
+      { label: "Открыть Панель", href: "/dashboard" },
+    ],
+  },
+  {
+    slug: "wholesale-electronics-grading-standards-b2b-auctions",
+    title: "Стандарты грейдинга электроники в B2B-опте: как прозрачность Grade A/B/C повышает ставки",
+    description:
+      "Разбираем стандарты Grade A+, A, B, C и Salvage, раскрытие ёмкости АКБ и проверку IMEI: как убрать риск-дисконт покупателей и поднять цену на оптовых B2B-аукционах электроники.",
+    category: "ITAD и Электроника",
+    publishedAt: "2026-11-24",
+    readTime: "6 мин чтения",
+    keywords: [
+      "грейдинг оптовой электроники",
+      "B2B смартфоны Grade A B C",
+      "оценка лотов восстановленной техники",
+      "ITAD аукционы электроники",
+      "оптовые аукционы смартфонов",
+    ],
+    sections: [
+      {
+        heading: "Почему размытые статусы состояния стоят оптовикам 10%–20% с каждого лота",
+        paragraphs: [
+          "В оптовой торговле смартфонами, ноутбуками и ITAD-оборудованием «Grade A» одного поставщика нередко оказывается «Grade B-» у другого. Когда описание лота ограничивается фразами «хорошее состояние» или «в основном проверено», опытные B2B-байеры автоматически закладывают 10%–20% дисконта на скрытые дефекты.",
+          "Единые и проверяемые критерии грейдинга убирают этот риск-буфер и позволяют рефабришерам торговаться до реальной рыночной стоимости.",
+        ],
+        bullets: [
+          "Чёткие косметические и технические категории снижают число споров и возвратов после торгов",
+          "Предсказуемый грейдинг формирует базу постоянных международных покупателей",
+          "Всегда разделяйте статус функциональной диагностики и внешний износ в описании лота",
+        ],
+      },
+      {
+        heading: "Базовые уровни грейдинга B2B-электроники (от Grade A+ до Salvage)",
+        paragraphs: [
+          "Разместите краткую расшифровку грейдов прямо в описании комнаты или в манифесте, чтобы все участники оценивали лоты по единому стандарту:",
+        ],
+        bullets: [
+          "Grade A+ / Как новый: без заметных следов с 30 см, оригинальные дисплей и корпус, 100% прохождение тестов и остаток АКБ от 85%–90%+",
+          "Grade A / Лёгкие следы: чистый экран без трещин и выгорания, минимальные микроследы на рамке, 100% работоспособность и АКБ от 80%+",
+          "Grade B / Умеренный износ: лёгкие поверхностные царапины на экране или корпусе (без сколов стекла), полностью исправное железо для вторичного рынка",
+          "Grade C / Сильный износ: заметные потёртости, вмятины или дефекты покрытия, подтверждённый запуск и рабочая плата, если не указано иное",
+          "Grade D / Без теста и На запчасти: разбитые экраны, ошибки диагностики и доноры выделяются в отдельные лоты, а не подмешиваются к рабочим грейдам",
+        ],
+      },
+      {
+        heading: "Проверка диагностики, батареи и блокировок перед стартом торгов",
+        paragraphs: [
+          "Одной косметической оценки на современном рынке ITAD и мобильного опта уже недостаточно. Лидеры продаж добавляют четыре обязательных параметра до запуска комнаты:",
+        ],
+        bullets: [
+          "Чистый IMEI/серийный номер без чёрных списков операторов и полное снятие MDM, iCloud и FRP",
+          "Точный порог здоровья аккумулятора (например, ≥80% или ≥85%) либо среднее значение по партии",
+          "Отдельная отметка о неоригинальных деталях (заменённые дисплеи или АКБ), чтобы исключить претензии при приёмке",
+          "Указание комплектации (только устройство, bulk-коробка или OEM-зарядка) и наличие логов тестирования (PhoneCheck, Blancco)",
+        ],
+      },
+      {
+        heading: "Продавайте отсортированные лоты вживую с комиссией 0%",
+        paragraphs: [
+          "Не прячьте устройства Grade C или нетестированные возвраты внутри паллеты Grade A. Разбейте партию на чистые лоты Grade A, Grade B и Salvage в одной 15–30-минутной комнате ArcBids, чтобы профильные покупатели активно боролись за нужную им категорию.",
+          "Просчитайте экономику лотов в нашем Калькуляторе Маржи, оплатите лишь €25 за билет при выходе в эфир и сохраняйте 100% выручки с комиссией 0% весь 2026 год.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Смартфоны Оптом", href: "/solutions/b2b-smartphone-stock-auctions" },
+      { label: "ITAD и Серверное Оборудование", href: "/solutions/itad-hardware-auctions" },
       { label: "Паллеты ликвидации", href: "/solutions/liquidation-pallet-auctions" },
       { label: "Калькулятор Маржи", href: "/tools" },
       { label: "Смотреть Цены", href: "/pricing" },
