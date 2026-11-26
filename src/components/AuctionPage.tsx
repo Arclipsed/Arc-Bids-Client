@@ -114,8 +114,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         title: r.title,
         status: r.status.tag,
         activeItemId: r.activeItemId ?? null,
-        minBidIncrement: r.minBidIncrement,
-        lotDurationSec: r.lotDurationSec,
         currency: r.currency?.toUpperCase() === "EUR" ? "EUR" : "USD",
         scheduledAtMs: r.scheduledAt ? Number(r.scheduledAt.toMillis()) : null,
         isPublic: r.isPublic,
@@ -138,6 +136,9 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         quantity: i.quantity ?? 1,
         category: i.category || "General",
         metadataJson: i.metadataJson || "",
+        lotDurationSec: i.lotDurationSec ?? 120,
+        antiSnipeSec: i.antiSnipeSec ?? 15,
+        minBidIncrement: i.minBidIncrement ?? BigInt(5000),
       }));
 
       const bids: UiBid[] = Array.from(conn.db.auctionItemBid.iter()).map((b) => ({
@@ -303,6 +304,9 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
           quantity: i.quantity ?? 1,
           category: i.category || "General",
           metadataJson: i.metadataJson || "",
+          lotDurationSec: i.lotDurationSec ?? 120,
+          antiSnipeSec: i.antiSnipeSec ?? 15,
+          minBidIncrement: i.minBidIncrement ?? BigInt(5000),
         }))
         .sort((a, b) => a.orderIndex - b.orderIndex);
     }
@@ -346,11 +350,11 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   );
 
   const minNextBid = useMemo(() => {
-    if (!activeItem || !activeRoom) return BigInt(0);
+    if (!activeItem) return BigInt(0);
     return activeItem.highestBidderId !== null
-      ? activeItem.currentBid + activeRoom.minBidIncrement
+      ? activeItem.currentBid + activeItem.minBidIncrement
       : activeItem.startingPrice;
-  }, [activeItem, activeRoom]);
+  }, [activeItem]);
 
   const handlePlaceBid = (amount: bigint) => {
     if (!activeItem || !activeRoom) return;
@@ -560,7 +564,8 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   const handleDownloadIcs = () => {
     if (!activeRoom?.scheduledAtMs) return;
     const start = new Date(activeRoom.scheduledAtMs);
-    const durationMs = Math.max(30 * 60_000, activeRoom.lotDurationSec * Math.max(1, roomItems.length) * 1000);
+    const totalLotSec = roomItems.reduce((sum, item) => sum + item.lotDurationSec, 0);
+    const durationMs = Math.max(30 * 60_000, totalLotSec * 1000);
     const end = new Date(start.getTime() + durationMs);
     const toIcsDate = (d: Date) =>
       d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
@@ -840,8 +845,8 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
               <ActiveLotCard
                 key={activeItem.id.toString()}
                 item={activeItem}
-                lotDurationSec={activeRoom.lotDurationSec}
-                minIncrement={activeRoom.minBidIncrement}
+                lotDurationSec={activeItem.lotDurationSec}
+                minIncrement={activeItem.minBidIncrement}
                 nowMs={nowMs}
                 bidCount={activeBids.length}
               />
@@ -884,7 +889,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       {activeItem && (
         <BidControls
           minNextBid={minNextBid}
-          minIncrement={activeRoom.minBidIncrement}
+          minIncrement={activeItem.minBidIncrement}
           currentPrice={
             activeItem.highestBidderId !== null
               ? activeItem.currentBid

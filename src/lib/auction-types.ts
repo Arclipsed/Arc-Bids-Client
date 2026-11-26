@@ -7,8 +7,6 @@ export interface UiRoom {
   title: string;
   status: RoomStatusTag;
   activeItemId: bigint | null;
-  minBidIncrement: bigint;
-  lotDurationSec: number;
   currency?: "EUR" | "USD";
   scheduledAtMs?: number | null;
   isPublic?: boolean;
@@ -31,6 +29,9 @@ export interface UiItem {
   quantity?: number;
   category?: string;
   metadataJson?: string;
+  lotDurationSec: number;
+  antiSnipeSec: number;
+  minBidIncrement: bigint;
 }
 
 export interface UiBid {

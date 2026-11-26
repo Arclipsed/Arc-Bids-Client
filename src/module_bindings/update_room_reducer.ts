@@ -13,9 +13,6 @@ import {
 export default {
   roomId: __t.u64(),
   title: __t.string(),
-  lotDurationSec: __t.u32(),
-  antiSnipeSec: __t.u32(),
-  minBidIncrement: __t.u64(),
   currency: __t.option(__t.string()),
   scheduledAt: __t.option(__t.timestamp()),
   isPublic: __t.bool(),

@@ -85,9 +85,6 @@ interface RoomRow {
   title: string;
   status: string;
   activeItemId: bigint | null;
-  lotDurationSec: number;
-  antiSnipeSec: number;
-  minBidIncrement: bigint;
   currency: "EUR" | "USD";
   scheduledAtMs: number | null;
   isPublic: boolean;
@@ -111,6 +108,9 @@ interface ItemRow {
   category: string;
   metadataJson: string;
   endsAtMs: number | null;
+  lotDurationSec: number;
+  antiSnipeSec: number;
+  minBidIncrement: bigint;
 }
 
 interface BuyerRow {
@@ -309,9 +309,6 @@ export default function DashboardPage() {
           title: r.title,
           status: r.status.tag,
           activeItemId: r.activeItemId ?? null,
-          lotDurationSec: r.lotDurationSec,
-          antiSnipeSec: r.antiSnipeSec,
-          minBidIncrement: r.minBidIncrement,
           currency: r.currency?.toUpperCase() === "EUR" ? "EUR" : "USD",
           scheduledAtMs: r.scheduledAt ? Number(r.scheduledAt.toMillis()) : null,
           isPublic: r.isPublic,
@@ -336,6 +333,9 @@ export default function DashboardPage() {
           category: i.category || "General",
           metadataJson: i.metadataJson || "",
           endsAtMs: i.endsAt ? Number(i.endsAt.toMillis()) : null,
+          lotDurationSec: i.lotDurationSec ?? 120,
+          antiSnipeSec: i.antiSnipeSec ?? 15,
+          minBidIncrement: i.minBidIncrement ?? BigInt(5000),
         }))
       );
       setBuyers(
@@ -449,6 +449,9 @@ export default function DashboardPage() {
                   quantity: lot.quantity,
                   category: lot.category ?? "General",
                   metadataJson: lot.metadataJson ?? "",
+                  lotDurationSec: lot.lotDurationSec,
+                  antiSnipeSec: lot.antiSnipeSec,
+                  minBidIncrement: lot.minBidIncrementCents,
                 });
               } catch {
                 // Ignore if item insert fails
@@ -764,9 +767,6 @@ export default function DashboardPage() {
       conn.reducers.createRoom({
         orgId: myOrg.id,
         title: payload.roomTitle,
-        lotDurationSec: payload.lotDurationSec,
-        antiSnipeSec: payload.antiSnipeSec,
-        minBidIncrement: payload.minBidIncrementCents,
         currency: payload.currency,
         scheduledAt,
         isPublic: payload.isPublic,
@@ -797,9 +797,6 @@ export default function DashboardPage() {
       conn.reducers.updateRoom({
         roomId: editingRoom.id,
         title: payload.roomTitle,
-        lotDurationSec: payload.lotDurationSec,
-        antiSnipeSec: payload.antiSnipeSec,
-        minBidIncrement: payload.minBidIncrementCents,
         currency: payload.currency,
         scheduledAt,
         isPublic: payload.isPublic,
@@ -829,6 +826,9 @@ export default function DashboardPage() {
           quantity: lot.quantity,
           category: lot.category ?? "General",
           metadataJson: lot.metadataJson ?? "",
+          lotDurationSec: lot.lotDurationSec,
+          antiSnipeSec: lot.antiSnipeSec,
+          minBidIncrement: lot.minBidIncrementCents,
         });
         setEditingLot(null);
       } else if (addingLotRoom) {
@@ -844,6 +844,9 @@ export default function DashboardPage() {
           quantity: lot.quantity,
           category: lot.category ?? "General",
           metadataJson: lot.metadataJson ?? "",
+          lotDurationSec: lot.lotDurationSec,
+          antiSnipeSec: lot.antiSnipeSec,
+          minBidIncrement: lot.minBidIncrementCents,
         });
         setAddingLotRoom(null);
       }
@@ -1338,8 +1341,7 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <p className="mt-0.5 font-mono text-[11px] text-zinc-400">
-                              {r.lotDurationSec}{d.LotTimerSuffix} ·{" "}
-                              {formatCurrency(r.minBidIncrement, r.currency)} {d.MinIncrementSuffix}
+                              {roomLots.length} {roomLots.length === 1 ? "lot" : "lots"} · {r.currency}
                             </p>
                           </div>
 
@@ -1745,9 +1747,6 @@ export default function DashboardPage() {
                   initialValues={{
                     roomTitle: editingRoom.title,
                     currency: editingRoom.currency,
-                    lotDurationSec: editingRoom.lotDurationSec,
-                    antiSnipeSec: editingRoom.antiSnipeSec,
-                    minBidIncrementCents: editingRoom.minBidIncrement,
                     isPublic: editingRoom.isPublic,
                     allowedListIds: editingRoom.allowedListIds,
                     allowAutoBid: editingRoom.allowAutoBid,
@@ -1764,6 +1763,9 @@ export default function DashboardPage() {
                         images: i.images,
                         category: i.category === "Car" ? "Car" : "General",
                         metadataJson: i.metadataJson,
+                        lotDurationSec: i.lotDurationSec,
+                        antiSnipeSec: i.antiSnipeSec,
+                        minBidIncrementCents: i.minBidIncrement,
                       })),
                   }}
                   onSubmit={handleUpdateAuction}
@@ -1810,6 +1812,9 @@ export default function DashboardPage() {
                           images: editingLot.item.images,
                           category: normalizeCategory(editingLot.item.category),
                           metadataJson: editingLot.item.metadataJson,
+                          lotDurationSec: editingLot.item.lotDurationSec,
+                          antiSnipeSec: editingLot.item.antiSnipeSec,
+                          minBidIncrementCents: editingLot.item.minBidIncrement,
                         }
                       : undefined
                   }

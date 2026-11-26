@@ -27,9 +27,6 @@ export const Auction = __t.object("Auction", {
     return RoomStatus;
   },
   activeItemId: __t.option(__t.u64()),
-  lotDurationSec: __t.u32(),
-  antiSnipeSec: __t.u32(),
-  minBidIncrement: __t.u64(),
   currency: __t.option(__t.string()),
   scheduledAt: __t.option(__t.timestamp()),
   isPublic: __t.bool(),
@@ -58,6 +55,9 @@ export const AuctionItem = __t.object("AuctionItem", {
   quantity: __t.u32(),
   category: __t.string(),
   metadataJson: __t.string(),
+  lotDurationSec: __t.u32(),
+  antiSnipeSec: __t.u32(),
+  minBidIncrement: __t.u64(),
 });
 export type AuctionItem = __Infer<typeof AuctionItem>;
 

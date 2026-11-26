@@ -32,4 +32,7 @@ export default __t.row({
   quantity: __t.u32(),
   category: __t.string(),
   metadataJson: __t.string().name("metadata_json"),
+  lotDurationSec: __t.u32().name("lot_duration_sec"),
+  antiSnipeSec: __t.u32().name("anti_snipe_sec"),
+  minBidIncrement: __t.u64().name("min_bid_increment"),
 });

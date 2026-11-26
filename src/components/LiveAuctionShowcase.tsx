@@ -124,6 +124,9 @@ export function LiveAuctionShowcase({
     status: "Active",
     endsAtMs,
     quantity: 40,
+    lotDurationSec: 45,
+    antiSnipeSec: 15,
+    minBidIncrement: BigInt(5000),
   };
 
   return (

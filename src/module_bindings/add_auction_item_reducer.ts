@@ -20,4 +20,7 @@ export default {
   quantity: __t.u32(),
   category: __t.string(),
   metadataJson: __t.string(),
+  lotDurationSec: __t.u32(),
+  antiSnipeSec: __t.u32(),
+  minBidIncrement: __t.u64(),
 };

@@ -29,8 +29,6 @@ interface OrgRoom {
   orgId: bigint;
   title: string;
   status: string;
-  lotDurationSec: number;
-  minBidIncrement: bigint;
   currency: "USD" | "EUR";
   scheduledAtMs: number | null;
   isPublic: boolean;
@@ -63,8 +61,6 @@ export function OrganizationPublicClient({ slug }: { slug: string }) {
           orgId: r.orgId,
           title: r.title,
           status: r.status.tag,
-          lotDurationSec: r.lotDurationSec,
-          minBidIncrement: r.minBidIncrement,
           currency: r.currency?.toUpperCase() === "EUR" ? "EUR" : "USD",
           scheduledAtMs: r.scheduledAt ? Number(r.scheduledAt.toMillis()) : null,
           isPublic: r.isPublic,
@@ -277,10 +273,7 @@ export function OrganizationPublicClient({ slug }: { slug: string }) {
                           </div>
 
                           <p className="font-mono text-xs text-zinc-400">
-                            {lots} {lots === 1 ? "lot" : "lots"} ·{" "}
-                            {r.lotDurationSec}s timer ·{" "}
-                            {formatCurrency(r.minBidIncrement, r.currency)} min
-                            increment
+                            {lots} {lots === 1 ? "lot" : "lots"} · {r.currency}
                           </p>
 
                           {r.scheduledAtMs &&

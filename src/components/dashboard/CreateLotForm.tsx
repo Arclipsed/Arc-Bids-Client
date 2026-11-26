@@ -38,6 +38,9 @@ export interface DraftLot {
   images: string[];
   category?: LotCategory;
   metadataJson?: string;
+  lotDurationSec: number;
+  antiSnipeSec: number;
+  minBidIncrementCents: bigint;
 }
 
 interface CreateLotFormProps {
@@ -109,6 +112,17 @@ export function CreateLotForm({
   );
   const [quantity, setQuantity] = useState(
     initialLot ? String(initialLot.quantity || 1) : "1"
+  );
+  const [lotDurationSec, setLotDurationSec] = useState(
+    String(initialLot?.lotDurationSec ?? 120)
+  );
+  const [antiSnipeSec, setAntiSnipeSec] = useState(
+    String(initialLot?.antiSnipeSec ?? 15)
+  );
+  const [minStepDollars, setMinStepDollars] = useState(
+    initialLot?.minBidIncrementCents
+      ? String(Number(initialLot.minBidIncrementCents) / 100)
+      : "50"
   );
   const [images, setImages] = useState<string[]>(initialLot?.images ?? []);
   const [category, setCategory] = useState<LotCategory>(() =>
@@ -192,6 +206,11 @@ export function CreateLotForm({
       images,
       category,
       metadataJson,
+      lotDurationSec: Math.max(15, Number(lotDurationSec) || 120),
+      antiSnipeSec: Math.max(0, Number(antiSnipeSec) || 15),
+      minBidIncrementCents: BigInt(
+        Math.max(100, Math.round((Number(minStepDollars) || 50) * 100))
+      ),
     });
   };
 
@@ -272,6 +291,45 @@ export function CreateLotForm({
             required
             value={startingPrice}
             onChange={(e) => setStartingPrice(e.target.value)}
+            className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#0e1420] px-3 font-mono text-xs text-white outline-none focus:border-[#3ff2e0]"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2.5">
+        <div>
+          <label className="text-[11px] font-medium text-zinc-400">
+            {copy.LotTimerLabel}
+          </label>
+          <input
+            type="number"
+            min={15}
+            value={lotDurationSec}
+            onChange={(e) => setLotDurationSec(e.target.value)}
+            className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#0e1420] px-3 font-mono text-xs text-white outline-none focus:border-[#3ff2e0]"
+          />
+        </div>
+        <div>
+          <label className="text-[11px] font-medium text-zinc-400">
+            {copy.AntiSnipeLabel}
+          </label>
+          <input
+            type="number"
+            min={0}
+            value={antiSnipeSec}
+            onChange={(e) => setAntiSnipeSec(e.target.value)}
+            className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#0e1420] px-3 font-mono text-xs text-white outline-none focus:border-[#3ff2e0]"
+          />
+        </div>
+        <div>
+          <label className="text-[11px] font-medium text-zinc-400">
+            {copy.MinStepLabel} ({currencySymbol})
+          </label>
+          <input
+            type="number"
+            min={1}
+            value={minStepDollars}
+            onChange={(e) => setMinStepDollars(e.target.value)}
             className="mt-1 h-9 w-full rounded-xl border border-white/10 bg-[#0e1420] px-3 font-mono text-xs text-white outline-none focus:border-[#3ff2e0]"
           />
         </div>

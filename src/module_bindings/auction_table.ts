@@ -22,9 +22,6 @@ export default __t.row({
     return RoomStatus;
   },
   activeItemId: __t.option(__t.u64()).name("active_item_id"),
-  lotDurationSec: __t.u32().name("lot_duration_sec"),
-  antiSnipeSec: __t.u32().name("anti_snipe_sec"),
-  minBidIncrement: __t.u64().name("min_bid_increment"),
   currency: __t.option(__t.string()),
   scheduledAt: __t.option(__t.timestamp()).name("scheduled_at"),
   isPublic: __t.bool().name("is_public"),
