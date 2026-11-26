@@ -1,0 +1,10 @@
+import { NextRequest } from "next/server";
+import { proxyToSpacetimeApi } from "@/lib/spacetime-http";
+
+export async function GET(req: NextRequest) {
+  return proxyToSpacetimeApi(req, "/v1/auctions");
+}
+
+export async function POST(req: NextRequest) {
+  return proxyToSpacetimeApi(req, "/v1/auctions/create");
+}

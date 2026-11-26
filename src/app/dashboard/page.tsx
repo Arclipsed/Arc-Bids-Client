@@ -10,6 +10,7 @@ import {
   Calendar as CalendarIcon,
   Check,
   CheckCircle2,
+  Code2,
   Copy,
   DollarSign,
   Eye,
@@ -19,7 +20,6 @@ import {
   Lock,
   LogOut,
   Mail,
-  Monitor,
   Package,
   Pencil,
   Plus,
@@ -47,6 +47,8 @@ import {
 } from "@/components/ui/glow-bento-card";
 import {
   OrganizationWidget,
+  type OrganizationAddressInput,
+  type OrganizationAddressRow,
   type OrganizationProfile,
 } from "@/components/dashboard/OrganizationWidget";
 import {
@@ -175,7 +177,7 @@ export default function DashboardPage() {
   const d = Translations[locale].DashboardPage.Copy;
   const [myIdentityHex, setMyIdentityHex] = useState<string | null>(null);
   const [dashboardTab, setDashboardTab] = useState<
-    "overview" | "buyers" | "devices" | "account"
+    "overview" | "buyers" | "developer" | "account"
   >("overview");
   const [tablesSynced, setTablesSynced] = useState(false);
   const [connState, setConnState] = useState<"connecting" | "connected" | "error">(
@@ -183,6 +185,7 @@ export default function DashboardPage() {
   );
 
   const [orgs, setOrgs] = useState<OrgRow[]>([]);
+  const [orgAddresses, setOrgAddresses] = useState<OrganizationAddressRow[]>([]);
   const [myAccountCredits, setMyAccountCredits] = useState(0);
   const [rooms, setRooms] = useState<RoomRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
@@ -285,14 +288,22 @@ export default function DashboardPage() {
           contactEmail: o.contactEmail ?? "",
           phone: o.phone ?? "",
           website: o.website ?? "",
-          addressLine1: o.addressLine1 ?? "",
-          addressLine2: o.addressLine2 ?? "",
-          city: o.city ?? "",
-          state: o.state ?? "",
-          postalCode: o.postalCode ?? "",
-          country: o.country ?? "",
           vatNumber: o.vatNumber ?? "",
           description: o.description ?? "",
+        }))
+      );
+      setOrgAddresses(
+        Array.from(conn.db.organizationAddress.iter()).map((a) => ({
+          id: a.id,
+          orgId: a.orgId,
+          label: a.label,
+          addressLine1: a.addressLine1,
+          addressLine2: a.addressLine2,
+          city: a.city,
+          state: a.state,
+          postalCode: a.postalCode,
+          country: a.country,
+          isPrimary: a.isPrimary,
         }))
       );
       const myAccount = Array.from(conn.db.myAccount.iter())[0];
@@ -334,18 +345,18 @@ export default function DashboardPage() {
         }))
       );
       setBuyerLists(
-        Array.from(conn.db.organizationBuyerList.iter()).map((l) => ({
+        Array.from(conn.db.accountBuyerList.iter()).map((l) => ({
           id: l.id,
-          orgId: l.orgId,
+          ownerHex: l.ownerIdentity.toHexString(),
           name: l.name,
           description: l.description,
         }))
       );
       setBuyerListMembers(
-        Array.from(conn.db.organizationBuyerListMember.iter()).map((m) => ({
+        Array.from(conn.db.accountBuyerListMember.iter()).map((m) => ({
           id: m.id,
           listId: m.listId,
-          orgId: m.orgId,
+          ownerHex: m.ownerIdentity.toHexString(),
           companyName: m.companyName,
           email: m.email,
           isBanned: m.isBanned,
@@ -371,16 +382,32 @@ export default function DashboardPage() {
           lastSeenMs: Number(d.lastSeenAt.toMillis()),
         }))
       );
+      const usageByKeyId = new Map<
+        string,
+        { totalRequests: number; successRequests: number; errorRequests: number }
+      >();
+      for (const u of conn.db.myApiKeyUsage.iter()) {
+        usageByKeyId.set(u.apiKeyId.toString(), {
+          totalRequests: Number(u.totalRequests),
+          successRequests: Number(u.successRequests),
+          errorRequests: Number(u.errorRequests),
+        });
+      }
       setApiKeys(
-        Array.from(conn.db.myApiKeys.iter()).map((k) => ({
-          id: k.id,
-          orgId: k.orgId,
-          name: k.name,
-          keyPrefix: k.keyPrefix,
-          createdAtMs: Number(k.createdAt.toMillis()),
-          lastUsedAtMs: k.lastUsedAt ? Number(k.lastUsedAt.toMillis()) : null,
-          isRevoked: k.isRevoked,
-        }))
+        Array.from(conn.db.myApiKeys.iter()).map((k) => {
+          const u = usageByKeyId.get(k.id.toString());
+          return {
+            id: k.id,
+            name: k.name,
+            keyPrefix: k.keyPrefix,
+            createdAtMs: Number(k.createdAt.toMillis()),
+            lastUsedAtMs: k.lastUsedAt ? Number(k.lastUsedAt.toMillis()) : null,
+            isRevoked: k.isRevoked,
+            totalRequests: u?.totalRequests ?? 0,
+            successRequests: u?.successRequests ?? 0,
+            errorRequests: u?.errorRequests ?? 0,
+          };
+        })
       );
       const counts: Record<string, number> = {};
       for (const p of conn.db.auctionPresence.iter()) {
@@ -415,23 +442,31 @@ export default function DashboardPage() {
           })
           .subscribe([
             "SELECT * FROM organization",
+            "SELECT * FROM organization_address",
             "SELECT * FROM auction",
             "SELECT * FROM auction_item",
-            "SELECT * FROM organization_buyer_list",
-            "SELECT * FROM organization_buyer_list_member",
+            "SELECT * FROM account_buyer_list",
+            "SELECT * FROM account_buyer_list_member",
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
             "SELECT * FROM my_devices",
             "SELECT * FROM my_account",
             "SELECT * FROM my_api_keys",
+            "SELECT * FROM my_api_key_usage",
           ]);
         connectedConn.db.myAccount.onInsert(() => sync(connectedConn));
         connectedConn.db.myAccount.onUpdate(() => sync(connectedConn));
         connectedConn.db.myApiKeys.onInsert(() => sync(connectedConn));
         connectedConn.db.myApiKeys.onUpdate(() => sync(connectedConn));
         connectedConn.db.myApiKeys.onDelete(() => sync(connectedConn));
+        connectedConn.db.myApiKeyUsage.onInsert(() => sync(connectedConn));
+        connectedConn.db.myApiKeyUsage.onUpdate(() => sync(connectedConn));
+        connectedConn.db.myApiKeyUsage.onDelete(() => sync(connectedConn));
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
         connectedConn.db.organization.onUpdate(() => sync(connectedConn));
+        connectedConn.db.organizationAddress.onInsert(() => sync(connectedConn));
+        connectedConn.db.organizationAddress.onUpdate(() => sync(connectedConn));
+        connectedConn.db.organizationAddress.onDelete(() => sync(connectedConn));
         connectedConn.db.auction.onInsert((_ctx, newRoom) => {
           sync(connectedConn);
           const pending = pendingLotRef.current;
@@ -464,12 +499,12 @@ export default function DashboardPage() {
         connectedConn.db.auctionItem.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItem.onUpdate(() => sync(connectedConn));
         connectedConn.db.auctionItem.onDelete(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerList.onInsert(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerList.onUpdate(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerList.onDelete(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onInsert(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onUpdate(() => sync(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onDelete(() => sync(connectedConn));
+        connectedConn.db.accountBuyerList.onInsert(() => sync(connectedConn));
+        connectedConn.db.accountBuyerList.onUpdate(() => sync(connectedConn));
+        connectedConn.db.accountBuyerList.onDelete(() => sync(connectedConn));
+        connectedConn.db.accountBuyerListMember.onInsert(() => sync(connectedConn));
+        connectedConn.db.accountBuyerListMember.onUpdate(() => sync(connectedConn));
+        connectedConn.db.accountBuyerListMember.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionPresence.onInsert(() => sync(connectedConn));
@@ -524,12 +559,6 @@ export default function DashboardPage() {
         contactEmail: "",
         phone: "",
         website: "",
-        addressLine1: "",
-        addressLine2: "",
-        city: "",
-        state: "",
-        postalCode: "",
-        country: "",
         vatNumber: "",
         description: "",
       });
@@ -613,14 +642,14 @@ export default function DashboardPage() {
   };
 
   const myBuyerLists = useMemo(() => {
-    if (!myOrg) return [];
-    return buyerLists.filter((l) => l.orgId === myOrg.id);
-  }, [buyerLists, myOrg]);
+    if (!myIdentityHex) return [];
+    return buyerLists.filter((l) => l.ownerHex === myIdentityHex);
+  }, [buyerLists, myIdentityHex]);
 
   const myBuyerListMembers = useMemo(() => {
-    if (!myOrg) return [];
-    return buyerListMembers.filter((m) => m.orgId === myOrg.id);
-  }, [buyerListMembers, myOrg]);
+    if (!myIdentityHex) return [];
+    return buyerListMembers.filter((m) => m.ownerHex === myIdentityHex);
+  }, [buyerListMembers, myIdentityHex]);
 
   const buyerListOptions = useMemo(() => {
     return myBuyerLists.map((l) => ({
@@ -642,12 +671,6 @@ export default function DashboardPage() {
         contactEmail: profile.contactEmail,
         phone: profile.phone,
         website: profile.website,
-        addressLine1: profile.addressLine1,
-        addressLine2: profile.addressLine2,
-        city: profile.city,
-        state: profile.state,
-        postalCode: profile.postalCode,
-        country: profile.country,
         vatNumber: profile.vatNumber,
         description: profile.description,
       });
@@ -656,12 +679,56 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCreateBuyerList = (name: string, description = "") => {
+  const myOrgAddresses = useMemo(() => {
+    if (!myOrg) return [];
+    return orgAddresses.filter((a) => a.orgId === myOrg.id);
+  }, [orgAddresses, myOrg]);
+
+  const handleAddOrgAddress = (addr: OrganizationAddressInput) => {
     setActionError(null);
     const conn = connRef.current;
     if (!conn || !myOrg) return;
     try {
-      conn.reducers.createBuyerList({ orgId: myOrg.id, name, description });
+      conn.reducers.addOrganizationAddress({
+        orgId: myOrg.id,
+        ...addr,
+      });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to add address.");
+    }
+  };
+
+  const handleUpdateOrgAddress = (addressId: bigint, addr: OrganizationAddressInput) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.updateOrganizationAddress({
+        addressId,
+        ...addr,
+      });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to update address.");
+    }
+  };
+
+  const handleDeleteOrgAddress = (addressId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.deleteOrganizationAddress({ addressId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete address.");
+    }
+  };
+
+  const handleCreateBuyerList = (name: string, description = "") => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.createBuyerList({ name, description });
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to create list.");
     }
@@ -748,10 +815,9 @@ export default function DashboardPage() {
   }) => {
     setActionError(null);
     const conn = connRef.current;
-    if (!conn || !myOrg) return;
+    if (!conn) return;
     try {
       conn.reducers.createApiKey({
-        orgId: myOrg.id,
         name: payload.name,
         keyPrefix: payload.keyPrefix,
         keyHash: payload.keyHash,
@@ -1212,7 +1278,11 @@ export default function DashboardPage() {
             <BentoGrid>
               <OrganizationWidget
                 org={myOrg}
+                addresses={myOrgAddresses}
                 onSave={handleUpdateOrg}
+                onAddAddress={handleAddOrgAddress}
+                onUpdateAddress={handleUpdateOrgAddress}
+                onDeleteAddress={handleDeleteOrgAddress}
                 copy={d}
                 className="lg:col-span-12"
               />
@@ -1686,14 +1756,15 @@ export default function DashboardPage() {
                   </GlowCard>
                 </BentoGrid>
 
-                {/* Developer & API Keys */}
-                <DeveloperWidget
-                  apiKeys={apiKeys.filter((k) => k.orgId === myOrg.id)}
-                  isDe={isDe}
-                  onCreateApiKey={handleCreateApiKey}
-                  onRevokeApiKey={handleRevokeApiKey}
-                  onDeleteApiKey={handleDeleteApiKey}
-                />
+                {/* Logged-In Devices */}
+                <BentoGrid>
+                  <DevicesWidget
+                    devices={devices}
+                    currentDeviceId={currentDeviceId}
+                    onRemoveDevice={handleRemoveDevice}
+                    className="lg:col-span-12"
+                  />
+                </BentoGrid>
 
                 {/* Danger Zone */}
                 <DangerZoneWidget
@@ -1704,13 +1775,15 @@ export default function DashboardPage() {
               </>
             )}
 
-            {dashboardTab === "devices" && (
-              /* Logged-In Devices */
+            {dashboardTab === "developer" && (
+              /* Developer & API Keys */
               <BentoGrid>
-                <DevicesWidget
-                  devices={devices}
-                  currentDeviceId={currentDeviceId}
-                  onRemoveDevice={handleRemoveDevice}
+                <DeveloperWidget
+                  apiKeys={apiKeys}
+                  isDe={isDe}
+                  onCreateApiKey={handleCreateApiKey}
+                  onRevokeApiKey={handleRevokeApiKey}
+                  onDeleteApiKey={handleDeleteApiKey}
                   className="lg:col-span-12"
                 />
               </BentoGrid>
@@ -1982,11 +2055,11 @@ export default function DashboardPage() {
                 onClick: () => setCreateAuctionOpen(true),
               },
               {
-                icon: Monitor,
-                label: isDe ? "Geräte" : "Devices",
-                active: dashboardTab === "devices",
-                badge: devices.length,
-                onClick: () => setDashboardTab("devices"),
+                icon: Code2,
+                label: isDe ? "Entwickler" : "Developer",
+                active: dashboardTab === "developer",
+                badge: apiKeys.filter((k) => !k.isRevoked).length,
+                onClick: () => setDashboardTab("developer"),
               },
               {
                 icon: Shield,

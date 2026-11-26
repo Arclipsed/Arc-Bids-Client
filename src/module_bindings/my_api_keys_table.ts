@@ -12,7 +12,6 @@ import {
 
 export default __t.row({
   id: __t.u64(),
-  orgId: __t.u64().name("org_id"),
   ownerIdentity: __t.identity().name("owner_identity"),
   name: __t.string(),
   keyPrefix: __t.string().name("key_prefix"),

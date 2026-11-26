@@ -36,6 +36,7 @@ import {
 // Import all reducer arg schemas
 import AddAuctionItemReducer from "./add_auction_item_reducer";
 import AddBuyerListMemberReducer from "./add_buyer_list_member_reducer";
+import AddOrganizationAddressReducer from "./add_organization_address_reducer";
 import AdminGrantTicketsReducer from "./admin_grant_tickets_reducer";
 import CancelAutoBidReducer from "./cancel_auto_bid_reducer";
 import CreateApiKeyReducer from "./create_api_key_reducer";
@@ -47,6 +48,7 @@ import DeleteApiKeyReducer from "./delete_api_key_reducer";
 import DeleteAuctionItemReducer from "./delete_auction_item_reducer";
 import DeleteBuyerListReducer from "./delete_buyer_list_reducer";
 import DeleteBuyerListMemberReducer from "./delete_buyer_list_member_reducer";
+import DeleteOrganizationAddressReducer from "./delete_organization_address_reducer";
 import DeleteRoomReducer from "./delete_room_reducer";
 import ForceNextItemReducer from "./force_next_item_reducer";
 import JoinRoomReducer from "./join_room_reducer";
@@ -64,28 +66,65 @@ import StartAuctionReducer from "./start_auction_reducer";
 import UpdateAuctionItemReducer from "./update_auction_item_reducer";
 import UpdateBuyerListReducer from "./update_buyer_list_reducer";
 import UpdateOrganizationReducer from "./update_organization_reducer";
+import UpdateOrganizationAddressReducer from "./update_organization_address_reducer";
 import UpdateRoomReducer from "./update_room_reducer";
 import VoidLastBidReducer from "./void_last_bid_reducer";
 
 // Import all procedure arg schemas
 
 // Import all table schema definitions
+import AccountBuyerListRow from "./account_buyer_list_table";
+import AccountBuyerListMemberRow from "./account_buyer_list_member_table";
 import AuctionRow from "./auction_table";
 import AuctionItemRow from "./auction_item_table";
 import AuctionItemBidRow from "./auction_item_bid_table";
 import AuctionPresenceRow from "./auction_presence_table";
-import OrganizationBuyerListRow from "./organization_buyer_list_table";
-import OrganizationBuyerListMemberRow from "./organization_buyer_list_member_table";
 import MyAccountRow from "./my_account_table";
+import MyApiKeyUsageRow from "./my_api_key_usage_table";
 import MyApiKeysRow from "./my_api_keys_table";
 import MyAutoBidsRow from "./my_auto_bids_table";
 import MyDevicesRow from "./my_devices_table";
 import OrganizationRow from "./organization_table";
+import OrganizationAddressRow from "./organization_address_table";
 
 /** Type-only namespace exports for generated type groups. */
 
 /** The schema information for all tables in this module. This is defined the same was as the tables would have been defined in the server. */
 const tablesSchema = __schema({
+  accountBuyerList: __table({
+    name: 'account_buyer_list',
+    indexes: [
+      { accessor: 'Id', name: 'account_buyer_list_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'OwnerIdentity', name: 'account_buyer_list_owner_identity_idx_btree', algorithm: 'btree', columns: [
+        'ownerIdentity',
+      ] },
+    ],
+    constraints: [
+      { name: 'account_buyer_list_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, AccountBuyerListRow),
+  accountBuyerListMember: __table({
+    name: 'account_buyer_list_member',
+    indexes: [
+      { accessor: 'Email', name: 'account_buyer_list_member_email_idx_btree', algorithm: 'btree', columns: [
+        'email',
+      ] },
+      { accessor: 'Id', name: 'account_buyer_list_member_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'ListId', name: 'account_buyer_list_member_list_id_idx_btree', algorithm: 'btree', columns: [
+        'listId',
+      ] },
+      { accessor: 'OwnerIdentity', name: 'account_buyer_list_member_owner_identity_idx_btree', algorithm: 'btree', columns: [
+        'ownerIdentity',
+      ] },
+    ],
+    constraints: [
+      { name: 'account_buyer_list_member_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, AccountBuyerListMemberRow),
   auction: __table({
     name: 'auction',
     indexes: [
@@ -142,40 +181,6 @@ const tablesSchema = __schema({
       { name: 'auction_presence_identity_key', constraint: 'unique', columns: ['identity'] },
     ],
   }, AuctionPresenceRow),
-  organizationBuyerList: __table({
-    name: 'organization_buyer_list',
-    indexes: [
-      { accessor: 'Id', name: 'organization_buyer_list_id_idx_btree', algorithm: 'btree', columns: [
-        'id',
-      ] },
-      { accessor: 'OrgId', name: 'organization_buyer_list_org_id_idx_btree', algorithm: 'btree', columns: [
-        'orgId',
-      ] },
-    ],
-    constraints: [
-      { name: 'organization_buyer_list_id_key', constraint: 'unique', columns: ['id'] },
-    ],
-  }, OrganizationBuyerListRow),
-  organizationBuyerListMember: __table({
-    name: 'organization_buyer_list_member',
-    indexes: [
-      { accessor: 'Email', name: 'organization_buyer_list_member_email_idx_btree', algorithm: 'btree', columns: [
-        'email',
-      ] },
-      { accessor: 'Id', name: 'organization_buyer_list_member_id_idx_btree', algorithm: 'btree', columns: [
-        'id',
-      ] },
-      { accessor: 'ListId', name: 'organization_buyer_list_member_list_id_idx_btree', algorithm: 'btree', columns: [
-        'listId',
-      ] },
-      { accessor: 'OrgId', name: 'organization_buyer_list_member_org_id_idx_btree', algorithm: 'btree', columns: [
-        'orgId',
-      ] },
-    ],
-    constraints: [
-      { name: 'organization_buyer_list_member_id_key', constraint: 'unique', columns: ['id'] },
-    ],
-  }, OrganizationBuyerListMemberRow),
   organization: __table({
     name: 'organization',
     indexes: [
@@ -194,6 +199,20 @@ const tablesSchema = __schema({
       { name: 'organization_slug_key', constraint: 'unique', columns: ['slug'] },
     ],
   }, OrganizationRow),
+  organizationAddress: __table({
+    name: 'organization_address',
+    indexes: [
+      { accessor: 'Id', name: 'organization_address_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'OrgId', name: 'organization_address_org_id_idx_btree', algorithm: 'btree', columns: [
+        'orgId',
+      ] },
+    ],
+    constraints: [
+      { name: 'organization_address_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, OrganizationAddressRow),
   myAccount: __table({
     name: 'my_account',
     indexes: [
@@ -201,6 +220,13 @@ const tablesSchema = __schema({
     constraints: [
     ],
   }, MyAccountRow),
+  myApiKeyUsage: __table({
+    name: 'my_api_key_usage',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, MyApiKeyUsageRow),
   myApiKeys: __table({
     name: 'my_api_keys',
     indexes: [
@@ -228,6 +254,7 @@ const tablesSchema = __schema({
 const reducersSchema = __reducers(
   __reducerSchema("add_auction_item", AddAuctionItemReducer),
   __reducerSchema("add_buyer_list_member", AddBuyerListMemberReducer),
+  __reducerSchema("add_organization_address", AddOrganizationAddressReducer),
   __reducerSchema("admin_grant_tickets", AdminGrantTicketsReducer),
   __reducerSchema("cancel_auto_bid", CancelAutoBidReducer),
   __reducerSchema("create_api_key", CreateApiKeyReducer),
@@ -239,6 +266,7 @@ const reducersSchema = __reducers(
   __reducerSchema("delete_auction_item", DeleteAuctionItemReducer),
   __reducerSchema("delete_buyer_list", DeleteBuyerListReducer),
   __reducerSchema("delete_buyer_list_member", DeleteBuyerListMemberReducer),
+  __reducerSchema("delete_organization_address", DeleteOrganizationAddressReducer),
   __reducerSchema("delete_room", DeleteRoomReducer),
   __reducerSchema("force_next_item", ForceNextItemReducer),
   __reducerSchema("join_room", JoinRoomReducer),
@@ -256,6 +284,7 @@ const reducersSchema = __reducers(
   __reducerSchema("update_auction_item", UpdateAuctionItemReducer),
   __reducerSchema("update_buyer_list", UpdateBuyerListReducer),
   __reducerSchema("update_organization", UpdateOrganizationReducer),
+  __reducerSchema("update_organization_address", UpdateOrganizationAddressReducer),
   __reducerSchema("update_room", UpdateRoomReducer),
   __reducerSchema("void_last_bid", VoidLastBidReducer),
 );
@@ -266,6 +295,10 @@ const proceduresSchema = __procedures(
 
 type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "tables"> & {
   tables: typeof tablesSchema.schemaType.tables & {
+    /** @deprecated Use `accountBuyerList` instead. This alias will be removed in the next major version. */
+    readonly "AccountBuyerList": Omit<typeof tablesSchema.schemaType.tables["accountBuyerList"], "accessorName"> & { readonly accessorName: "AccountBuyerList" };
+    /** @deprecated Use `accountBuyerListMember` instead. This alias will be removed in the next major version. */
+    readonly "AccountBuyerListMember": Omit<typeof tablesSchema.schemaType.tables["accountBuyerListMember"], "accessorName"> & { readonly accessorName: "AccountBuyerListMember" };
     /** @deprecated Use `auction` instead. This alias will be removed in the next major version. */
     readonly "Auction": Omit<typeof tablesSchema.schemaType.tables["auction"], "accessorName"> & { readonly accessorName: "Auction" };
     /** @deprecated Use `auctionItem` instead. This alias will be removed in the next major version. */
@@ -274,14 +307,14 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "AuctionItemBid": Omit<typeof tablesSchema.schemaType.tables["auctionItemBid"], "accessorName"> & { readonly accessorName: "AuctionItemBid" };
     /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
     readonly "AuctionPresence": Omit<typeof tablesSchema.schemaType.tables["auctionPresence"], "accessorName"> & { readonly accessorName: "AuctionPresence" };
-    /** @deprecated Use `organizationBuyerList` instead. This alias will be removed in the next major version. */
-    readonly "OrganizationBuyerList": Omit<typeof tablesSchema.schemaType.tables["organizationBuyerList"], "accessorName"> & { readonly accessorName: "OrganizationBuyerList" };
-    /** @deprecated Use `organizationBuyerListMember` instead. This alias will be removed in the next major version. */
-    readonly "OrganizationBuyerListMember": Omit<typeof tablesSchema.schemaType.tables["organizationBuyerListMember"], "accessorName"> & { readonly accessorName: "OrganizationBuyerListMember" };
     /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
     readonly "Organization": Omit<typeof tablesSchema.schemaType.tables["organization"], "accessorName"> & { readonly accessorName: "Organization" };
+    /** @deprecated Use `organizationAddress` instead. This alias will be removed in the next major version. */
+    readonly "OrganizationAddress": Omit<typeof tablesSchema.schemaType.tables["organizationAddress"], "accessorName"> & { readonly accessorName: "OrganizationAddress" };
     /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
     readonly "MyAccount": Omit<typeof tablesSchema.schemaType.tables["myAccount"], "accessorName"> & { readonly accessorName: "MyAccount" };
+    /** @deprecated Use `myApiKeyUsage` instead. This alias will be removed in the next major version. */
+    readonly "MyApiKeyUsage": Omit<typeof tablesSchema.schemaType.tables["myApiKeyUsage"], "accessorName"> & { readonly accessorName: "MyApiKeyUsage" };
     /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
     readonly "MyApiKeys": Omit<typeof tablesSchema.schemaType.tables["myApiKeys"], "accessorName"> & { readonly accessorName: "MyApiKeys" };
     /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
@@ -306,14 +339,16 @@ const REMOTE_MODULE = {
 >;
 
 const tableAccessorAliases = {
+  "AccountBuyerList": "accountBuyerList",
+  "AccountBuyerListMember": "accountBuyerListMember",
   "Auction": "auction",
   "AuctionItem": "auctionItem",
   "AuctionItemBid": "auctionItemBid",
   "AuctionPresence": "auctionPresence",
-  "OrganizationBuyerList": "organizationBuyerList",
-  "OrganizationBuyerListMember": "organizationBuyerListMember",
   "Organization": "organization",
+  "OrganizationAddress": "organizationAddress",
   "MyAccount": "myAccount",
+  "MyApiKeyUsage": "myApiKeyUsage",
   "MyApiKeys": "myApiKeys",
   "MyAutoBids": "myAutoBids",
   "MyDevices": "myDevices",
@@ -337,6 +372,10 @@ function __withTableAccessorAliases<T extends object>(target: T, freeze = false)
 
 type __DbViewBase = __DbConnectionImpl<typeof REMOTE_MODULE>["db"];
 export type DbView = __DbViewBase & {
+  /** @deprecated Use `accountBuyerList` instead. This alias will be removed in the next major version. */
+  readonly "AccountBuyerList": __DbViewBase["accountBuyerList"];
+  /** @deprecated Use `accountBuyerListMember` instead. This alias will be removed in the next major version. */
+  readonly "AccountBuyerListMember": __DbViewBase["accountBuyerListMember"];
   /** @deprecated Use `auction` instead. This alias will be removed in the next major version. */
   readonly "Auction": __DbViewBase["auction"];
   /** @deprecated Use `auctionItem` instead. This alias will be removed in the next major version. */
@@ -345,14 +384,14 @@ export type DbView = __DbViewBase & {
   readonly "AuctionItemBid": __DbViewBase["auctionItemBid"];
   /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
   readonly "AuctionPresence": __DbViewBase["auctionPresence"];
-  /** @deprecated Use `organizationBuyerList` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationBuyerList": __DbViewBase["organizationBuyerList"];
-  /** @deprecated Use `organizationBuyerListMember` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationBuyerListMember": __DbViewBase["organizationBuyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __DbViewBase["organization"];
+  /** @deprecated Use `organizationAddress` instead. This alias will be removed in the next major version. */
+  readonly "OrganizationAddress": __DbViewBase["organizationAddress"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __DbViewBase["myAccount"];
+  /** @deprecated Use `myApiKeyUsage` instead. This alias will be removed in the next major version. */
+  readonly "MyApiKeyUsage": __DbViewBase["myApiKeyUsage"];
   /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
   readonly "MyApiKeys": __DbViewBase["myApiKeys"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
@@ -363,6 +402,10 @@ export type DbView = __DbViewBase & {
 
 type __TablesBase = __QueryBuilder<typeof tablesSchema.schemaType>;
 export type Tables = __TablesBase & {
+  /** @deprecated Use `accountBuyerList` instead. This alias will be removed in the next major version. */
+  readonly "AccountBuyerList": __TablesBase["accountBuyerList"];
+  /** @deprecated Use `accountBuyerListMember` instead. This alias will be removed in the next major version. */
+  readonly "AccountBuyerListMember": __TablesBase["accountBuyerListMember"];
   /** @deprecated Use `auction` instead. This alias will be removed in the next major version. */
   readonly "Auction": __TablesBase["auction"];
   /** @deprecated Use `auctionItem` instead. This alias will be removed in the next major version. */
@@ -371,14 +414,14 @@ export type Tables = __TablesBase & {
   readonly "AuctionItemBid": __TablesBase["auctionItemBid"];
   /** @deprecated Use `auctionPresence` instead. This alias will be removed in the next major version. */
   readonly "AuctionPresence": __TablesBase["auctionPresence"];
-  /** @deprecated Use `organizationBuyerList` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationBuyerList": __TablesBase["organizationBuyerList"];
-  /** @deprecated Use `organizationBuyerListMember` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationBuyerListMember": __TablesBase["organizationBuyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __TablesBase["organization"];
+  /** @deprecated Use `organizationAddress` instead. This alias will be removed in the next major version. */
+  readonly "OrganizationAddress": __TablesBase["organizationAddress"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __TablesBase["myAccount"];
+  /** @deprecated Use `myApiKeyUsage` instead. This alias will be removed in the next major version. */
+  readonly "MyApiKeyUsage": __TablesBase["myApiKeyUsage"];
   /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
   readonly "MyApiKeys": __TablesBase["myApiKeys"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */

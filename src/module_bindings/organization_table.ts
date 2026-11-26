@@ -18,12 +18,6 @@ export default __t.row({
   contactEmail: __t.string().name("contact_email"),
   phone: __t.string(),
   website: __t.string(),
-  addressLine1: __t.string().name("address_line_1"),
-  addressLine2: __t.string().name("address_line_2"),
-  city: __t.string(),
-  state: __t.string(),
-  postalCode: __t.string().name("postal_code"),
-  country: __t.string(),
   vatNumber: __t.string().name("vat_number"),
   description: __t.string(),
 });

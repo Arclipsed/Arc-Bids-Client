@@ -19,9 +19,8 @@ export const Account = __t.object("Account", {
 });
 export type Account = __Infer<typeof Account>;
 
-export const OrganizationApiKey = __t.object("OrganizationApiKey", {
+export const AccountApiKey = __t.object("AccountApiKey", {
   id: __t.u64(),
-  orgId: __t.u64(),
   ownerIdentity: __t.identity(),
   name: __t.string(),
   keyPrefix: __t.string(),
@@ -30,7 +29,56 @@ export const OrganizationApiKey = __t.object("OrganizationApiKey", {
   lastUsedAt: __t.option(__t.timestamp()),
   isRevoked: __t.bool(),
 });
-export type OrganizationApiKey = __Infer<typeof OrganizationApiKey>;
+export type AccountApiKey = __Infer<typeof AccountApiKey>;
+
+export const AccountApiKeyUsage = __t.object("AccountApiKeyUsage", {
+  apiKeyId: __t.u64(),
+  ownerIdentity: __t.identity(),
+  totalRequests: __t.u64(),
+  successRequests: __t.u64(),
+  errorRequests: __t.u64(),
+});
+export type AccountApiKeyUsage = __Infer<typeof AccountApiKeyUsage>;
+
+export const AccountBuyerList = __t.object("AccountBuyerList", {
+  id: __t.u64(),
+  ownerIdentity: __t.identity(),
+  name: __t.string(),
+  description: __t.string(),
+});
+export type AccountBuyerList = __Infer<typeof AccountBuyerList>;
+
+export const AccountBuyerListMember = __t.object("AccountBuyerListMember", {
+  id: __t.u64(),
+  listId: __t.u64(),
+  ownerIdentity: __t.identity(),
+  companyName: __t.string(),
+  email: __t.string(),
+  isBanned: __t.bool(),
+});
+export type AccountBuyerListMember = __Infer<typeof AccountBuyerListMember>;
+
+export const AccountDevice = __t.object("AccountDevice", {
+  id: __t.u64(),
+  identity: __t.identity(),
+  deviceKey: __t.string(),
+  deviceId: __t.string(),
+  deviceName: __t.string(),
+  deviceType: __t.string(),
+  lastConnectionId: __t.string(),
+  isOnline: __t.bool(),
+  lastSeenAt: __t.timestamp(),
+});
+export type AccountDevice = __Infer<typeof AccountDevice>;
+
+export const AccountTicketPurchase = __t.object("AccountTicketPurchase", {
+  id: __t.u64(),
+  sessionId: __t.string(),
+  orgId: __t.u64(),
+  quantity: __t.u32(),
+  createdAt: __t.timestamp(),
+});
+export type AccountTicketPurchase = __Infer<typeof AccountTicketPurchase>;
 
 export const Auction = __t.object("Auction", {
   id: __t.u64(),
@@ -74,6 +122,19 @@ export const AuctionItem = __t.object("AuctionItem", {
 });
 export type AuctionItem = __Infer<typeof AuctionItem>;
 
+export const AuctionItemAutoBid = __t.object("AuctionItemAutoBid", {
+  id: __t.u64(),
+  itemId: __t.u64(),
+  bidderIdentity: __t.identity(),
+  roomId: __t.u64(),
+  buyerId: __t.u64(),
+  buyerName: __t.string(),
+  buyerEmail: __t.string(),
+  maxAmount: __t.u64(),
+  updatedAt: __t.timestamp(),
+});
+export type AuctionItemAutoBid = __Infer<typeof AuctionItemAutoBid>;
+
 export const AuctionItemBid = __t.object("AuctionItemBid", {
   id: __t.u64(),
   itemId: __t.u64(),
@@ -109,37 +170,6 @@ export const AuctionStartTimer = __t.object("AuctionStartTimer", {
 });
 export type AuctionStartTimer = __Infer<typeof AuctionStartTimer>;
 
-export const AuctionItemAutoBid = __t.object("AuctionItemAutoBid", {
-  id: __t.u64(),
-  itemId: __t.u64(),
-  bidderIdentity: __t.identity(),
-  roomId: __t.u64(),
-  buyerId: __t.u64(),
-  buyerName: __t.string(),
-  buyerEmail: __t.string(),
-  maxAmount: __t.u64(),
-  updatedAt: __t.timestamp(),
-});
-export type AuctionItemAutoBid = __Infer<typeof AuctionItemAutoBid>;
-
-export const OrganizationBuyerList = __t.object("OrganizationBuyerList", {
-  id: __t.u64(),
-  orgId: __t.u64(),
-  name: __t.string(),
-  description: __t.string(),
-});
-export type OrganizationBuyerList = __Infer<typeof OrganizationBuyerList>;
-
-export const OrganizationBuyerListMember = __t.object("OrganizationBuyerListMember", {
-  id: __t.u64(),
-  listId: __t.u64(),
-  orgId: __t.u64(),
-  companyName: __t.string(),
-  email: __t.string(),
-  isBanned: __t.bool(),
-});
-export type OrganizationBuyerListMember = __Infer<typeof OrganizationBuyerListMember>;
-
 // The tagged union or sum type for the algebraic type `ItemStatus`.
 export const ItemStatus = __t.enum("ItemStatus", {
   Queued: __t.unit(),
@@ -157,16 +187,24 @@ export const Organization = __t.object("Organization", {
   contactEmail: __t.string(),
   phone: __t.string(),
   website: __t.string(),
+  vatNumber: __t.string(),
+  description: __t.string(),
+});
+export type Organization = __Infer<typeof Organization>;
+
+export const OrganizationAddress = __t.object("OrganizationAddress", {
+  id: __t.u64(),
+  orgId: __t.u64(),
+  label: __t.string(),
   addressLine1: __t.string(),
   addressLine2: __t.string(),
   city: __t.string(),
   state: __t.string(),
   postalCode: __t.string(),
   country: __t.string(),
-  vatNumber: __t.string(),
-  description: __t.string(),
+  isPrimary: __t.bool(),
 });
-export type Organization = __Infer<typeof Organization>;
+export type OrganizationAddress = __Infer<typeof OrganizationAddress>;
 
 // The tagged union or sum type for the algebraic type `RoomStatus`.
 export const RoomStatus = __t.enum("RoomStatus", {
@@ -176,26 +214,4 @@ export const RoomStatus = __t.enum("RoomStatus", {
   Ended: __t.unit(),
 });
 export type RoomStatus = __Infer<typeof RoomStatus>;
-
-export const AccountTicketPurchase = __t.object("AccountTicketPurchase", {
-  id: __t.u64(),
-  sessionId: __t.string(),
-  orgId: __t.u64(),
-  quantity: __t.u32(),
-  createdAt: __t.timestamp(),
-});
-export type AccountTicketPurchase = __Infer<typeof AccountTicketPurchase>;
-
-export const AccountDevice = __t.object("AccountDevice", {
-  id: __t.u64(),
-  identity: __t.identity(),
-  deviceKey: __t.string(),
-  deviceId: __t.string(),
-  deviceName: __t.string(),
-  deviceType: __t.string(),
-  lastConnectionId: __t.string(),
-  isOnline: __t.bool(),
-  lastSeenAt: __t.timestamp(),
-});
-export type AccountDevice = __Infer<typeof AccountDevice>;
 

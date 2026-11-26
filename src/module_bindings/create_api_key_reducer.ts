@@ -11,7 +11,6 @@ import {
 } from "spacetimedb";
 
 export default {
-  orgId: __t.u64(),
   name: __t.string(),
   keyPrefix: __t.string(),
   keyHash: __t.string(),

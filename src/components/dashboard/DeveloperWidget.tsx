@@ -11,6 +11,7 @@ import {
   KeyRound,
   Plus,
   ShieldAlert,
+  Sparkles,
   Terminal,
   Trash2,
 } from "lucide-react";
@@ -20,12 +21,14 @@ import { Dialog } from "@/components/ui/dialog";
 
 export interface ApiKeyRow {
   id: bigint;
-  orgId: bigint;
   name: string;
   keyPrefix: string;
   createdAtMs: number;
   lastUsedAtMs: number | null;
   isRevoked: boolean;
+  totalRequests: number;
+  successRequests: number;
+  errorRequests: number;
 }
 
 interface DeveloperWidgetProps {
@@ -78,14 +81,13 @@ export function DeveloperWidget({
     secret: string;
   } | null>(null);
   const [copiedSecret, setCopiedSecret] = useState(false);
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
 
   const sorted = [...apiKeys].sort((a, b) => {
     if (a.isRevoked !== b.isRevoked) return a.isRevoked ? 1 : -1;
     return b.createdAtMs - a.createdAtMs;
   });
-
-  const activeCount = sorted.filter((k) => !k.isRevoked).length;
 
   const handleOpenCreate = () => {
     setKeyName("");
@@ -132,6 +134,51 @@ export function DeveloperWidget({
     window.setTimeout(() => setCopiedSecret(false), 2000);
   };
 
+  const handleCopyAiPrompt = async () => {
+    const origin =
+      typeof window !== "undefined" ? window.location.origin : "https://arcbids.com";
+    const prompt = [
+      "Integrate the ArcBids REST API into this project.",
+      "",
+      `Base URL: ${origin}`,
+      `OpenAPI / Swagger spec: ${origin}/api/v1/swagger`,
+      "",
+      "Authentication:",
+      "- Send header: Authorization: Bearer <ARCBIDS_API_KEY>",
+      "- Store the API key in an environment variable (e.g. ARCBIDS_API_KEY), never hardcode it.",
+      "",
+      "Available Endpoints:",
+      "- GET    /api/v1/account                                 — Get account info, auctionCredits, and owned organizations",
+      "- GET    /api/v1/auctions                                — List auctions (optional ?orgId=&status=Draft|Lobby|Live|Ended)",
+      "- POST   /api/v1/auctions                                — Create auction ({ title, currency?, orgId?, scheduledAt?, isPublic?, allowedListIds?, allowAutoBid? })",
+      "- PATCH  /api/v1/auctions/{auctionId}                    — Update Draft/Lobby auction",
+      "- DELETE /api/v1/auctions/{auctionId}                    — Delete non-live auction",
+      "- POST   /api/v1/auctions/{auctionId}/start              — Start auction immediately (reserves 1 ticket if unpaid, locks auction & lots)",
+      "- GET    /api/v1/auctions/{auctionId}/items              — List auction items (lots)",
+      "- POST   /api/v1/auctions/{auctionId}/items              — Create auction item ({ title, startingPrice, quantity?, category?, description?, images?, lotDurationSec?, antiSnipeSec?, minBidIncrement?, metadataJson? })",
+      "- PATCH  /api/v1/auctions/{auctionId}/items/{itemId}     — Update auction item (Draft/Lobby only)",
+      "- DELETE /api/v1/auctions/{auctionId}/items/{itemId}     — Delete auction item (Draft/Lobby only)",
+      "- GET    /api/v1/buyer-lists                             — List account buyer lists",
+      "- POST   /api/v1/buyer-lists                             — Create buyer list ({ name, description? })",
+      "- PATCH  /api/v1/buyer-lists/{listId}                    — Update buyer list",
+      "- DELETE /api/v1/buyer-lists/{listId}                    — Delete buyer list",
+      "- GET    /api/v1/buyer-lists/{listId}/members            — List members in a buyer list",
+      "- POST   /api/v1/buyer-lists/{listId}/members            — Add member ({ companyName, email })",
+      "- PATCH  /api/v1/buyer-lists/{listId}/members/{memberId} — Update or ban/unban member ({ companyName?, isBanned? })",
+      "- DELETE /api/v1/buyer-lists/{listId}/members/{memberId} — Remove member",
+      "",
+      "Important Rules:",
+      "- All prices (startingPrice, currentBid, minBidIncrement) are integers in minor currency units (cents).",
+      "- scheduledAt is an ISO-8601 UTC timestamp string (or null). Scheduling or starting an auction consumes 1 Auction Ticket.",
+      "- Once an auction is Live or Ended, the auction and its items are locked and cannot be edited.",
+      `- Fetch ${origin}/api/v1/swagger for the full OpenAPI 3.0.3 JSON schemas.`,
+    ].join("\n");
+
+    await navigator.clipboard.writeText(prompt);
+    setCopiedPrompt(true);
+    window.setTimeout(() => setCopiedPrompt(false), 2000);
+  };
+
   return (
     <>
       <GlowCard accent="teal" className={className}>
@@ -139,27 +186,46 @@ export function DeveloperWidget({
           title={isDe ? "Entwickler & API-Schlüssel" : "Developer & API Keys"}
           icon={<Code2 className="h-4 w-4 text-[#3ff2e0]" />}
           right={
-            <div className="flex items-center gap-2.5">
-              <span className="hidden font-mono text-[11px] text-zinc-400 sm:inline">
-                {activeCount} {isDe ? "aktiv" : "active"}
-              </span>
+            <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={handleOpenCreate}
-                className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-[#e4fffb] px-3 text-xs font-semibold text-[#04070b] transition hover:bg-white"
+                onClick={() => void handleCopyAiPrompt()}
+                title={
+                  isDe
+                    ? "Prompt für deine KI (Cursor, Claude, ChatGPT) kopieren"
+                    : "Copy integration prompt for your AI (Cursor, Claude, ChatGPT)"
+                }
+                className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 text-[11px] font-medium text-zinc-200 transition hover:border-[#3ff2e0]/40 hover:bg-[#3ff2e0]/10 hover:text-[#3ff2e0]"
               >
-                <Plus className="h-3.5 w-3.5" />
-                {isDe ? "Neuer API-Key" : "New API Key"}
+                {copiedPrompt ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                    <span className="text-[#3ff2e0]">
+                      {isDe ? "Kopiert" : "Copied"}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-3.5 w-3.5 text-[#3ff2e0]" />
+                    <span className="sm:hidden">{isDe ? "KI" : "AI"}</span>
+                    <span className="hidden sm:inline">
+                      {isDe ? "KI-Prompt" : "Copy AI Prompt"}
+                    </span>
+                  </>
+                )}
               </button>
+              <IconButton
+                variant="accent"
+                size="sm"
+                onClick={handleOpenCreate}
+                aria-label={isDe ? "Neuer API-Key" : "New API Key"}
+                title={isDe ? "Neuer API-Key" : "New API Key"}
+              >
+                <Plus className="h-4 w-4" />
+              </IconButton>
             </div>
           }
         />
-
-        <p className="mb-4 text-xs text-zinc-400">
-          {isDe
-            ? "Erstelle API-Schlüssel, um Auktionen und Lose programmatisch über die ArcBids-API zu erstellen und zu verwalten."
-            : "Create API keys to programmatically create and manage auctions and lots via the ArcBids API."}
-        </p>
 
         <div className="space-y-2">
           {sorted.length === 0 ? (
@@ -178,80 +244,93 @@ export function DeveloperWidget({
             sorted.map((k) => (
               <div
                 key={k.id.toString()}
-                className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition ${
+                className={`space-y-2.5 rounded-2xl border p-3.5 transition sm:px-4 sm:py-3.5 ${
                   k.isRevoked
                     ? "border-white/[0.04] bg-[#0e1420]/40 opacity-65"
                     : "border-white/[0.06] bg-[#0e1420]/70"
                 }`}
               >
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#090d14]">
-                    <KeyRound
-                      className={`h-4 w-4 ${
-                        k.isRevoked ? "text-zinc-500" : "text-[#3ff2e0]"
-                      }`}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="truncate text-sm font-semibold text-white">
-                        {k.name}
-                      </p>
-                      {k.isRevoked ? (
-                        <span className="rounded-full border border-rose-400/25 bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-rose-300">
-                          {isDe ? "Widerrufen" : "Revoked"}
-                        </span>
-                      ) : (
-                        <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-300">
-                          {isDe ? "Aktiv" : "Active"}
-                        </span>
-                      )}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#090d14]">
+                      <KeyRound
+                        className={`h-4 w-4 ${
+                          k.isRevoked ? "text-zinc-500" : "text-[#3ff2e0]"
+                        }`}
+                      />
                     </div>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 font-mono text-[11px] text-zinc-400">
-                      <span className="text-zinc-300">{k.keyPrefix}••••••••</span>
-                      <span>·</span>
-                      <span>
-                        {isDe ? "Erstellt" : "Created"}{" "}
-                        {format(new Date(k.createdAtMs), "MMM d, yyyy")}
+                    <p className="truncate text-sm font-semibold text-white">
+                      {k.name}
+                    </p>
+                    {k.isRevoked ? (
+                      <span className="shrink-0 rounded-full border border-rose-400/25 bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-rose-300">
+                        {isDe ? "Widerrufen" : "Revoked"}
                       </span>
-                      <span>·</span>
-                      <span>
-                        {k.lastUsedAtMs
-                          ? `${isDe ? "Zuletzt genutzt" : "Last used"} ${formatDistanceToNow(
-                              new Date(k.lastUsedAtMs),
-                              { addSuffix: true }
-                            )}`
-                          : isDe
-                            ? "Noch nicht genutzt"
-                            : "Never used"}
+                    ) : (
+                      <span className="shrink-0 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-300">
+                        {isDe ? "Aktiv" : "Active"}
                       </span>
-                    </div>
+                    )}
                   </div>
-                </div>
 
-                <div className="flex items-center gap-1.5">
-                  {!k.isRevoked && (
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    {!k.isRevoked && (
+                      <IconButton
+                        variant="subtle"
+                        size="sm"
+                        onClick={() => onRevokeApiKey(k.id)}
+                        aria-label={`Revoke ${k.name}`}
+                        title={isDe ? "Schlüssel widerrufen" : "Revoke key"}
+                        className="h-7 w-7 enabled:hover:border-amber-400/40 enabled:hover:text-amber-300"
+                      >
+                        <Ban className="h-3.5 w-3.5" />
+                      </IconButton>
+                    )}
                     <IconButton
                       variant="subtle"
                       size="sm"
-                      onClick={() => onRevokeApiKey(k.id)}
-                      aria-label={`Revoke ${k.name}`}
-                      title={isDe ? "Schlüssel widerrufen" : "Revoke key"}
-                      className="h-8 w-8 enabled:hover:border-amber-400/40 enabled:hover:text-amber-300"
+                      onClick={() => onDeleteApiKey(k.id)}
+                      aria-label={`Delete ${k.name}`}
+                      title={isDe ? "Schlüssel löschen" : "Delete key"}
+                      className="h-7 w-7 enabled:hover:border-rose-400/40 enabled:hover:text-rose-400"
                     >
-                      <Ban className="h-3.5 w-3.5" />
+                      <Trash2 className="h-3.5 w-3.5" />
                     </IconButton>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+                  <span className="rounded-lg border border-white/[0.07] bg-[#090d14] px-2 py-0.5 text-zinc-300">
+                    {k.keyPrefix}••••••
+                  </span>
+                  {k.totalRequests > 0 && (
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.07] bg-[#090d14] px-2 py-0.5 tabular-nums">
+                      <span className="text-zinc-300">
+                        {k.totalRequests} {isDe ? "Anfragen" : "reqs"}
+                      </span>
+                      <span className="text-emerald-400">{k.successRequests} ok</span>
+                      {k.errorRequests > 0 && (
+                        <span className="text-rose-400">{k.errorRequests} err</span>
+                      )}
+                    </span>
                   )}
-                  <IconButton
-                    variant="subtle"
-                    size="sm"
-                    onClick={() => onDeleteApiKey(k.id)}
-                    aria-label={`Delete ${k.name}`}
-                    title={isDe ? "Schlüssel löschen" : "Delete key"}
-                    className="h-8 w-8 enabled:hover:border-rose-400/40 enabled:hover:text-rose-400"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </IconButton>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-0.5 text-[11px] text-zinc-500">
+                  <span>
+                    {isDe ? "Erstellt" : "Created"}{" "}
+                    {format(new Date(k.createdAtMs), "MMM d, yyyy")}
+                  </span>
+                  <span>
+                    {k.lastUsedAtMs
+                      ? `${isDe ? "Zuletzt genutzt" : "Last used"} ${formatDistanceToNow(
+                          new Date(k.lastUsedAtMs),
+                          { addSuffix: true }
+                        )}`
+                      : isDe
+                        ? "Noch nicht genutzt"
+                        : "Never used"}
+                  </span>
                 </div>
               </div>
             ))
@@ -268,8 +347,8 @@ export function DeveloperWidget({
             <span className="inline-flex items-center gap-2">
               <Terminal className="h-3.5 w-3.5 text-[#3ff2e0]" />
               {isDe
-                ? "API-Authentifizierung (Vorschau)"
-                : "API Authentication (Preview)"}
+                ? "API-Dokumentation & Swagger"
+                : "API Documentation & Swagger"}
             </span>
             <ChevronDown
               className={`h-3.5 w-3.5 text-zinc-400 transition-transform ${
@@ -290,6 +369,17 @@ export function DeveloperWidget({
   -H "Content-Type: application/json" \\
   -d '{"title": "Q2 Wholesale Drop", "currency": "EUR"}'`}
               </pre>
+              <p className="mt-2.5 text-[11px] text-zinc-400">
+                OpenAPI / Swagger:{" "}
+                <a
+                  href="/api/v1/swagger"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-mono text-[#3ff2e0] underline-offset-2 hover:underline"
+                >
+                  /api/v1/swagger
+                </a>
+              </p>
             </div>
           )}
         </div>

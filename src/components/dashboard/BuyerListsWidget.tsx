@@ -19,7 +19,7 @@ import { normalizeBuyerContact } from "@/lib/format";
 
 export interface BuyerListRow {
   id: bigint;
-  orgId: bigint;
+  ownerHex: string;
   name: string;
   description: string;
 }
@@ -27,7 +27,7 @@ export interface BuyerListRow {
 export interface BuyerListMemberRow {
   id: bigint;
   listId: bigint;
-  orgId: bigint;
+  ownerHex: string;
   companyName: string;
   email: string;
   isBanned: boolean;

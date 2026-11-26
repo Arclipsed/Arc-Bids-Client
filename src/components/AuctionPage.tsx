@@ -40,7 +40,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   const [liveItems, setLiveItems] = useState<UiItem[]>([]);
   const [liveBids, setLiveBids] = useState<UiBid[]>([]);
   const [buyerListMembers, setBuyerListMembers] = useState<
-    Array<{ orgId: bigint; listId: bigint; email: string; isBanned: boolean }>
+    Array<{ ownerHex: string; listId: bigint; email: string; isBanned: boolean }>
   >([]);
   const [myAutoBids, setMyAutoBids] = useState<
     Array<{ itemId: bigint; maxAmount: bigint }>
@@ -153,8 +153,8 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       }));
       const viewers = presences.length;
 
-      const listMembers = Array.from(conn.db.organizationBuyerListMember.iter()).map((m) => ({
-        orgId: m.orgId,
+      const listMembers = Array.from(conn.db.accountBuyerListMember.iter()).map((m) => ({
+        ownerHex: m.ownerIdentity.toHexString(),
         listId: m.listId,
         email: m.email.toLowerCase(),
         isBanned: m.isBanned,
@@ -203,7 +203,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
             "SELECT * FROM auction_item",
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
-            "SELECT * FROM organization_buyer_list_member",
+            "SELECT * FROM account_buyer_list_member",
             "SELECT * FROM organization",
             "SELECT * FROM my_auto_bids",
           ]);
@@ -219,9 +219,9 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         connectedConn.db.auctionItemBid.onDelete(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onInsert(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onDelete(() => syncTables(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onInsert(() => syncTables(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onUpdate(() => syncTables(connectedConn));
-        connectedConn.db.organizationBuyerListMember.onDelete(() => syncTables(connectedConn));
+        connectedConn.db.accountBuyerListMember.onInsert(() => syncTables(connectedConn));
+        connectedConn.db.accountBuyerListMember.onUpdate(() => syncTables(connectedConn));
+        connectedConn.db.accountBuyerListMember.onDelete(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onInsert(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onUpdate(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onDelete(() => syncTables(connectedConn));
@@ -435,9 +435,11 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   const isEmailApprovedForRoom = (room: UiRoom, normalizedEmail: string) => {
     const allowedLists = room.allowedListIds ?? [];
     if (allowedLists.length === 0) return false;
+    const roomOrg = orgs.find((o) => o.id === room.orgId);
+    if (!roomOrg) return false;
     return buyerListMembers.some(
       (m) =>
-        m.orgId === room.orgId &&
+        m.ownerHex === roomOrg.ownerHex &&
         allowedLists.some((id) => id === m.listId) &&
         m.email === normalizedEmail &&
         !m.isBanned
@@ -507,12 +509,15 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         setInviteGateError("No buyer lists are whitelisted for this private auction.");
         return;
       }
-      const listMatches = buyerListMembers.filter(
-        (m) =>
-          m.orgId === activeRoom.orgId &&
-          m.email === normalized &&
-          allowedLists.some((id) => id === m.listId)
-      );
+      const roomOrg = orgs.find((o) => o.id === activeRoom.orgId);
+      const listMatches = roomOrg
+        ? buyerListMembers.filter(
+            (m) =>
+              m.ownerHex === roomOrg.ownerHex &&
+              m.email === normalized &&
+              allowedLists.some((id) => id === m.listId)
+          )
+        : [];
 
       if (listMatches.length === 0) {
         setInviteGateError("This email or phone number is not whitelisted for this auction.");
