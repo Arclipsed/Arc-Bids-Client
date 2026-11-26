@@ -60,6 +60,10 @@ import {
   type DeviceRow,
 } from "@/components/dashboard/DevicesWidget";
 import {
+  DeveloperWidget,
+  type ApiKeyRow,
+} from "@/components/dashboard/DeveloperWidget";
+import {
   clearDeviceRegisteredMarkers,
   getDeviceDetails,
   isDeviceRegisteredForIdentity,
@@ -186,6 +190,7 @@ export default function DashboardPage() {
   const [buyerListMembers, setBuyerListMembers] = useState<BuyerListMemberRow[]>([]);
   const [bids, setBids] = useState<BidRow[]>([]);
   const [devices, setDevices] = useState<DeviceRow[]>([]);
+  const [apiKeys, setApiKeys] = useState<ApiKeyRow[]>([]);
   const [roomPresenceCounts, setRoomPresenceCounts] = useState<Record<string, number>>({});
   const [currentDeviceId] = useState<string>(() =>
     typeof window !== "undefined" ? getDeviceDetails().deviceId : ""
@@ -366,6 +371,17 @@ export default function DashboardPage() {
           lastSeenMs: Number(d.lastSeenAt.toMillis()),
         }))
       );
+      setApiKeys(
+        Array.from(conn.db.myApiKeys.iter()).map((k) => ({
+          id: k.id,
+          orgId: k.orgId,
+          name: k.name,
+          keyPrefix: k.keyPrefix,
+          createdAtMs: Number(k.createdAt.toMillis()),
+          lastUsedAtMs: k.lastUsedAt ? Number(k.lastUsedAt.toMillis()) : null,
+          isRevoked: k.isRevoked,
+        }))
+      );
       const counts: Record<string, number> = {};
       for (const p of conn.db.auctionPresence.iter()) {
         const key = p.roomId.toString();
@@ -407,9 +423,13 @@ export default function DashboardPage() {
             "SELECT * FROM auction_presence",
             "SELECT * FROM my_devices",
             "SELECT * FROM my_account",
+            "SELECT * FROM my_api_keys",
           ]);
         connectedConn.db.myAccount.onInsert(() => sync(connectedConn));
         connectedConn.db.myAccount.onUpdate(() => sync(connectedConn));
+        connectedConn.db.myApiKeys.onInsert(() => sync(connectedConn));
+        connectedConn.db.myApiKeys.onUpdate(() => sync(connectedConn));
+        connectedConn.db.myApiKeys.onDelete(() => sync(connectedConn));
         connectedConn.db.organization.onInsert(() => sync(connectedConn));
         connectedConn.db.organization.onUpdate(() => sync(connectedConn));
         connectedConn.db.auction.onInsert((_ctx, newRoom) => {
@@ -718,6 +738,48 @@ export default function DashboardPage() {
       conn.reducers.removeDevice({ deviceRowId });
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to remove device.");
+    }
+  };
+
+  const handleCreateApiKey = (payload: {
+    name: string;
+    keyPrefix: string;
+    keyHash: string;
+  }) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn || !myOrg) return;
+    try {
+      conn.reducers.createApiKey({
+        orgId: myOrg.id,
+        name: payload.name,
+        keyPrefix: payload.keyPrefix,
+        keyHash: payload.keyHash,
+      });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to create API key.");
+    }
+  };
+
+  const handleRevokeApiKey = (keyId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.revokeApiKey({ keyId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to revoke API key.");
+    }
+  };
+
+  const handleDeleteApiKey = (keyId: bigint) => {
+    setActionError(null);
+    const conn = connRef.current;
+    if (!conn) return;
+    try {
+      conn.reducers.deleteApiKey({ keyId });
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete API key.");
     }
   };
 
@@ -1623,6 +1685,15 @@ export default function DashboardPage() {
                     </div>
                   </GlowCard>
                 </BentoGrid>
+
+                {/* Developer & API Keys */}
+                <DeveloperWidget
+                  apiKeys={apiKeys.filter((k) => k.orgId === myOrg.id)}
+                  isDe={isDe}
+                  onCreateApiKey={handleCreateApiKey}
+                  onRevokeApiKey={handleRevokeApiKey}
+                  onDeleteApiKey={handleDeleteApiKey}
+                />
 
                 {/* Danger Zone */}
                 <DangerZoneWidget

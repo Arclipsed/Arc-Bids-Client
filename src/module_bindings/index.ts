@@ -38,10 +38,12 @@ import AddAuctionItemReducer from "./add_auction_item_reducer";
 import AddBuyerListMemberReducer from "./add_buyer_list_member_reducer";
 import AdminGrantTicketsReducer from "./admin_grant_tickets_reducer";
 import CancelAutoBidReducer from "./cancel_auto_bid_reducer";
+import CreateApiKeyReducer from "./create_api_key_reducer";
 import CreateBuyerListReducer from "./create_buyer_list_reducer";
 import CreateOrganizationReducer from "./create_organization_reducer";
 import CreateRoomReducer from "./create_room_reducer";
 import DeleteAccountReducer from "./delete_account_reducer";
+import DeleteApiKeyReducer from "./delete_api_key_reducer";
 import DeleteAuctionItemReducer from "./delete_auction_item_reducer";
 import DeleteBuyerListReducer from "./delete_buyer_list_reducer";
 import DeleteBuyerListMemberReducer from "./delete_buyer_list_member_reducer";
@@ -54,6 +56,7 @@ import PlaceBidReducer from "./place_bid_reducer";
 import RedeemAuctionTicketsReducer from "./redeem_auction_tickets_reducer";
 import RegisterDeviceReducer from "./register_device_reducer";
 import RemoveDeviceReducer from "./remove_device_reducer";
+import RevokeApiKeyReducer from "./revoke_api_key_reducer";
 import SetAutoBidReducer from "./set_auto_bid_reducer";
 import SetBuyerListMemberBannedReducer from "./set_buyer_list_member_banned_reducer";
 import SetRoomStatusReducer from "./set_room_status_reducer";
@@ -74,6 +77,7 @@ import AuctionPresenceRow from "./auction_presence_table";
 import BuyerListRow from "./buyer_list_table";
 import BuyerListMemberRow from "./buyer_list_member_table";
 import MyAccountRow from "./my_account_table";
+import MyApiKeysRow from "./my_api_keys_table";
 import MyAutoBidsRow from "./my_auto_bids_table";
 import MyDevicesRow from "./my_devices_table";
 import OrganizationRow from "./organization_table";
@@ -197,6 +201,13 @@ const tablesSchema = __schema({
     constraints: [
     ],
   }, MyAccountRow),
+  myApiKeys: __table({
+    name: 'my_api_keys',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, MyApiKeysRow),
   myAutoBids: __table({
     name: 'my_auto_bids',
     indexes: [
@@ -219,10 +230,12 @@ const reducersSchema = __reducers(
   __reducerSchema("add_buyer_list_member", AddBuyerListMemberReducer),
   __reducerSchema("admin_grant_tickets", AdminGrantTicketsReducer),
   __reducerSchema("cancel_auto_bid", CancelAutoBidReducer),
+  __reducerSchema("create_api_key", CreateApiKeyReducer),
   __reducerSchema("create_buyer_list", CreateBuyerListReducer),
   __reducerSchema("create_organization", CreateOrganizationReducer),
   __reducerSchema("create_room", CreateRoomReducer),
   __reducerSchema("delete_account", DeleteAccountReducer),
+  __reducerSchema("delete_api_key", DeleteApiKeyReducer),
   __reducerSchema("delete_auction_item", DeleteAuctionItemReducer),
   __reducerSchema("delete_buyer_list", DeleteBuyerListReducer),
   __reducerSchema("delete_buyer_list_member", DeleteBuyerListMemberReducer),
@@ -235,6 +248,7 @@ const reducersSchema = __reducers(
   __reducerSchema("redeem_auction_tickets", RedeemAuctionTicketsReducer),
   __reducerSchema("register_device", RegisterDeviceReducer),
   __reducerSchema("remove_device", RemoveDeviceReducer),
+  __reducerSchema("revoke_api_key", RevokeApiKeyReducer),
   __reducerSchema("set_auto_bid", SetAutoBidReducer),
   __reducerSchema("set_buyer_list_member_banned", SetBuyerListMemberBannedReducer),
   __reducerSchema("set_room_status", SetRoomStatusReducer),
@@ -268,6 +282,8 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "Organization": Omit<typeof tablesSchema.schemaType.tables["organization"], "accessorName"> & { readonly accessorName: "Organization" };
     /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
     readonly "MyAccount": Omit<typeof tablesSchema.schemaType.tables["myAccount"], "accessorName"> & { readonly accessorName: "MyAccount" };
+    /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
+    readonly "MyApiKeys": Omit<typeof tablesSchema.schemaType.tables["myApiKeys"], "accessorName"> & { readonly accessorName: "MyApiKeys" };
     /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
     readonly "MyAutoBids": Omit<typeof tablesSchema.schemaType.tables["myAutoBids"], "accessorName"> & { readonly accessorName: "MyAutoBids" };
     /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
@@ -298,6 +314,7 @@ const tableAccessorAliases = {
   "BuyerListMember": "buyerListMember",
   "Organization": "organization",
   "MyAccount": "myAccount",
+  "MyApiKeys": "myApiKeys",
   "MyAutoBids": "myAutoBids",
   "MyDevices": "myDevices",
 } as const;
@@ -336,6 +353,8 @@ export type DbView = __DbViewBase & {
   readonly "Organization": __DbViewBase["organization"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __DbViewBase["myAccount"];
+  /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
+  readonly "MyApiKeys": __DbViewBase["myApiKeys"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __DbViewBase["myAutoBids"];
   /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */
@@ -360,6 +379,8 @@ export type Tables = __TablesBase & {
   readonly "Organization": __TablesBase["organization"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __TablesBase["myAccount"];
+  /** @deprecated Use `myApiKeys` instead. This alias will be removed in the next major version. */
+  readonly "MyApiKeys": __TablesBase["myApiKeys"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
   readonly "MyAutoBids": __TablesBase["myAutoBids"];
   /** @deprecated Use `myDevices` instead. This alias will be removed in the next major version. */

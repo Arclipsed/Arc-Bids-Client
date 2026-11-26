@@ -19,6 +19,19 @@ export const Account = __t.object("Account", {
 });
 export type Account = __Infer<typeof Account>;
 
+export const ApiKey = __t.object("ApiKey", {
+  id: __t.u64(),
+  orgId: __t.u64(),
+  ownerIdentity: __t.identity(),
+  name: __t.string(),
+  keyPrefix: __t.string(),
+  keyHash: __t.string(),
+  createdAt: __t.timestamp(),
+  lastUsedAt: __t.option(__t.timestamp()),
+  isRevoked: __t.bool(),
+});
+export type ApiKey = __Infer<typeof ApiKey>;
+
 export const Auction = __t.object("Auction", {
   id: __t.u64(),
   orgId: __t.u64(),
