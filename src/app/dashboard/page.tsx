@@ -1943,16 +1943,17 @@ export default function DashboardPage() {
       </main>
 
       {/* Bottom Navigation Dock */}
-      {myOrg &&
-        !(
-          createAuctionOpen ||
-          editingRoom ||
-          addingLotRoom ||
-          editingLot ||
-          resultsLot
-        ) && (
-          <Dock
-            className="sticky bottom-0 z-40 mt-auto sm:bottom-5 sm:pb-5"
+      {myOrg && (
+        <Dock
+          className={`sticky bottom-0 z-40 mt-auto sm:bottom-5 sm:pb-5 ${
+            createAuctionOpen ||
+            editingRoom ||
+            addingLotRoom ||
+            editingLot ||
+            resultsLot
+              ? "pointer-events-none invisible"
+              : ""
+          }`}
             items={[
               {
                 icon: LayoutGrid,
