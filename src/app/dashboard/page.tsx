@@ -334,7 +334,7 @@ export default function DashboardPage() {
         }))
       );
       setBuyerLists(
-        Array.from(conn.db.buyerList.iter()).map((l) => ({
+        Array.from(conn.db.organizationBuyerList.iter()).map((l) => ({
           id: l.id,
           orgId: l.orgId,
           name: l.name,
@@ -342,7 +342,7 @@ export default function DashboardPage() {
         }))
       );
       setBuyerListMembers(
-        Array.from(conn.db.buyerListMember.iter()).map((m) => ({
+        Array.from(conn.db.organizationBuyerListMember.iter()).map((m) => ({
           id: m.id,
           listId: m.listId,
           orgId: m.orgId,
@@ -417,8 +417,8 @@ export default function DashboardPage() {
             "SELECT * FROM organization",
             "SELECT * FROM auction",
             "SELECT * FROM auction_item",
-            "SELECT * FROM buyer_list",
-            "SELECT * FROM buyer_list_member",
+            "SELECT * FROM organization_buyer_list",
+            "SELECT * FROM organization_buyer_list_member",
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
             "SELECT * FROM my_devices",
@@ -464,12 +464,12 @@ export default function DashboardPage() {
         connectedConn.db.auctionItem.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItem.onUpdate(() => sync(connectedConn));
         connectedConn.db.auctionItem.onDelete(() => sync(connectedConn));
-        connectedConn.db.buyerList.onInsert(() => sync(connectedConn));
-        connectedConn.db.buyerList.onUpdate(() => sync(connectedConn));
-        connectedConn.db.buyerList.onDelete(() => sync(connectedConn));
-        connectedConn.db.buyerListMember.onInsert(() => sync(connectedConn));
-        connectedConn.db.buyerListMember.onUpdate(() => sync(connectedConn));
-        connectedConn.db.buyerListMember.onDelete(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerList.onInsert(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerList.onUpdate(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerList.onDelete(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onInsert(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onUpdate(() => sync(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItemBid.onDelete(() => sync(connectedConn));
         connectedConn.db.auctionPresence.onInsert(() => sync(connectedConn));

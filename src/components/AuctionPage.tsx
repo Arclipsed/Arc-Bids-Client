@@ -153,7 +153,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       }));
       const viewers = presences.length;
 
-      const listMembers = Array.from(conn.db.buyerListMember.iter()).map((m) => ({
+      const listMembers = Array.from(conn.db.organizationBuyerListMember.iter()).map((m) => ({
         orgId: m.orgId,
         listId: m.listId,
         email: m.email.toLowerCase(),
@@ -203,7 +203,7 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
             "SELECT * FROM auction_item",
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
-            "SELECT * FROM buyer_list_member",
+            "SELECT * FROM organization_buyer_list_member",
             "SELECT * FROM organization",
             "SELECT * FROM my_auto_bids",
           ]);
@@ -219,9 +219,9 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         connectedConn.db.auctionItemBid.onDelete(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onInsert(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onDelete(() => syncTables(connectedConn));
-        connectedConn.db.buyerListMember.onInsert(() => syncTables(connectedConn));
-        connectedConn.db.buyerListMember.onUpdate(() => syncTables(connectedConn));
-        connectedConn.db.buyerListMember.onDelete(() => syncTables(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onInsert(() => syncTables(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onUpdate(() => syncTables(connectedConn));
+        connectedConn.db.organizationBuyerListMember.onDelete(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onInsert(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onUpdate(() => syncTables(connectedConn));
         connectedConn.db.myAutoBids.onDelete(() => syncTables(connectedConn));
