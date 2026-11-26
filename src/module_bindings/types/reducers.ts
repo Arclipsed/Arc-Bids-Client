@@ -6,7 +6,6 @@
 import { type Infer as __Infer } from "spacetimedb";
 
 // Import all reducer arg schemas
-import AddApprovedBuyerReducer from "../add_approved_buyer_reducer";
 import AddAuctionItemReducer from "../add_auction_item_reducer";
 import AddBuyerListMemberReducer from "../add_buyer_list_member_reducer";
 import AdminGrantTicketsReducer from "../admin_grant_tickets_reducer";
@@ -15,7 +14,6 @@ import CreateBuyerListReducer from "../create_buyer_list_reducer";
 import CreateOrganizationReducer from "../create_organization_reducer";
 import CreateRoomReducer from "../create_room_reducer";
 import DeleteAccountReducer from "../delete_account_reducer";
-import DeleteApprovedBuyerReducer from "../delete_approved_buyer_reducer";
 import DeleteAuctionItemReducer from "../delete_auction_item_reducer";
 import DeleteBuyerListReducer from "../delete_buyer_list_reducer";
 import DeleteBuyerListMemberReducer from "../delete_buyer_list_member_reducer";
@@ -29,7 +27,6 @@ import RedeemAuctionTicketsReducer from "../redeem_auction_tickets_reducer";
 import RegisterDeviceReducer from "../register_device_reducer";
 import RemoveDeviceReducer from "../remove_device_reducer";
 import SetAutoBidReducer from "../set_auto_bid_reducer";
-import SetBuyerBannedReducer from "../set_buyer_banned_reducer";
 import SetBuyerListMemberBannedReducer from "../set_buyer_list_member_banned_reducer";
 import SetRoomStatusReducer from "../set_room_status_reducer";
 import StartAuctionReducer from "../start_auction_reducer";
@@ -39,7 +36,6 @@ import UpdateOrganizationReducer from "../update_organization_reducer";
 import UpdateRoomReducer from "../update_room_reducer";
 import VoidLastBidReducer from "../void_last_bid_reducer";
 
-export type AddApprovedBuyerParams = __Infer<typeof AddApprovedBuyerReducer>;
 export type AddAuctionItemParams = __Infer<typeof AddAuctionItemReducer>;
 export type AddBuyerListMemberParams = __Infer<typeof AddBuyerListMemberReducer>;
 export type AdminGrantTicketsParams = __Infer<typeof AdminGrantTicketsReducer>;
@@ -48,7 +44,6 @@ export type CreateBuyerListParams = __Infer<typeof CreateBuyerListReducer>;
 export type CreateOrganizationParams = __Infer<typeof CreateOrganizationReducer>;
 export type CreateRoomParams = __Infer<typeof CreateRoomReducer>;
 export type DeleteAccountParams = __Infer<typeof DeleteAccountReducer>;
-export type DeleteApprovedBuyerParams = __Infer<typeof DeleteApprovedBuyerReducer>;
 export type DeleteAuctionItemParams = __Infer<typeof DeleteAuctionItemReducer>;
 export type DeleteBuyerListParams = __Infer<typeof DeleteBuyerListReducer>;
 export type DeleteBuyerListMemberParams = __Infer<typeof DeleteBuyerListMemberReducer>;
@@ -62,7 +57,6 @@ export type RedeemAuctionTicketsParams = __Infer<typeof RedeemAuctionTicketsRedu
 export type RegisterDeviceParams = __Infer<typeof RegisterDeviceReducer>;
 export type RemoveDeviceParams = __Infer<typeof RemoveDeviceReducer>;
 export type SetAutoBidParams = __Infer<typeof SetAutoBidReducer>;
-export type SetBuyerBannedParams = __Infer<typeof SetBuyerBannedReducer>;
 export type SetBuyerListMemberBannedParams = __Infer<typeof SetBuyerListMemberBannedReducer>;
 export type SetRoomStatusParams = __Infer<typeof SetRoomStatusReducer>;
 export type StartAuctionParams = __Infer<typeof StartAuctionReducer>;

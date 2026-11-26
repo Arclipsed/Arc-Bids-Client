@@ -155,15 +155,6 @@ export const Organization = __t.object("Organization", {
 });
 export type Organization = __Infer<typeof Organization>;
 
-export const OrganizationWhitelist = __t.object("OrganizationWhitelist", {
-  id: __t.u64(),
-  orgId: __t.u64(),
-  companyName: __t.string(),
-  magicToken: __t.string(),
-  isBanned: __t.bool(),
-});
-export type OrganizationWhitelist = __Infer<typeof OrganizationWhitelist>;
-
 // The tagged union or sum type for the algebraic type `RoomStatus`.
 export const RoomStatus = __t.enum("RoomStatus", {
   Draft: __t.unit(),

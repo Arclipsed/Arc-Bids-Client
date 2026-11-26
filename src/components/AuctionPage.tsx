@@ -39,9 +39,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
   const [liveRooms, setLiveRooms] = useState<UiRoom[]>([]);
   const [liveItems, setLiveItems] = useState<UiItem[]>([]);
   const [liveBids, setLiveBids] = useState<UiBid[]>([]);
-  const [approvedBuyers, setApprovedBuyers] = useState<
-    Array<{ orgId: bigint; magicToken: string; isBanned: boolean }>
-  >([]);
   const [buyerListMembers, setBuyerListMembers] = useState<
     Array<{ orgId: bigint; listId: bigint; email: string; isBanned: boolean }>
   >([]);
@@ -156,12 +153,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       }));
       const viewers = presences.length;
 
-      const buyers = Array.from(conn.db.organizationWhitelist.iter()).map((b) => ({
-        orgId: b.orgId,
-        magicToken: b.magicToken.toLowerCase(),
-        isBanned: b.isBanned,
-      }));
-
       const listMembers = Array.from(conn.db.buyerListMember.iter()).map((m) => ({
         orgId: m.orgId,
         listId: m.listId,
@@ -183,7 +174,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
       setLiveRooms(rooms);
       setLiveItems(items);
       setLiveBids(bids);
-      setApprovedBuyers(buyers);
       setBuyerListMembers(listMembers);
       setMyAutoBids(autoBids);
       setOrgs(orgRows);
@@ -213,7 +203,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
             "SELECT * FROM auction_item",
             "SELECT * FROM auction_item_bid",
             "SELECT * FROM auction_presence",
-            "SELECT * FROM organization_whitelist",
             "SELECT * FROM buyer_list_member",
             "SELECT * FROM organization",
             "SELECT * FROM my_auto_bids",
@@ -230,9 +219,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
         connectedConn.db.auctionItemBid.onDelete(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onInsert(() => syncTables(connectedConn));
         connectedConn.db.auctionPresence.onDelete(() => syncTables(connectedConn));
-        connectedConn.db.organizationWhitelist.onInsert(() => syncTables(connectedConn));
-        connectedConn.db.organizationWhitelist.onUpdate(() => syncTables(connectedConn));
-        connectedConn.db.organizationWhitelist.onDelete(() => syncTables(connectedConn));
         connectedConn.db.buyerListMember.onInsert(() => syncTables(connectedConn));
         connectedConn.db.buyerListMember.onUpdate(() => syncTables(connectedConn));
         connectedConn.db.buyerListMember.onDelete(() => syncTables(connectedConn));
@@ -472,7 +458,6 @@ export function AuctionPage({ initialRoomKey }: { initialRoomKey?: string } = {}
     isRoomOwner,
     effectiveMagicToken,
     effectiveBuyerName,
-    approvedBuyers,
     buyerListMembers,
   ]);
 

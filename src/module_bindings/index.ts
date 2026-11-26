@@ -34,7 +34,6 @@ import {
 } from "spacetimedb";
 
 // Import all reducer arg schemas
-import AddApprovedBuyerReducer from "./add_approved_buyer_reducer";
 import AddAuctionItemReducer from "./add_auction_item_reducer";
 import AddBuyerListMemberReducer from "./add_buyer_list_member_reducer";
 import AdminGrantTicketsReducer from "./admin_grant_tickets_reducer";
@@ -43,7 +42,6 @@ import CreateBuyerListReducer from "./create_buyer_list_reducer";
 import CreateOrganizationReducer from "./create_organization_reducer";
 import CreateRoomReducer from "./create_room_reducer";
 import DeleteAccountReducer from "./delete_account_reducer";
-import DeleteApprovedBuyerReducer from "./delete_approved_buyer_reducer";
 import DeleteAuctionItemReducer from "./delete_auction_item_reducer";
 import DeleteBuyerListReducer from "./delete_buyer_list_reducer";
 import DeleteBuyerListMemberReducer from "./delete_buyer_list_member_reducer";
@@ -57,7 +55,6 @@ import RedeemAuctionTicketsReducer from "./redeem_auction_tickets_reducer";
 import RegisterDeviceReducer from "./register_device_reducer";
 import RemoveDeviceReducer from "./remove_device_reducer";
 import SetAutoBidReducer from "./set_auto_bid_reducer";
-import SetBuyerBannedReducer from "./set_buyer_banned_reducer";
 import SetBuyerListMemberBannedReducer from "./set_buyer_list_member_banned_reducer";
 import SetRoomStatusReducer from "./set_room_status_reducer";
 import StartAuctionReducer from "./start_auction_reducer";
@@ -80,7 +77,6 @@ import MyAccountRow from "./my_account_table";
 import MyAutoBidsRow from "./my_auto_bids_table";
 import MyDevicesRow from "./my_devices_table";
 import OrganizationRow from "./organization_table";
-import OrganizationWhitelistRow from "./organization_whitelist_table";
 
 /** Type-only namespace exports for generated type groups. */
 
@@ -194,24 +190,6 @@ const tablesSchema = __schema({
       { name: 'organization_slug_key', constraint: 'unique', columns: ['slug'] },
     ],
   }, OrganizationRow),
-  organizationWhitelist: __table({
-    name: 'organization_whitelist',
-    indexes: [
-      { accessor: 'Id', name: 'organization_whitelist_id_idx_btree', algorithm: 'btree', columns: [
-        'id',
-      ] },
-      { accessor: 'MagicToken', name: 'organization_whitelist_magic_token_idx_btree', algorithm: 'btree', columns: [
-        'magicToken',
-      ] },
-      { accessor: 'OrgId', name: 'organization_whitelist_org_id_idx_btree', algorithm: 'btree', columns: [
-        'orgId',
-      ] },
-    ],
-    constraints: [
-      { name: 'organization_whitelist_id_key', constraint: 'unique', columns: ['id'] },
-      { name: 'organization_whitelist_magic_token_key', constraint: 'unique', columns: ['magicToken'] },
-    ],
-  }, OrganizationWhitelistRow),
   myAccount: __table({
     name: 'my_account',
     indexes: [
@@ -237,7 +215,6 @@ const tablesSchema = __schema({
 
 /** The schema information for all reducers in this module. This is defined the same way as the reducers would have been defined in the server, except the body of the reducer is omitted in code generation. */
 const reducersSchema = __reducers(
-  __reducerSchema("add_approved_buyer", AddApprovedBuyerReducer),
   __reducerSchema("add_auction_item", AddAuctionItemReducer),
   __reducerSchema("add_buyer_list_member", AddBuyerListMemberReducer),
   __reducerSchema("admin_grant_tickets", AdminGrantTicketsReducer),
@@ -246,7 +223,6 @@ const reducersSchema = __reducers(
   __reducerSchema("create_organization", CreateOrganizationReducer),
   __reducerSchema("create_room", CreateRoomReducer),
   __reducerSchema("delete_account", DeleteAccountReducer),
-  __reducerSchema("delete_approved_buyer", DeleteApprovedBuyerReducer),
   __reducerSchema("delete_auction_item", DeleteAuctionItemReducer),
   __reducerSchema("delete_buyer_list", DeleteBuyerListReducer),
   __reducerSchema("delete_buyer_list_member", DeleteBuyerListMemberReducer),
@@ -260,7 +236,6 @@ const reducersSchema = __reducers(
   __reducerSchema("register_device", RegisterDeviceReducer),
   __reducerSchema("remove_device", RemoveDeviceReducer),
   __reducerSchema("set_auto_bid", SetAutoBidReducer),
-  __reducerSchema("set_buyer_banned", SetBuyerBannedReducer),
   __reducerSchema("set_buyer_list_member_banned", SetBuyerListMemberBannedReducer),
   __reducerSchema("set_room_status", SetRoomStatusReducer),
   __reducerSchema("start_auction", StartAuctionReducer),
@@ -291,8 +266,6 @@ type __SchemaWithTableAccessorAliases = Omit<typeof tablesSchema.schemaType, "ta
     readonly "BuyerListMember": Omit<typeof tablesSchema.schemaType.tables["buyerListMember"], "accessorName"> & { readonly accessorName: "BuyerListMember" };
     /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
     readonly "Organization": Omit<typeof tablesSchema.schemaType.tables["organization"], "accessorName"> & { readonly accessorName: "Organization" };
-    /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
-    readonly "OrganizationWhitelist": Omit<typeof tablesSchema.schemaType.tables["organizationWhitelist"], "accessorName"> & { readonly accessorName: "OrganizationWhitelist" };
     /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
     readonly "MyAccount": Omit<typeof tablesSchema.schemaType.tables["myAccount"], "accessorName"> & { readonly accessorName: "MyAccount" };
     /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
@@ -324,7 +297,6 @@ const tableAccessorAliases = {
   "BuyerList": "buyerList",
   "BuyerListMember": "buyerListMember",
   "Organization": "organization",
-  "OrganizationWhitelist": "organizationWhitelist",
   "MyAccount": "myAccount",
   "MyAutoBids": "myAutoBids",
   "MyDevices": "myDevices",
@@ -362,8 +334,6 @@ export type DbView = __DbViewBase & {
   readonly "BuyerListMember": __DbViewBase["buyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __DbViewBase["organization"];
-  /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationWhitelist": __DbViewBase["organizationWhitelist"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __DbViewBase["myAccount"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */
@@ -388,8 +358,6 @@ export type Tables = __TablesBase & {
   readonly "BuyerListMember": __TablesBase["buyerListMember"];
   /** @deprecated Use `organization` instead. This alias will be removed in the next major version. */
   readonly "Organization": __TablesBase["organization"];
-  /** @deprecated Use `organizationWhitelist` instead. This alias will be removed in the next major version. */
-  readonly "OrganizationWhitelist": __TablesBase["organizationWhitelist"];
   /** @deprecated Use `myAccount` instead. This alias will be removed in the next major version. */
   readonly "MyAccount": __TablesBase["myAccount"];
   /** @deprecated Use `myAutoBids` instead. This alias will be removed in the next major version. */

@@ -113,14 +113,6 @@ interface ItemRow {
   minBidIncrement: bigint;
 }
 
-interface BuyerRow {
-  id: bigint;
-  orgId: bigint;
-  companyName: string;
-  magicToken: string;
-  isBanned: boolean;
-}
-
 interface BidRow {
   id: bigint;
   itemId: bigint;
@@ -190,7 +182,6 @@ export default function DashboardPage() {
   const [myAccountCredits, setMyAccountCredits] = useState(0);
   const [rooms, setRooms] = useState<RoomRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
-  const [buyers, setBuyers] = useState<BuyerRow[]>([]);
   const [buyerLists, setBuyerLists] = useState<BuyerListRow[]>([]);
   const [buyerListMembers, setBuyerListMembers] = useState<BuyerListMemberRow[]>([]);
   const [bids, setBids] = useState<BidRow[]>([]);
@@ -211,7 +202,6 @@ export default function DashboardPage() {
     room: RoomRow;
     item: ItemRow;
   } | null>(null);
-  const [buyerCompany, setBuyerCompany] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [stripeConfigured, setStripeConfigured] = useState(false);
@@ -338,15 +328,6 @@ export default function DashboardPage() {
           minBidIncrement: i.minBidIncrement ?? BigInt(5000),
         }))
       );
-      setBuyers(
-        Array.from(conn.db.organizationWhitelist.iter()).map((b) => ({
-          id: b.id,
-          orgId: b.orgId,
-          companyName: b.companyName,
-          magicToken: b.magicToken,
-          isBanned: b.isBanned,
-        }))
-      );
       setBuyerLists(
         Array.from(conn.db.buyerList.iter()).map((l) => ({
           id: l.id,
@@ -420,7 +401,6 @@ export default function DashboardPage() {
             "SELECT * FROM organization",
             "SELECT * FROM auction",
             "SELECT * FROM auction_item",
-            "SELECT * FROM organization_whitelist",
             "SELECT * FROM buyer_list",
             "SELECT * FROM buyer_list_member",
             "SELECT * FROM auction_item_bid",
@@ -464,9 +444,6 @@ export default function DashboardPage() {
         connectedConn.db.auctionItem.onInsert(() => sync(connectedConn));
         connectedConn.db.auctionItem.onUpdate(() => sync(connectedConn));
         connectedConn.db.auctionItem.onDelete(() => sync(connectedConn));
-        connectedConn.db.organizationWhitelist.onInsert(() => sync(connectedConn));
-        connectedConn.db.organizationWhitelist.onUpdate(() => sync(connectedConn));
-        connectedConn.db.organizationWhitelist.onDelete(() => sync(connectedConn));
         connectedConn.db.buyerList.onInsert(() => sync(connectedConn));
         connectedConn.db.buyerList.onUpdate(() => sync(connectedConn));
         connectedConn.db.buyerList.onDelete(() => sync(connectedConn));
@@ -557,11 +534,6 @@ export default function DashboardPage() {
           Number(b.id - a.id)
       );
   }, [rooms, myOrg]);
-
-  const myBuyers = useMemo(() => {
-    if (!myOrg) return [];
-    return buyers.filter((b) => b.orgId === myOrg.id);
-  }, [buyers, myOrg]);
 
   const stats = useMemo(() => {
     const activeAuctions = myRooms.filter((r) => r.status === "Live").length;
@@ -954,42 +926,6 @@ export default function DashboardPage() {
       }
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "Failed to delete auction.");
-    }
-  };
-
-  const handleDeleteBuyer = (buyerId: bigint) => {
-    setActionError(null);
-    const conn = connRef.current;
-    if (!conn) return;
-    try {
-      conn.reducers.deleteApprovedBuyer({ buyerId });
-    } catch (err) {
-      setActionError(err instanceof Error ? err.message : "Failed to delete buyer.");
-    }
-  };
-
-  const handleAddBuyer = (e: React.FormEvent) => {
-    e.preventDefault();
-    setActionError(null);
-    const conn = connRef.current;
-    if (!conn || !myOrg || !buyerCompany.trim()) return;
-    const raw = buyerCompany.trim();
-    const email = raw.toLowerCase();
-    const displayName = raw.includes("@")
-      ? raw
-          .split("@")[0]
-          .replace(/[._-]+/g, " ")
-          .replace(/\b\w/g, (c) => c.toUpperCase())
-      : raw;
-    try {
-      conn.reducers.addApprovedBuyer({
-        orgId: myOrg.id,
-        companyName: displayName,
-        magicToken: email,
-      });
-      setBuyerCompany("");
-    } catch (err) {
-      setActionError(err instanceof Error ? err.message : "Failed to whitelist buyer.");
     }
   };
 
@@ -1846,10 +1782,10 @@ export default function DashboardPage() {
                   .sort((a, b) => Number(b.amount - a.amount) || Number(b.id - a.id))[0];
                 const matchedBuyer =
                   winningBid && winningBid.buyerId > BigInt(0)
-                    ? buyers.find((b) => b.id === winningBid.buyerId)
+                    ? buyerListMembers.find((m) => m.id === winningBid.buyerId)
                     : undefined;
                 const winnerContact =
-                  winningBid?.buyerEmail || matchedBuyer?.magicToken || "";
+                  winningBid?.buyerEmail || matchedBuyer?.email || "";
                 const isEmailContact = winnerContact.includes("@");
                 const isSold = lot.status === "Sold" && Boolean(winningBid);
 
