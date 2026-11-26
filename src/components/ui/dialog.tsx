@@ -16,6 +16,11 @@ interface DialogProps {
   className?: string;
 }
 
+let openDialogCount = 0;
+let savedBodyOverflow = "";
+let savedHtmlOverflow = "";
+let savedBodyPaddingRight = "";
+
 export function Dialog({
   open,
   onClose,
@@ -34,6 +39,33 @@ export function Dialog({
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    if (openDialogCount === 0) {
+      const html = document.documentElement;
+      const body = document.body;
+      const scrollbarWidth = window.innerWidth - html.clientWidth;
+      savedHtmlOverflow = html.style.overflow;
+      savedBodyOverflow = body.style.overflow;
+      savedBodyPaddingRight = body.style.paddingRight;
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      if (scrollbarWidth > 0) {
+        body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+    }
+    openDialogCount += 1;
+
+    return () => {
+      openDialogCount = Math.max(0, openDialogCount - 1);
+      if (openDialogCount === 0) {
+        document.documentElement.style.overflow = savedHtmlOverflow;
+        document.body.style.overflow = savedBodyOverflow;
+        document.body.style.paddingRight = savedBodyPaddingRight;
+      }
+    };
   }, [open]);
 
   return (
@@ -90,7 +122,7 @@ export function Dialog({
             </div>
 
             {/* Body */}
-            <div className="overflow-y-auto px-6 py-5 no-scrollbar">
+            <div className="overflow-y-auto overscroll-contain px-6 py-5 no-scrollbar">
               {children}
             </div>
           </motion.div>
